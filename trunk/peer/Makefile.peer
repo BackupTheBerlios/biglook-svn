@@ -64,7 +64,7 @@ jheap: .afile .jfile $(BOOTKDIR)/lib/biglook_peer.jheap
 $(BOOTKDIR)/lib/biglook_peer.jheap: $(PEER_HEAP_FILE) $(PEER_SOURCES)
 	@ $(BIGLOO) $(BHEAPFLAGS) \
                     $(PEER_HEAP_FILE) \
-                    -jvm -g -no-saw -addheap $(BOOTKDIR)/lib/biglook_peer.jheap
+                    -jvm -g -addheap $(BOOTKDIR)/lib/biglook_peer.jheap
 	@ echo "JHeap Done... ($(BOOTKDIR)/lib/biglook_peer.jheap)"
 	@ echo "-------------------------------"
 
@@ -185,7 +185,7 @@ distclean: cleanall
 #*---------------------------------------------------------------------*/
 # .scm -> .class
 $(PEER_CDIR)/%.class: %.scm
-	$(BIGLOO) -s -jvm -g -no-saw $(BFLAGS) $(PEER_BFLAGS) -c $< -o $@
+	$(BIGLOO) -s -jvm -g $(BFLAGS) $(PEER_BFLAGS) -c $< -o $@
 # .scm -> .o
 objs/%.o: %.scm
 	$(BIGLOO) -s $(BFLAGS) $(PEER_BFLAGS) -c $< -o $@

@@ -99,7 +99,7 @@ fi
 #*    Preliminary checks                                               */
 #*---------------------------------------------------------------------*/
 for p in "pkg-config --cflags gtk+-2.0" \
-         "pkg-config --libsi gtk+-2.0" \
+         "pkg-config --libs gtk+-2.0" \
          "pkg-config --cflags gdk-pixbuf-2.0" \
          "pkg-config --libs gdk-pixbuf-2.0" \
          "pkg-config --cflags glib-2.0" \

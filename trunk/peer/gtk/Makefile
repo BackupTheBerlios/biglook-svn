@@ -39,7 +39,7 @@ PEER_CLEAN	= Include/event.h
 #*    Sources                                                          */
 #*---------------------------------------------------------------------*/
 LLIB		= _configure _app _error _event _callback \
-                  _color _font _after _port
+                  _color _font _after _port _cursor
 LWIDGET		= _peer _bglkobject _widget \
                   _image _text \
                   _container _window _frame _scroll \

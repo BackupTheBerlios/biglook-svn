@@ -231,7 +231,11 @@
 	   
 	   (%canvas-line-spline-steps::int ::%bglk-object)
 	   (%canvas-line-spline-steps-set! ::%bglk-object ::int)
-	   
+
+           ;; canvas ellipse
+	   (%canvas-ellipse-style::symbol ::%bglk-object)
+	   (%canvas-ellipse-style-set! ::%bglk-object ::symbol)
+
 	   ;; canvas image
 	   (%canvas-image-x::int ::%bglk-object)
 	   (%canvas-image-x-set! ::%bglk-object ::int)
@@ -912,6 +916,18 @@
 			     %%gtk-type-gdk-line-style))
       (else
        (error "line-style-set!" "Illegal style value" v))))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-ellipse-style ...                                        */
+;*---------------------------------------------------------------------*/
+(define (%canvas-ellipse-style o::%bglk-object)
+   (not-implemented o "%canvas-ellipse-style"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-ellipse-style-set! ...                                   */
+;*---------------------------------------------------------------------*/
+(define (%canvas-ellipse-style-set! o::%bglk-object v)
+   (not-implemented o "%canvas-ellipse-style-set!"))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-line-cap-style ...                                       */

@@ -107,6 +107,12 @@
 	   (%canvas-scroll-height::int ::%bglk-object)
 	   (%canvas-scroll-height-set! ::%bglk-object ::int)
 	   
+	   (%canvas-zoom-x::float ::%bglk-object)
+	   (%canvas-zoom-x-set! ::%bglk-object ::float)
+
+	   (%canvas-zoom-y::float ::%bglk-object)
+	   (%canvas-zoom-y-set! ::%bglk-object ::float)
+
 	   (%canvas-add! ::%bglk-object ::%bglk-object ::pair-nil)
 	   (%canvas-add-item! ::%bglk-object ::%bglk-object)
 	   (%canvas-remove-item! ::%bglk-object ::%bglk-object)))
@@ -256,4 +262,28 @@
    (with-access::%peer (%bglk-object-%peer o) (%builtin)
       (%%bglk-gnome-canvas-scroll-region-height-set! (gnomecanvas %builtin) v)
       o))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-x ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-x::float o::%bglk-object)
+   (not-implemented o "%canvas-zoom-x"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-x-set! ...                                          */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-x-set! o::%bglk-object v::float)
+   (not-implemented o "%canvas-zoom-x-set!"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-y ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-y::float o::%bglk-object)
+   (not-implemented o "%canvas-zoom-y"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-y-set! ...                                          */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-y-set! o::%bglk-object v::float)
+   (not-implemented o "%canvas-zoom-y-set!"))
 

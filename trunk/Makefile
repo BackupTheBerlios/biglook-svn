@@ -36,7 +36,9 @@ include Makefile.kconfig
 #*    Peers                                                            */
 #*---------------------------------------------------------------------*/
 PEER	= null
-PEERS	= null gtk swing swt
+_PEERS  = gtk gtk2 swing
+PEERS_SH = gtk,gtk2,swing
+PEERS	= null $(_PEERS)
 
 #*---------------------------------------------------------------------*/
 #*    goals                                                            */
@@ -58,14 +60,22 @@ boot-jnull: lib/null
 	@ echo "[0m[1;32m--->>> peer/null[0m"
 	(cd peer/null; $(MAKE) jvm-all)
 
-#*--- boot-gtk --------------------------------------------------------*/
-boot-gtk: boot-null lib/gtk peer/gtk/Makefile.gtkconfig
+#*--- boot-gtk-generic ------------------------------------------------*/
+boot-gtk-generic: boot-null lib/$(GTK) peer/$(GTK)/Makefile.$(GTK)config
 	@ echo "[0m[1;32m--->>> biglook[0m"
 	(cd biglook; $(MAKE) init heap lib)
-	@ echo "[0m[1;32m--->>> peer/gtk[0m"
-	(cd peer/gtk; $(MAKE))
+	@ echo "[0m[1;32m--->>> peer/$(GTK)[0m"
+	(cd peer/$(GTK); $(MAKE))
 
-#*--- boot-gtk --------------------------------------------------------*/
+#*--- boot-gtk -------------------------------------------------------*/
+boot-gtk: GTK=gtk
+boot-gtk: boot-gtk-generic
+	
+#*--- boot-gtk2 -------------------------------------------------------*/
+boot-gtk2: GTK=gtk2
+boot-gtk2: boot-gtk-generic
+
+#*--- boot-swing ------------------------------------------------------*/
 boot-swing: boot-jnull lib/swing
 	@ echo "[0m[1;32m--->>> biglook[0m"
 	(cd biglook; $(MAKE) init jheap zip)
@@ -80,18 +90,12 @@ boot-swt: boot-jnull lib/swt
 	(cd peer/swt; $(MAKE))
 
 #*--- peers -----------------------------------------------------------*/
-lib/null:
-	mkdir -p lib/null
-lib/gtk:
-	mkdir -p lib/gtk
-lib/swing:
-	mkdir -p lib/swing
-lib/swt:
-	mkdir -p lib/swt
+$(foreach p,$(PEERS),lib/$(p)):
+	mkdir -p $@
 
-peer/gtk/Makefile.gtkconfig:
-	@ echo "[0m[1;32m>>> peer/gtk[0m"
-	(cd peer/gtk; ./configure)
+peer/$(GTK)/Makefile.$(GTK)config:
+	@ echo "[0m[1;32m>>> peer/$(GTK)[0m"
+	(cd peer/$(GTK); ./configure)
 
 #*---------------------------------------------------------------------*/
 #*    install                                                          */
@@ -109,25 +113,31 @@ install-biglook:
 	cp $(BOOTKDIR)/lib/biglook.init $(FILDIR)/biglook.init
 	chmod $(BMASK) $(FILDIR)/biglook.init
 
-install-gtk:
-	mkdir -p $(FILDIR)/gtk
-	chmod $(BMASK) $(FILDIR)/gtk
+install-gtk: GTK=gtk
+install-gtk: install-gtk-generic
+	
+install-gtk2: GTK=gtk2
+install-gtk2: install-gtk-generic
+	
+install-gtk-generic:
+	mkdir -p $(FILDIR)/$(GTK)
+	chmod $(BMASK) $(FILDIR)/$(GTK)
 	cp $(BOOTKDIR)/lib/biglook.heap $(FILDIR)/biglook.heap
 	chmod $(BMASK) $(FILDIR)/biglook.heap
-	cp $(BOOTKDIR)/lib/gtk/biglook_peer.init \
-           $(FILDIR)/gtk/biglook_peer.init
-	chmod $(BMASK) $(FILDIR)/gtk/biglook_peer.init
-	cp $(BOOTKDIR)/lib/gtk/biglook_peer.h $(FILDIR)/gtk/biglook_peer.h
-	chmod $(BMASK) $(FILDIR)/gtk/biglook_peer.h
+	cp $(BOOTKDIR)/lib/$(GTK)/biglook_peer.init \
+           $(FILDIR)/$(GTK)/biglook_peer.init
+	chmod $(BMASK) $(FILDIR)/$(GTK)/biglook_peer.init
+	cp $(BOOTKDIR)/lib/$(GTK)/biglook_peer.h $(FILDIR)/$(GTK)/biglook_peer.h
+	chmod $(BMASK) $(FILDIR)/$(GTK)/biglook_peer.h
 	$(MAKE) install-lib BOOTLIBDIR=lib LIB=libbiglook_s-$(KRELEASE)
 	$(MAKE) install-lnlib BOOTLIBDIR=lib \
                               LIB=libbiglook_s-$(KRELEASE) \
                               LN=libbiglook_u-$(KRELEASE)
 	$(MAKE) install-lib BOOTLIBDIR=lib \
-                            SUBDIR=gtk/ \
+                            SUBDIR=$(GTK)/ \
                             LIB=libbiglook_peer_s-$(KRELEASE)
 	$(MAKE) install-lnlib BOOTLIBDIR=lib \
-                              SUBDIR=gtk/ \
+                              SUBDIR=$(GTK)/ \
                               LIB=libbiglook_peer_s-$(KRELEASE) \
                               LN=libbiglook_peer_u-$(KRELEASE)
 
@@ -174,12 +184,13 @@ uninstall:
 	$(RM) -f $(FILDIR)/biglook.init
 	$(RM) -f $(FILDIR)/biglook_s.zip
 	$(RM) -f $(FILDIR)/biglook_u.zip
-	$(RM) -rf $(FILDIR)/gtk
-	$(RM) -rf $(FILDIR)/swing
+	$(RM) -rf $(FILDIR)/{$(PEERS_SH)}
 	$(MAKE) uninstall-lib LIB=libbiglook_s-$(KRELEASE)
 	$(MAKE) uninstall-lib LIB=libbiglook_u-$(KRELEASE)
-	$(MAKE) uninstall-lib SUBDIR=gtk/ LIB=libbiglook_peer_s-$(KRELEASE)
-	$(MAKE) uninstall-lib SUBDIR=gtk/ LIB=libbiglook_peer_u-$(KRELEASE)
+	for p in gtk gtk2; do \
+         $(MAKE) uninstall-lib SUBDIR=$$p LIB=libbiglook_peer_s-$(KRELEASE) ;\
+	 $(MAKE) uninstall-lib SUBDIR=$$p LIB=libbiglook_peer_u-$(KRELEASE) ;\
+	done
 	$(RM) -f $(FILDIR)/swing/biglook_peer_s.zip
 	$(RM) -f $(FILDIR)/swing/biglook_peer_u.zip
 	for p in $(BACKENDS); do \

@@ -170,29 +170,31 @@
 ;*---------------------------------------------------------------------*/
 (define (%window-x::int o::%bglk-object)
    (with-access::%bglk-object o (%peer)
-      (%%gtk-window-x %peer)))
+      (%%gtk-window-x (gtkwidget (%peer-%builtin %peer)))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %window-x-set! ...                                               */
 ;*---------------------------------------------------------------------*/
 (define (%window-x-set! o::%bglk-object v::int)
    (with-access::%bglk-object o (%peer)
-      (%%gtk-window-x-set! %peer v (%window-y o))
-      #unspecified))
+    (%%gtk-window-x-set!  (gtkwindow (%peer-%builtin %peer))
+                          v (%window-y o))
+    #unspecified))
 
 ;*---------------------------------------------------------------------*/
 ;*    %window-y ...                                                    */
 ;*---------------------------------------------------------------------*/
 (define (%window-y::int o::%bglk-object)
    (with-access::%bglk-object o (%peer)
-      (%%gtk-window-y %peer)))
+      (%%gtk-window-y  (gtkwidget (%peer-%builtin %peer)))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %window-y-set! ...                                               */
 ;*---------------------------------------------------------------------*/
 (define (%window-y-set! o::%bglk-object v::int)
    (with-access::%bglk-object o (%peer)
-      (%%gtk-window-y-set! %peer (%window-x o) v)
+      (%%gtk-window-y-set!  (gtkwindow (%peer-%builtin %peer))
+                            (%window-x o) v)
       #unspecified))
 
 ;*---------------------------------------------------------------------*/

@@ -11,7 +11,7 @@
 #*=====================================================================*/
 
 # configure back-end list
-backends="gtk swing"
+backends="gtk gtk2 swing"
 
 # the name of the current bigloo compiler
 bigloo=bigloo

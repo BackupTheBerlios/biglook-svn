@@ -19,7 +19,9 @@
 	   __biglook_%bglk-object
 	   __biglook_%error
 	   __biglook_%gtk-misc
-	   __biglook_%color)
+	   __biglook_%color
+   	   __biglook_%cursor
+           )
    
    (extern (macro %%gtk-tooltips-new::gtktooltips* ()
 		  "gtk_tooltips_new")
@@ -101,6 +103,9 @@
 
 	   (%widget-can-focus?::bool ::%bglk-object)
 	   (%widget-can-focus?-set! ::%bglk-object ::bool)
+
+           (%widget-cursor ::%bglk-object)
+	   (%widget-cursor-set! ::%bglk-object ::obj)
 
 	   (%destroy-widget ::%bglk-object)
 	   (%repaint-widget ::%bglk-object)))
@@ -271,3 +276,15 @@
 	    (%%widget-show (gtkwidget %builtin))
 	    #unspecified))
    o)
+
+;*---------------------------------------------------------------------*/
+;*    %widget-cursor ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%widget-cursor o::%bglk-object)
+   (not-implemented o "%widget-cursor"))
+
+;*---------------------------------------------------------------------*/
+;*    %widget-can-focus?-set! ...                                      */
+;*---------------------------------------------------------------------*/
+(define (%widget-cursor-set! o::%bglk-object v::obj)
+   (not-implemented o "%widget_cursor-set!"))

@@ -12,13 +12,13 @@
 ;*    GTK CC options                                                   */
 ;*---------------------------------------------------------------------*/
 ;; linking
-(let ((gtk-ld-options "-lgtk-x11-2.0   "))
+(let ((gtk-ld-options "-Wl,--export-dynamic -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangoxft-1.0 -lpangox-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0   "))
    (set! *ld-options* (string-append *ld-options*
 				     gtk-ld-options
 				     " -L/usr/X11R6/lib ")))
 
 ;; compiling
-(let ((gtk-cc-options "-I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   ")
+(let ((gtk-cc-options "-DXTHREADS -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   ")
       (glib-cc-options "-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   "))
    (set! *cc-options* (string-append gtk-cc-options
 				     glib-cc-options
@@ -32,18 +32,18 @@
 ;*    GNOMEUI CC options                                               */
 ;*---------------------------------------------------------------------*/
 ;; linking
-(let ((gnome-ld-options "-L/usr/X11R6/lib -lgnomeui-2 -lSM -lICE -lgnomecanvas-2   "))
+(let ((gnome-ld-options "-Wl,--export-dynamic -pthread -L/usr/X11R6/lib -lgnomeui-2 -lSM -lICE -lbonoboui-2 -lxml2 -lpthread -lz -lgnome-2 -lpopt -lgnomevfs-2 -lbonobo-2 -lgconf-2 -lbonobo-activation -lORBit-2 -lgthread-2.0 -lgnomecanvas-2 -lart_lgpl_2 -lpangoft2-1.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangoxft-1.0 -lpangox-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0   "))
    (set! *ld-options* (string-append *ld-options* gnome-ld-options)))
 
 ;; compiling
-(let ((gnome-cc-options "-DORBIT2=1 -pthread -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/gconf/2 -I/usr/include/libbonoboui-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libbonobo-2.0 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/libxml2   "))
+(let ((gnome-cc-options "-DORBIT2=1 -pthread -DXTHREADS -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/gconf/2 -I/usr/include/libbonoboui-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libbonobo-2.0 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/libxml2   "))
    (set! *cc-options* (string-append gnome-cc-options *cc-options*)))
 
 ;*---------------------------------------------------------------------*/
 ;*    GdkPixbuf CC options                                             */
 ;*---------------------------------------------------------------------*/
 ;; linking
-(let ((pixbuf-ld-options "-lgdk_pixbuf-2.0 -lm   "))
+(let ((pixbuf-ld-options "-Wl,--export-dynamic -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0   "))
    (set! *ld-options* (string-append *ld-options* pixbuf-ld-options)))
   
 ;; compiling
