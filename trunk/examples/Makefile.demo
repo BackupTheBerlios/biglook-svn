@@ -3,7 +3,7 @@
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Thu Jan  7 10:36:01 1999                          */
-#*    Last change :  Mon Jun 14 16:20:00 2004 (dciabrin)               */
+#*    Last change :  Thu Nov 18 11:16:03 2004 (dciabrin)               */
 #*    -------------------------------------------------------------    */
 #*    The standard Makefile for all Biglook demonstrations.            */
 #*    -------------------------------------------------------------    */
@@ -60,7 +60,7 @@ clean:
 	@- \rm -f $(SCM_FILE:%=%.o)
 	@- \rm -f $(SCM_FILE:%=%.class)
 	@- \rm -f JVMMAIN.class *.class
-	@- \rm -f a.null a.gtk a.swing a.swt a.jar Manifest
+	@- \rm -f a.null a.gtk2 a.gtk a.swing a.swt a.jar Manifest
 
 #*---------------------------------------------------------------------*/
 #*    Suffixes                                                         */

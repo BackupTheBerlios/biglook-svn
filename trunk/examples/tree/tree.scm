@@ -64,7 +64,7 @@
 							   value
 							   (string-length val)))
 					   #t)))))))
-   (print "class-tree: " class-tree))
+   (widget-visible-set! win #t))
 
 (define (directory-children data)
    (map (lambda (x)

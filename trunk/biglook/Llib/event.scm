@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Fri Apr 20 09:50:41 2001                          */
-;*    Last change :  Fri May  7 14:14:10 2004 (dciabrin)               */
+;*    Last change :  Wed Nov 24 11:18:33 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Biglook event handling                                       */
@@ -294,7 +294,7 @@
       ;; focus-in
       (install-callback! w 'focus-in %focus-in)
       ;; focus-out
-      (install-callback! w 'focus-in %focus-out)
+      (install-callback! w 'focus-out %focus-out)
       ;; configure
       (install-callback! w 'configure %configure)))
 
@@ -341,7 +341,7 @@
       ;; focus-in
       (uninstall-callback! w 'focus-in %focus-in)
       ;; focus-out
-      (uninstall-callback! w 'focus-in %focus-out)
+      (uninstall-callback! w 'focus-out %focus-out)
       ;; configure
       (uninstall-callback! w 'configure %configure)))
 

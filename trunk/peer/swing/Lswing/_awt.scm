@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Thu Apr 19 08:57:56 2001                          */
-;*    Last change :  Fri Jun  4 23:40:00 2004 (braun)                  */
+;*    Last change :  Thu Dec  9 14:49:57 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Awt connection                                               */
@@ -185,8 +185,8 @@
 	 ;; java.awt.Dimension2D
 	 (class %awt-geom-dimension2D::%jobject
 	    (constructor new (::int ::int))
-	    (method width::int (::%awt-geom-dimension2D) "getWidth")
-	    (method height::int (::%awt-geom-dimension2D) "getHeight")
+	    (method width::double (::%awt-geom-dimension2D) "getWidth")
+	    (method height::double (::%awt-geom-dimension2D) "getHeight")
 	    "java.awt.geom.Dimension2D")
 	 
 	 ;; java.awt.Image
@@ -325,6 +325,24 @@
 	    (method enabled?-set!::void
 		    (::%awt-component ::bool)
 		    "setEnabled")
+	    (method invalidate!::void
+		    (::%awt-component)
+		    "invalidate")
+	    (method validate!::void
+		    (::%awt-component)
+		    "validate")
+	    (method repaint!::void
+		    (::%awt-component)
+		    "repaint")
+	    (method cursor::%awt-cursor
+		    (::%awt-component)
+		    "getCursor")
+	    (method cursor-set!::void
+		    (::%awt-component ::%awt-cursor)
+		    "setCursor")
+	    (method valid?::bool
+		    (::%awt-component)
+		    "isValid")
 	    "java.awt.Component")
 	 
 	 ;; java.awt.Container
@@ -592,6 +610,21 @@
 
 	 ;; java.awt.geom.GeneralPath
 	 (class %awt-generalpath::%awt-shape
+	    (constructor new ())
+	    (method lineto::void
+		    (::%awt-generalpath ::float ::float)
+		    "lineTo")	    
+	    (method moveto::void
+		    (::%awt-generalpath ::float ::float)
+		    "moveTo")	    
+	    (method curveto::void
+		    (::%awt-generalpath ::float ::float ::float ::float
+					::float ::float)
+		    "curveTo")
+	    (method contains?::bool (::%awt-generalpath ::double ::double)
+		    "contains")
+	    (method bbox::%awt-rectangle2D (::%awt-generalpath)
+		    "getBounds2D")	    
 	    "java.awt.geom.GeneralPath")
 	 
 	 ;; java.awt.image.BufferedImage
@@ -731,6 +764,34 @@
 		    (::%awt-line2D-double ::double ::double ::double ::double)
 		    "setLine")
 	    "java.awt.geom.Line2D$Double")
+
+	 ;; java.awt.geom.CubicCurve2D.Double
+	 (class %awt-cubic-curve2D-double
+	    (constructor new ())
+	    (method contains::bool
+		    (::%awt-cubic-curve2D-double ::double ::double)
+		    "contains")
+	    (method getbounds::%awt-rectangle2D
+		    (::%awt-cubic-curve2D-double)
+		    "getBounds2D")
+	    (method getX1::double
+		    (::%awt-cubic-curve2D-double)
+		    "getX1")
+	    (method getY1::double
+		    (::%awt-cubic-curve2D-double)
+		    "getY1")
+	    (method getX2::double
+		    (::%awt-cubic-curve2D-double)
+		    "getX2")
+	    (method getY2::double
+		    (::%awt-cubic-curve2D-double)
+		    "getY2")
+	    (method set::void
+		    (::%awt-cubic-curve2D-double ::double ::double ::double ::double
+						 ::double ::double ::double ::double)
+		    "setCurve")
+	    "java.awt.geom.CubicCurve2D$Double")
+
 	 
 	 ;; java.awt.Stroke
 	 (class %awt-stroke::%jobject
@@ -756,4 +817,28 @@
 		    "getEndCap")
 	    (method line-join::int (::%awt-basicstroke)
 		    "getLineJoin")
-	    "java.awt.BasicStroke")))
+	    "java.awt.BasicStroke")
+
+
+	 ;; java.awt.Cursor
+	 (class %awt-cursor
+	    (field static CROSSHAIR_CURSOR::int "CROSSHAIR_CURSOR")
+	    (field static CUSTOM_CURSOR::int "CUSTOM_CURSOR")
+	    (field static DEFAULT_CURSOR::int "DEFAULT_CURSOR")
+	    (field static E_RESIZE_CURSOR::int "E_RESIZE_CURSOR")
+	    (field static HAND_CURSOR::int "HAND_CURSOR")
+	    (field static MOVE_CURSOR::int "MOVE_CURSOR")
+	    (field static N_RESIZE_CURSOR::int "N_RESIZE_CURSOR")
+	    (field static NE_RESIZE_CURSOR::int "NE_RESIZE_CURSOR")
+	    (field static NW_RESIZE_CURSOR::int "NW_RESIZE_CURSOR")
+	    (field static S_RESIZE_CURSOR::int "S_RESIZE_CURSOR")
+	    (field static SE_RESIZE_CURSOR::int "SE_RESIZE_CURSOR")
+	    (field static SW_RESIZE_CURSOR::int "SW_RESIZE_CURSOR")
+	    (field static TEXT_CURSOR::int "TEXT_CURSOR")
+	    (field static W_RESIZE_CURSOR::int "W_RESIZE_CURSOR")
+	    (field static WAIT_CURSOR::int "WAIT_CURSOR")
+	    (constructor new ())
+	    (constructor new/type (::int))
+	    (method type::int (::%awt-cursor) "getType")
+	    "java.awt.Cursor")
+	))

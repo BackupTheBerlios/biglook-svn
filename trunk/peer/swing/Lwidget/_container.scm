@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Sun Apr 25 16:33:30 2004 (braun)                  */
+;*    Last change :  Tue Nov 30 16:26:31 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Null peer Container implementation.                          */
@@ -20,7 +20,9 @@
 	   __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%widget
-	   __biglook_%color)
+	   __biglook_%color
+   	   ;__biglook_%cursor
+	   )
    
    (export (class %container::%peer)
 	   
@@ -70,12 +72,19 @@
 ;*    %container-remove! ...                                           */
 ;*---------------------------------------------------------------------*/
 (define (%container-remove! c::%bglk-object w::%bglk-object)
+;   (print "%container-remove! " (find-runtime-type c)
+;	  " " (find-runtime-type w))
+;   (print "%container-remove! "
+;	  (find-runtime-type (%bglk-object-%peer c)) " "
+;	  (find-runtime-type (%bglk-object-%peer w)))
    (%%container-remove!  (%bglk-object-%peer c) w))
 
 ;*---------------------------------------------------------------------*/
 ;*    %%container-remove! ::%bglk-object ...                           */
 ;*---------------------------------------------------------------------*/
 (define-generic (%%container-remove! c::%peer w::%bglk-object)
+;   (print "---- REMOVE ---- " (find-runtime-type (%peer-%builtin c))
+;	  " " (find-runtime-type (%peer-%builtin (%bglk-object-%peer w))))
    (%awt-container-remove! (%peer-%builtin c)
 			   (%peer-%builtin (%bglk-object-%peer w)))
    (%swing-jcomponent-revalidate (%peer-%builtin c))
@@ -101,7 +110,9 @@
 	     (let ((child (%bglk-get-object (%awt-container-child c num))))
 		(loop (-fx num 1)
 		      (if (%bglk-object? child) (cons child res) res)))
-	     (reverse! res)))))
+	     (begin
+		(print (map (lambda (x) (find-runtime-type x)) res))
+		(reverse! res))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %container-border-width ...                                      */

@@ -18,7 +18,9 @@
    (import __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%error
-	   __biglook_%color)
+	   __biglook_%color
+   	   __biglook_%cursor
+	   )
    
    (export (class %widget::%peer)
 	   
@@ -50,6 +52,9 @@
 
 	   (%widget-can-focus?::bool ::%bglk-object)
 	   (%widget-can-focus?-set! ::%bglk-object ::bool)
+
+	   (%widget-cursor ::%bglk-object)
+	   (%widget-cursor-set! ::%bglk-object ::obj)
 
 	   (%repaint-widget ::%bglk-object)
 	   (%destroy-widget ::%bglk-object)))
@@ -142,13 +147,13 @@
 ;*---------------------------------------------------------------------*/
 ;*    %widget-visible ...                                              */
 ;*---------------------------------------------------------------------*/
-(define (%widget-visible o::%bglk-object)
+(define-generic (%widget-visible o::%bglk-object)
    (not-implemented o "%widget-visible"))
 
 ;*---------------------------------------------------------------------*/
 ;*    %widget-visible-set! ...                                         */
 ;*---------------------------------------------------------------------*/
-(define (%widget-visible-set! o::%bglk-object v)
+(define-generic (%widget-visible-set! o::%bglk-object v)
    (not-implemented o "%widget-visible-set!"))
 
 ;*---------------------------------------------------------------------*/
@@ -186,3 +191,15 @@
 ;*---------------------------------------------------------------------*/
 (define (%repaint-widget o::%bglk-object)
    (not-implemented o "%destroy-widget"))
+
+;*---------------------------------------------------------------------*/
+;*    %widget-cursor ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%widget-cursor o::%bglk-object)
+   (not-implemented o "%widget-cursor"))
+
+;*---------------------------------------------------------------------*/
+;*    %widget-can-focus?-set! ...                                      */
+;*---------------------------------------------------------------------*/
+(define (%widget-cursor-set! o::%bglk-object v::obj)
+   (not-implemented o "%widget_cursor-set!"))

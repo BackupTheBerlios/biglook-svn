@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/biglook/Lwidget/canvitem.scm        */
+;*    biglook/Lwidget/canvitem.scm                                     */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Wed Sep  6 08:21:00 2000                          */
-;*    Last change :  Sun Sep  8 14:10:15 2002 (serrano)                */
-;*    Copyright   :  2000-02 Manuel Serrano                            */
+;*    Last change :  Thu Oct 14 17:46:22 2004 (dciabrin)               */
+;*    Copyright   :  2000-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    Biglook Canvas item widgets                                      */
 ;*    -------------------------------------------------------------    */
@@ -194,7 +194,10 @@
 
 	    (class canvas-rectangle::canvas-shape)
 	    
-	    (class canvas-ellipse::canvas-shape)
+	    (class canvas-ellipse::canvas-shape
+	       (style::symbol
+		(get %canvas-ellipse-style)
+		(set %canvas-ellipse-style-set!)))
 	    
 	    (class canvas-polygon::canvas-geometry)
 	    

@@ -19,10 +19,10 @@
 
 (define radio2 (instantiate::radio
                   (parent box)
-		  (title "Radio2")
+		  ;(title "Radio2")
                   (texts '("foo" "bar" "gee" "hux"))
                   (tooltips "Another stupid tooltip")
-                  (shadow 'etched-in)
+                  ;(shadow 'etched-in)
                   (border-width 2)
                   (orientation 'vertical)
                   (value "bar")
@@ -52,3 +52,4 @@
 
 (print "Radio1: " radio1)
 (print "Radio2: " radio2)
+(widget-visible-set! tp #t)

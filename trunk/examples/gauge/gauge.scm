@@ -38,4 +38,5 @@
 				   (v (check-button-on w)))
 			       (set! anim? v)
 			       (if v (timeout 100 thunk))))))))
-   (print "gauge1: " gauge1))
+   (print "gauge1: " gauge1)
+   (widget-visible-set! win #t))

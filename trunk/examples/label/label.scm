@@ -23,4 +23,5 @@
    (print "first label: " l1)
    (print "second label: " l2)
    (print "third label: " l3)
-   (print "fourth label: " l4))
+   (print "fourth label: " l4)
+   (widget-visible-set! win #t))

@@ -67,7 +67,7 @@
 	 (parent left)
 	 (command (go-command ground pace message)))
       (message "Nobody's running")
-      #unspecified))
+      (widget-visible-set! win #t) ))
 
 (demo)
 

@@ -45,7 +45,7 @@ public class BJMouseAdapter extends java.awt.event.MouseAdapter {
 	wrapper = w;
     }
 
-    static Object wrap_event( MouseEvent e, procedure wrapper ) {
+    public static Object wrap_event( MouseEvent e, procedure wrapper ) {
 	Component ec = e.getComponent();
 	Object receiver = Bglk.get_bglk_object( ec );
 	
@@ -85,7 +85,7 @@ public class BJMouseAdapter extends java.awt.event.MouseAdapter {
 	}
     }
 
-    static BJMouseAdapter findAdapter( Component comp ) {
+    public static BJMouseAdapter findAdapter( Component comp ) {
 	MouseListener[] mls = (MouseListener[])(comp.getListeners( MouseListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -98,7 +98,7 @@ public class BJMouseAdapter extends java.awt.event.MouseAdapter {
 	}
     }
 
-    static Object getMouseAdapterPress( Component comp ) {
+    public static Object getMouseAdapterPress( Component comp ) {
 	BJMouseAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.press_proc == null) ) {
@@ -108,7 +108,7 @@ public class BJMouseAdapter extends java.awt.event.MouseAdapter {
 	}
     }
 
-    static Object getMouseAdapterRelease( Component comp ) {
+    public static Object getMouseAdapterRelease( Component comp ) {
 	BJMouseAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.release_proc == null ) ) {
@@ -118,7 +118,7 @@ public class BJMouseAdapter extends java.awt.event.MouseAdapter {
 	}
     }
 
-    static Object getMouseAdapterEnter( Component comp ) {
+    public static Object getMouseAdapterEnter( Component comp ) {
 	BJMouseAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.enter_proc == null) ) {
@@ -128,7 +128,7 @@ public class BJMouseAdapter extends java.awt.event.MouseAdapter {
 	}
     }
 
-    static Object getMouseAdapterLeave( Component comp ) {
+    public static Object getMouseAdapterLeave( Component comp ) {
 	BJMouseAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.leave_proc == null) ) {
@@ -138,7 +138,7 @@ public class BJMouseAdapter extends java.awt.event.MouseAdapter {
 	}
     }
 
-    static Object getMouseAdapterClick( Component comp ) {
+    public static Object getMouseAdapterClick( Component comp ) {
 	BJMouseAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.click_proc == null) ) {
@@ -148,7 +148,7 @@ public class BJMouseAdapter extends java.awt.event.MouseAdapter {
 	}
     }
 
-    static Object getMouseAdapterCommand( Component comp ) {
+    public static Object getMouseAdapterCommand( Component comp ) {
 	BJMouseAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.command_proc == null) ) {

@@ -1,10 +1,10 @@
 /*=====================================================================*/
-/*    .../biglook/peer/swing/Jlib/BJCanvasMouseMotionAdapter.java      */
+/*    swing/Jlib/BJCanvasMouseMotionAdapter.java                       */
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Wed Apr 18 10:39:08 2001                          */
-/*    Last change :  Sat Jul  7 09:49:38 2001 (serrano)                */
-/*    Copyright   :  2001 Manuel Serrano                               */
+/*    Last change :  Thu Nov 25 17:54:28 2004 (dciabrin)               */
+/*    Copyright   :  2001-04 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    The Biglook Canvas MouseAdapter                                  */
 /*=====================================================================*/
@@ -25,7 +25,7 @@ import bigloo.biglook.peer.Jlib.*;
 public class BJCanvasMouseMotionAdapter extends MouseMotionAdapter {
     procedure bglk_mm;
 
-    BJCanvasMouseMotionAdapter( procedure mm ) {
+    public BJCanvasMouseMotionAdapter( procedure mm ) {
 	super();
 	bglk_mm = mm;
     }
@@ -38,7 +38,7 @@ public class BJCanvasMouseMotionAdapter extends MouseMotionAdapter {
 	bglk_mm.funcall1( e );
     }
 
-    static BJCanvasMouseMotionAdapter findAdapter( BJCanvas comp ) {
+    public static BJCanvasMouseMotionAdapter findAdapter( BJCanvas comp ) {
 	MouseMotionListener[] mls = (MouseMotionListener[])(comp.getListeners( MouseMotionListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -51,7 +51,7 @@ public class BJCanvasMouseMotionAdapter extends MouseMotionAdapter {
 	}
     }
 
-    static Object getCanvasMouseMotionAdapterProc( BJCanvas comp ) {
+    public static Object getCanvasMouseMotionAdapterProc( BJCanvas comp ) {
 	BJCanvasMouseMotionAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.bglk_mm == null) ) {
@@ -61,7 +61,7 @@ public class BJCanvasMouseMotionAdapter extends MouseMotionAdapter {
 	}
     }
 
-    static void addCanvasMouseMotionAdapter( BJCanvas comp, Object p ) {
+    public static void addCanvasMouseMotionAdapter( BJCanvas comp, Object p ) {
 	BJCanvasMouseMotionAdapter a = findAdapter( comp );
 
 	if( a == null ) {

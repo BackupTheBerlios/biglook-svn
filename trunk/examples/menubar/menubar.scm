@@ -108,5 +108,6 @@
 			   (:menu "Quit"
 				  (:label "Quit" :command ,(lambda (_)
 							      (exit 0)))))))))
-   (print "easy menubar: " menubar))
+   (widget-visible-set! window #t))
+
 

@@ -49,14 +49,14 @@ public class BJTableModelAdapter implements TableModelListener {
     }	
     */
 
-    static Object wrap_event( Object receiver,
+    public static Object wrap_event( Object receiver,
 			      TableModelEvent event, 
 			      procedure wrapper ) {
 	int x, y;
 	return wrapper.funcall2( event, receiver );
     }
     
-    static BJTableModelAdapter findAdapter( TableModel comp ) {
+    public static BJTableModelAdapter findAdapter( TableModel comp ) {
 	TableModelListener[] mls = (TableModelListener[])(((AbstractTableModel)comp).getListeners( BJTableModelAdapter.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -69,7 +69,7 @@ public class BJTableModelAdapter implements TableModelListener {
 	}
     }
 
-    static void addTableModelAdapter( TableModel comp, 
+    public static void addTableModelAdapter( TableModel comp, 
 				      Object o, 
 				      Object p, 
 				      procedure w ) { 

@@ -33,7 +33,7 @@ public class BJKeyAdapter extends java.awt.event.KeyAdapter {
 	wrapper = w;
     }
 
-    static Object wrap_event( KeyEvent e, procedure wrapper ) {
+    public static Object wrap_event( KeyEvent e, procedure wrapper ) {
 	Component ec = e.getComponent();
 	Object receiver = Bglk.get_bglk_object( ec );
 	
@@ -49,7 +49,7 @@ public class BJKeyAdapter extends java.awt.event.KeyAdapter {
 	}
     }
 
-    static BJKeyAdapter findPressAdapter( Component comp ) {
+    public static BJKeyAdapter findPressAdapter( Component comp ) {
 	KeyListener[] mls = (KeyListener[])(comp.getListeners( KeyListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -63,7 +63,7 @@ public class BJKeyAdapter extends java.awt.event.KeyAdapter {
 	}
     }
 
-    static BJKeyAdapter findReturnAdapter( Component comp ) {
+    public static BJKeyAdapter findReturnAdapter( Component comp ) {
 	KeyListener[] mls = (KeyListener[])(comp.getListeners( KeyListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -77,7 +77,7 @@ public class BJKeyAdapter extends java.awt.event.KeyAdapter {
 	}
     }
 
-    static Object getKeyAdapterPress( Component comp ) {
+    public static Object getKeyAdapterPress( Component comp ) {
 	BJKeyAdapter a = findPressAdapter( comp );
 
 	if( (a == null) || (a.press_proc == null) ) {
@@ -87,7 +87,7 @@ public class BJKeyAdapter extends java.awt.event.KeyAdapter {
 	}
     }
 
-    static void addKeyAdapter( Component comp, Object p, procedure w ) { 
+    public static void addKeyAdapter( Component comp, Object p, procedure w ) { 
 	BJKeyAdapter a = findPressAdapter( comp );
 
 	if( a == null ) {
@@ -105,7 +105,7 @@ public class BJKeyAdapter extends java.awt.event.KeyAdapter {
 	}
     }
 
-    static void addKeyReturnAdapter( Component comp, Object p, procedure w ) { 
+    public static void addKeyReturnAdapter( Component comp, Object p, procedure w ) { 
 	BJKeyAdapter a = findReturnAdapter( comp );
 
 	if( a == null ) {

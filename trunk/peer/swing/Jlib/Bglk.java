@@ -3,7 +3,7 @@
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Tue Apr 17 17:24:30 2001                          */
-/*    Last change :  Fri May  7 13:53:05 2004 (dciabrin)               */
+/*    Last change :  Tue Nov 30 16:24:28 2004 (dciabrin)               */
 /*    Copyright   :  2001-04 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    Various utilities for the Biglook Jvm back-end.                  */
@@ -120,7 +120,7 @@ public class Bglk {
 	}
     }
 
-    static void gridbag_add( Panel panel, Component comp,
+    public static void gridbag_add( JPanel panel, Component comp,
 			     int x, int w,
 			     int y, int h,
 			     boolean expand, boolean fillx, boolean filly ) {
@@ -211,7 +211,7 @@ public class Bglk {
 	idle.start();
     }
 
-    static Font get_bglk_default_font() {
+    public static Font get_bglk_default_font() {
 	return bglk_default_font;
     }
 

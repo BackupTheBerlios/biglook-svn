@@ -1,10 +1,10 @@
 #*=====================================================================*/
-#*    serrano/prgm/project/biglook/examples/Makefile                   */
+#*    examples/Makefile                                                */
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Thu Oct  5 10:28:17 2000                          */
-#*    Last change :  Sun Jul 15 17:54:31 2001 (serrano)                */
-#*    Copyright   :  2000-01 Manuel Serrano                            */
+#*    Last change :  Wed Sep 15 09:16:44 2004 (dciabrin)               */
+#*    Copyright   :  2000-04 Manuel Serrano                            */
 #*    -------------------------------------------------------------    */
 #*    The general Makefile for testing Biglook                         */
 #*=====================================================================*/
@@ -22,7 +22,7 @@ DEMO	= simple label \
           menubar toolbar \
           fileselect colorselect \
           anim1 anim2 \
-          rc tree table
+          rc tree table box
 
 #*---------------------------------------------------------------------*/
 #*    Goals                                                            */
@@ -48,6 +48,11 @@ null:
 gtk:
 	for p in $(DEMO); do \
 	  (cd $$p; echo `pwd`; $(MAKE) gtk) || exit 1; \
+        done
+
+gtk2:
+	for p in $(DEMO); do \
+	  (cd $$p; echo `pwd`; $(MAKE) gtk2) || exit 1; \
         done
 
 swing:

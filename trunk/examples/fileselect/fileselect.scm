@@ -50,4 +50,4 @@
 					 (exit 0)
 					 (old-key e)))))
    (entry-event-set! entry hdl)
-   (print "entry: " entry))
+   (widget-visible-set! win #t))

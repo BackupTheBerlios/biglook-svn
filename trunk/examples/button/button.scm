@@ -32,4 +32,5 @@
    (print "third button: " b3)
    (print "fourth button: " b4)
    (print "fifth button: " b5)
-   (print "sixth button: " b6))
+   (print "sixth button: " b6)
+   (widget-visible-set! win #t))

@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/null/Lwidget/_canvitem.scm     */
+;*    null/Lwidget/_canvitem.scm                                       */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Tue Jul 31 06:57:21 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Thu Oct 14 17:54:05 2004 (dciabrin)               */
+;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Null peer Canvas items implementation.                       */
 ;*    definition: @path ../../../biglook/Lwidget/canvitem.scm@         */
@@ -132,6 +132,10 @@
 	   
 	   (%canvas-line-spline-steps::int ::%bglk-object)
 	   (%canvas-line-spline-steps-set! ::%bglk-object ::int)
+
+	   ;; canvas ellipse
+	   (%canvas-ellipse-style::symbol ::%bglk-object)
+	   (%canvas-ellipse-style-set! ::%bglk-object ::symbol)
 
 	   ;; canvas image
 	   (%canvas-image-x::int ::%bglk-object)
@@ -566,6 +570,18 @@
 ;*---------------------------------------------------------------------*/
 (define (%canvas-line-style-set! o::%bglk-object v)
    (not-implemented o "%canvas-line-style-set!"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-ellipse-style ...                                        */
+;*---------------------------------------------------------------------*/
+(define (%canvas-ellipse-style o::%bglk-object)
+   (not-implemented o "%canvas-ellipse-style"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-ellipse-style-set! ...                                   */
+;*---------------------------------------------------------------------*/
+(define (%canvas-ellipse-style-set! o::%bglk-object v)
+   (not-implemented o "%canvas-ellipse-style-set!"))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-line-cap-style ...                                       */

@@ -50,6 +50,3 @@
    ;(print "toolbar1: " toolbar1)
    ;(print "toolbar2: " toolbar2)
    ;(print "toolbar3: " toolbar3))
-
-
-   

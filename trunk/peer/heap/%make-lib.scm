@@ -23,6 +23,7 @@
     __biglook_%font
     __biglook_%after
     __biglook_%port
+    __biglook_%cursor
     
     ;; Lwidget
     __biglook_%peer

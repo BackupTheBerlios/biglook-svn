@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Lwidget/_canvas.scm      */
+;*    swing/Lwidget/_canvas.scm                                        */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Mon Jul 16 10:39:43 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Thu Nov 25 11:07:27 2004 (dciabrin)               */
+;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Canvas implementation.                            */
 ;*    definition: @path ../../../biglook/Lwidget/canvas.scm@           */
@@ -22,11 +22,14 @@
 	   __biglook_%error
 	   __biglook_%container
 	   __biglook_%widget
+	   ;__biglook_%cursor
 	   __biglook_%event)
 
    (export (class %canvas::%container
 	      ;; the list of objects that belongs to that canvas
 	      (children::pair-nil (default '()))
+	      ;; the last pair of the previous list (for quick adds)
+	      (%lp::pair-nil (default '()))
 	      ;; the list of objects that have registered a motion hook
 	      (motion-items::pair-nil (default '()))
 	      ;; the list of objects that have registered a release hook
@@ -67,7 +70,13 @@
 	   
 	   (%canvas-scroll-height::int ::%bglk-object)
 	   (%canvas-scroll-height-set! ::%bglk-object ::int)
-	   
+
+	   (%canvas-zoom-x::float ::%bglk-object)
+	   (%canvas-zoom-x-set! ::%bglk-object ::float)
+
+	   (%canvas-zoom-y::float ::%bglk-object)
+	   (%canvas-zoom-y-set! ::%bglk-object ::float)
+
 	   (%canvas-add! ::%bglk-object ::%bglk-object ::pair-nil)))
 
 ;*---------------------------------------------------------------------*/
@@ -95,9 +104,12 @@
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-mouse-at ...                                             */
 ;*---------------------------------------------------------------------*/
-(define (%canvas-mouse-at items::pair-nil event::%awt-mouseevent)
-   (let ((x (%awt-mouseevent-x event))
-	 (y (%awt-mouseevent-y event)))
+(define (%canvas-mouse-at canvas::%bglk-object items::pair-nil
+			  event::%awt-mouseevent)
+   (let ((x (flonum->fixnum (/ (%awt-mouseevent-x event)
+			       (%canvas-zoom-x canvas))))
+	 (y (flonum->fixnum (/ (%awt-mouseevent-y event)
+			       (%canvas-zoom-y canvas)))))
       (for-each (lambda (item.callback)
 		   (let* ((i (car item.callback))
 			  (%i (%bglk-object-%peer i)))
@@ -111,11 +123,13 @@
 ;*    %canvas-motion-listener ...                                      */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-motion-listener o::%canvas event::%awt-mouseevent)
-   (with-access::%canvas o (motion-items enter-items leave-items)
+   (with-access::%canvas o (%bglk-object motion-items enter-items leave-items)
       ;; first, we scan for motion events
-      (%canvas-mouse-at motion-items event)
-      (let ((x (%awt-mouseevent-x event))
-	    (y (%awt-mouseevent-y event)))
+      (%canvas-mouse-at %bglk-object motion-items event)
+      (let ((x (flonum->fixnum (/ (%awt-mouseevent-x event)
+				  (%canvas-zoom-x %bglk-object))))
+	    (y (flonum->fixnum (/ (%awt-mouseevent-y event)
+				  (%canvas-zoom-y %bglk-object)))))
 	 ;; enter
 	 (for-each (lambda (item.callback)
 		      (let* ((i (car item.callback))
@@ -145,15 +159,15 @@
 ;*    %canvas-press-listener ...                                       */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-press-listener o::%canvas event::%awt-mouseevent)
-   (with-access::%canvas o (press-items)
-      (%canvas-mouse-at press-items event)))
+   (with-access::%canvas o (%bglk-object press-items)
+      (%canvas-mouse-at %bglk-object press-items event)))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-release-listener ...                                     */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-release-listener o::%canvas event::%awt-mouseevent)
-   (with-access::%canvas o (release-items)
-      (%canvas-mouse-at release-items event)))
+   (with-access::%canvas o (%bglk-object release-items)
+      (%canvas-mouse-at %bglk-object release-items event)))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-add! ...                                                 */
@@ -168,14 +182,14 @@
    (with-access::%canvas c (children)
       (for-each (lambda (ci)
 		   (if (%peer? (%bglk-object-%peer ci))
-		       (%canvas-item-draw (%bglk-object-%peer ci) g)))
+			  (%canvas-item-draw (%bglk-object-%peer ci) g)))
 		children)))
 
 ;*---------------------------------------------------------------------*/
 ;*    %peer-init ::%canvas-item ...                                    */
 ;*---------------------------------------------------------------------*/
 (define-method (%peer-init ci::%canvas-item)
-   (with-access::%canvas-item ci (%canvas)
+   '(with-access::%canvas-item ci (%canvas)
       (with-access::%bglk-object %canvas (%peer)
 	 (let ((g (%awt-component-graphics (%peer-%builtin %peer))))
 	    (%canvas-item-draw ci g)))))
@@ -277,5 +291,40 @@
 ;*    %%container-remove! ::%canvas ...                                */
 ;*---------------------------------------------------------------------*/
 (define-method (%%container-remove! o::%canvas w)
-   (with-access::%canvas o (children)
-      (set! children (remq! w children))))
+   (with-access::%canvas o (children %lp)
+      (set! children (remq! w children))
+      (set! %lp (last-pair children)) ))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-x ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-x::float o::%bglk-object)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas %peer (%builtin)
+	 (%bglk-canvas-zoom-x %builtin))))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-x-set! ...                                          */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-x-set! o::%bglk-object v::float)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas %peer (%builtin)
+	 (%bglk-canvas-zoom-x-set! %builtin v)
+	 o)))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-y ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-y::float o::%bglk-object)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas %peer (%builtin)
+	 (%bglk-canvas-zoom-y %builtin))))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-y-set! ...                                          */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-y-set! o::%bglk-object v::float)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas %peer (%builtin)
+	 (%bglk-canvas-zoom-y-set! %builtin v)
+	 o)))

@@ -36,7 +36,7 @@ public class BJComponentAdapter extends java.awt.event.ComponentAdapter {
 	wrapper = w;
     }
 
-    static Object wrap_event( ComponentEvent e, procedure wrapper ) {
+    public static Object wrap_event( ComponentEvent e, procedure wrapper ) {
 	Component ec = e.getComponent();
 	Object receiver = Bglk.get_bglk_object( ec );
 	
@@ -55,7 +55,7 @@ public class BJComponentAdapter extends java.awt.event.ComponentAdapter {
 	}
     }
 
-    static BJComponentAdapter findAdapter( Component comp ) {
+    public static BJComponentAdapter findAdapter( Component comp ) {
 	ComponentListener[] mls = (ComponentListener[])(comp.getListeners( ComponentListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -68,7 +68,7 @@ public class BJComponentAdapter extends java.awt.event.ComponentAdapter {
 	}
     }
 
-    static Object getComponentAdapterConfigure( Component comp ) {
+    public static Object getComponentAdapterConfigure( Component comp ) {
 	BJComponentAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.configure_proc == null) ) {
@@ -79,7 +79,7 @@ public class BJComponentAdapter extends java.awt.event.ComponentAdapter {
     }
 
     
-    static void addComponentAdapter( Component comp, Object c, procedure w ) {
+    public static void addComponentAdapter( Component comp, Object c, procedure w ) {
 	BJComponentAdapter a = findAdapter( comp );
 
 	if( a == null ) {

@@ -33,7 +33,7 @@ public class BJMouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
 	wrapper = w;
     }
 
-    static Object wrap_event( MouseEvent e, procedure wrapper ) {
+    public static Object wrap_event( MouseEvent e, procedure wrapper ) {
 	Component ec = e.getComponent();
 	Object receiver = Bglk.get_bglk_object( ec );
 	
@@ -52,7 +52,7 @@ public class BJMouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
 	}
     }
 
-    static BJMouseMotionAdapter findAdapter( Component comp ) {
+    public static BJMouseMotionAdapter findAdapter( Component comp ) {
 	MouseMotionListener[] mls = (MouseMotionListener[])(comp.getListeners( MouseMotionListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -65,7 +65,7 @@ public class BJMouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
 	}
     }
 
-    static Object getMouseMotionAdapterDrag( Component comp ) {
+    public static Object getMouseMotionAdapterDrag( Component comp ) {
 	BJMouseMotionAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.drag_proc == null) ) {
@@ -75,7 +75,7 @@ public class BJMouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
 	}
     }
 
-    static Object getMouseMotionAdapterMove( Component comp ) {
+    public static Object getMouseMotionAdapterMove( Component comp ) {
 	BJMouseMotionAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.move_proc == null) ) {
@@ -85,7 +85,7 @@ public class BJMouseMotionAdapter extends java.awt.event.MouseMotionAdapter {
 	}
     }
 
-    static void addMouseMotionAdapter( Component comp,
+    public static void addMouseMotionAdapter( Component comp,
 				       Object d, Object m, 
 				       procedure w ) {
 	BJMouseMotionAdapter a = findAdapter( comp );

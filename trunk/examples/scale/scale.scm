@@ -21,4 +21,5 @@
 			  (print "vscale: "
 				 (scale-value (event-widget e))))))))
    (print "horizontal scale: " hs)
-   (print "vertical scale: " vs))
+   (print "vertical scale: " vs)
+   (widget-visible-set! win #t))

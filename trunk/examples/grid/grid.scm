@@ -31,4 +31,4 @@
    (container-add! grid l7 :x 0 :width 4 :y 2)
    (container-add! grid l8 :x 0 :y 3 :height 2)
    (container-add! grid l9 :x 1 :width 3 :y 3 :height 1)
-   (print "grid:" grid))
+   (widget-visible-set! win #t) )

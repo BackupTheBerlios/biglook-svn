@@ -2,7 +2,8 @@
 	    (width 150)
 	    (height 300))))
    (make-scroll-frame w)
-   (make-scroll-canvas w))
+   (make-scroll-canvas w)
+   (widget-visible-set! w #t))
 
 (define (make-scroll-canvas w)
    (let* ((s (instantiate::scroll

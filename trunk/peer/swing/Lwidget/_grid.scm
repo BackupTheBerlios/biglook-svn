@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Lwidget/_grid.scm        */
+;*    swing/Lwidget/_grid.scm                                          */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Mon Jul 16 10:10:34 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Nov 30 16:26:10 2004 (dciabrin)               */
+;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Grid implementation.                              */
 ;*    definition: @path ../../../biglook/Lwidget/grid.scm@             */
@@ -50,7 +50,7 @@
 ;*---------------------------------------------------------------------*/
 (define (%make-%grid o::%bglk-object)
    (let* ((layout-manager::%awt-layoutmanager (%awt-gridbaglayout-new))
-	  (panel::%awt-panel (%awt-panel-new)) 
+	  (panel::%swing-jpanel (%swing-jpanel-new)) 
 	  (listener::%awt-componentlistener (%bglk-jcomponentadapter-new))
 	  (peer (instantiate::%grid
 		   (%builtin panel)

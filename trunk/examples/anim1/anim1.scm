@@ -23,7 +23,8 @@
 	       (lambda ()
 		  (button-image-set! but (car images))
 		  (set! images (cdr images))
-		  #t))))
+		  #t)))
+   (widget-visible-set! window #t))
 
 							   
        

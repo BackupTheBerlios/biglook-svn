@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 31 13:34:23 2001                          */
-;*    Last change :  Mon Jun 21 17:12:03 2004 (dciabrin)               */
+;*    Last change :  Tue Nov 30 16:25:31 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The implementation of the peer object.                           */
@@ -266,19 +266,32 @@
 	   (class %bglk-canvas::%swing-jpanel
 	      (constructor new (::procedure))
 	      (field public peer::obj "peer")
+	      (method static get-canvas-line-points::pair-nil
+		      (::%awt-generalpath)
+		      "getCanvasLinePoints")
 	      (method static arrow-path-new::%awt-generalpath
 		      (::int ::int ::int)
 		      "makeArrowPath")
 	      (method static arrow-beg-new::%awt-generalpath
-		      (::%awt-generalpath ::%awt-line2D)
+		      (::%awt-generalpath ::%awt-generalpath)
 		      "makeBeginArrow")
 	      (method static arrow-end-new::%awt-generalpath
-		      (::%awt-generalpath ::%awt-line2D)
+		      (::%awt-generalpath ::%awt-generalpath)
 		      "makeEndArrow")
 	      (method static draw-end-arrow::void
 		      (::%awt-graphics2D ::%awt-generalpath
 					 ::double ::double ::double ::double)
 		      "drawEndArrow")
+	      (method static generalpath-contains?::bool (::%awt-generalpath
+							  ::%awt-basicstroke
+							  ::double ::double)
+		      "doesGeneralPathContain")
+	      (method static graphics2D->fontrender::obj (::%awt-graphics2D)
+		      "getFontRenderContextFromGraphics2D")
+	      (method zoom-x::float (::%bglk-canvas) "getZoomX")
+	      (method zoom-x-set!::void (::%bglk-canvas ::float) "setZoomX")
+	      (method zoom-y::float (::%bglk-canvas) "getZoomY")
+	      (method zoom-y-set!::void (::%bglk-canvas ::float) "setZoomY")
 	      "bigloo.biglook.peer.Jlib.BJCanvas")
 
 	   ;; BJTreeCellRenderer
@@ -355,7 +368,7 @@
 		      (::%jstring)
 		      "jstring_to_bstring")
 	      (method static jgridbaglayoutadd!::void
-		      (::%awt-panel
+		      (::%swing-jpanel
 		       ::%awt-component
 		       ::int ::int ::int ::int
 		       ::bool ::bool ::bool)

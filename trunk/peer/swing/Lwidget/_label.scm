@@ -21,6 +21,7 @@
 	   __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%widget
+	   ;__biglook_%cursor
 	   __biglook_%color)
    
    (static (class %label::%peer))

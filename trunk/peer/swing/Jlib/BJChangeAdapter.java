@@ -33,7 +33,7 @@ public class BJChangeAdapter implements javax.swing.event.ChangeListener {
 	wrapper = w;
     }
 
-    static Object wrap_event( ChangeEvent e, procedure wrapper ) {
+    public static Object wrap_event( ChangeEvent e, procedure wrapper ) {
 	Object ec = e.getSource();
 	Object receiver = Bglk.get_bglk_object( ec );
 	
@@ -44,7 +44,7 @@ public class BJChangeAdapter implements javax.swing.event.ChangeListener {
 	proc.funcall1( wrap_event( e, wrapper ) );
     }
 
-    static BJChangeAdapter findAdapter( JSlider comp ) {
+    public static BJChangeAdapter findAdapter( JSlider comp ) {
 	ChangeListener[] mls = (ChangeListener[])(comp.getListeners( ChangeListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -57,7 +57,7 @@ public class BJChangeAdapter implements javax.swing.event.ChangeListener {
 	}
     }
 
-    static Object getChangeAdapterProc( JSlider comp ) {
+    public static Object getChangeAdapterProc( JSlider comp ) {
 	BJChangeAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.proc == null) ) {
@@ -67,7 +67,7 @@ public class BJChangeAdapter implements javax.swing.event.ChangeListener {
 	}
     }	
 
-    static void addChangeAdapter( JSlider comp, Object p, procedure w ) { 
+    public static void addChangeAdapter( JSlider comp, Object p, procedure w ) { 
 	BJChangeAdapter a = findAdapter( comp );
 	
 	if( a == null ) {

@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Wed Apr  7 18:55:02 2004 (braun)                  */
+;*    Last change :  Tue Nov 30 12:06:17 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Label implementation.                             */
@@ -22,8 +22,7 @@
 	   __biglook_%bglk-object
 	   __biglook_%container)
    
-   (static (class %scroll::%container
-	      (%panel::%awt-container read-only)))
+   (static (class %scroll::%container))
 	   
    (export (%make-%scroll ::%bglk-object)
 
@@ -54,13 +53,11 @@
 ;*    %make-%scroll ...                                                */
 ;*---------------------------------------------------------------------*/
 (define (%make-%scroll o::%bglk-object)
-   (let* ((panel (%swing-box-vertical-new))
-	  (win (%swing-jscrollpane-new/policy
+   (let* ((win (%swing-jscrollpane-new/policy
 		%swing-jscrollpaneconstants-v-needed
 		%swing-jscrollpaneconstants-h-needed)))
       (instantiate::%scroll
 	 (%bglk-object o)
-	 (%panel panel)
 	 (%builtin win))))
 
 ;*---------------------------------------------------------------------*/
@@ -71,7 +68,9 @@
 			   (%swing-jscrollbar-minimum scrollbar))
 		      (%swing-jscrollbar-visible scrollbar)))
 	  (value (%swing-jscrollbar-value scrollbar)))
-      (/fl (fixnum->flonum value) (fixnum->flonum range))))
+      (if (>fx value 0)
+	  (/fl (fixnum->flonum value) (fixnum->flonum range))
+	  0.0)))
 
 ;*---------------------------------------------------------------------*/
 ;*    scrollbar-fraction-set! ...                                      */
@@ -87,7 +86,11 @@
 		 0.0)
 		(else
 		 v)))
-	  (actual (flonum->fixnum (*fl v (fixnum->flonum range)))))
+	  (actual (if (> range 0)
+		      (flonum->fixnum (*fl v (fixnum->flonum range)))
+		      (flonum->fixnum
+		       (*fl v (fixnum->flonum
+			       (%swing-jscrollbar-maximum scrollbar)))))))
       (%swing-jscrollbar-value-set! scrollbar actual)
       v))
 
@@ -98,6 +101,14 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%scroll %peer (%builtin)
 	 (let ((scrollbar (%swing-jscrollpane-hscrollbar %builtin)))
+	    ;; We must ensure that the scrollpane and its viewport
+	    ;; are in sync, to be sure that hfraction's max-value
+	    ;; reflect the real size of the scrollpane's child.
+	    (if (not (%awt-component-valid? %builtin))
+		(let* ((viewport (%swing-jscrollpane-viewport %builtin))
+		       (child (%swing-jviewport-view viewport)))
+		   (%swing-jscrollbar-maximum-set!
+		    scrollbar (%awt-component-width child)) #t))
 	    (scrollbar-fraction scrollbar)))))
 
 ;*---------------------------------------------------------------------*/
@@ -107,6 +118,14 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%scroll %peer (%builtin)
 	 (let ((scrollbar (%swing-jscrollpane-hscrollbar %builtin)))
+	    ;; We must ensure that the scrollpane and its viewport
+	    ;; are in sync, to be sure that hfraction's max-value
+	    ;; reflect the real size of the scrollpane's child.
+	    (if (not (%awt-component-valid? %builtin))
+		(let* ((viewport (%swing-jscrollpane-viewport %builtin))
+		       (child (%swing-jviewport-view viewport)))
+		   (%swing-jscrollbar-maximum-set!
+		    scrollbar (%awt-component-width child)) #t))
 	    (scrollbar-fraction-set! scrollbar v)))))
    
 ;*---------------------------------------------------------------------*/
@@ -116,6 +135,14 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%scroll %peer (%builtin)
 	 (let ((scrollbar (%swing-jscrollpane-vscrollbar %builtin)))
+	    ;; We must ensure that the scrollpane and its viewport
+	    ;; are in sync, to be sure that vfraction's max-value
+	    ;; reflect the real size of the scrollpane's child.
+	    (if (not (%awt-component-valid? %builtin))
+		(let* ((viewport (%swing-jscrollpane-viewport %builtin))
+		       (child (%swing-jviewport-view viewport)))
+		   (%swing-jscrollbar-maximum-set!
+		    scrollbar (%awt-component-height child)) #t))
 	    (scrollbar-fraction scrollbar)))))
    
 ;*---------------------------------------------------------------------*/
@@ -125,6 +152,14 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%scroll %peer (%builtin)
 	 (let ((scrollbar (%swing-jscrollpane-vscrollbar %builtin)))
+	    ;; We must ensure that the scrollpane and its viewport
+	    ;; are in sync, to be sure that vfraction's max-value
+	    ;; reflect the real size of the scrollpane's child.
+	    (if (not (%awt-component-valid? %builtin))
+		(let* ((viewport (%swing-jscrollpane-viewport %builtin))
+		       (child (%swing-jviewport-view viewport)))
+		   (%swing-jscrollbar-maximum-set!
+		    scrollbar (%awt-component-height child)) #t))
 	    (scrollbar-fraction-set! scrollbar v)))))
    
 ;*---------------------------------------------------------------------*/
@@ -241,7 +276,28 @@
 ;*    %scroll-add! ...                                                 */
 ;*---------------------------------------------------------------------*/
 (define (%scroll-add! c::%bglk-object w::%bglk-object)
-   (with-access::%scroll (%bglk-object-%peer c) (%builtin %panel)
+   (with-access::%scroll (%bglk-object-%peer c) (%builtin)
       (%swing-jscrollpane-view-set! %builtin (%peer-%builtin (%bglk-object-%peer w)))
       c))
 
+;*---------------------------------------------------------------------*/
+;*    %%container-children ::%scroll ...                               */
+;*---------------------------------------------------------------------*/
+(define-method (%%container-children peer::%scroll)
+   (let* ((c (%peer-%builtin peer))
+	  (child (%swing-jviewport-view (%swing-jscrollpane-viewport c)))
+	  (bglkobj (%bglk-get-object child)))
+      (if (not bglkobj)
+	  '()
+	  (list bglkobj))))
+
+
+;*---------------------------------------------------------------------*/
+;*    %%container-remove ::%scroll ...                                 */
+;*---------------------------------------------------------------------*/
+(define-method (%%container-remove! c::%scroll w::%bglk-object)
+   (let* ((b (%peer-%builtin c))
+	  (viewport (%swing-jscrollpane-viewport b)))
+      (%awt-container-remove! viewport (%peer-%builtin (%bglk-object-%peer w)))
+      (%swing-jcomponent-revalidate b)
+      w))

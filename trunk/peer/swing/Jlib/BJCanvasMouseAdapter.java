@@ -1,10 +1,10 @@
 /*=====================================================================*/
-/*    .../biglook/peer/swing/Jlib/BJCanvasMouseAdapter.java            */
+/*    swing/Jlib/BJCanvasMouseAdapter.java                             */
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Wed Apr 18 10:39:08 2001                          */
-/*    Last change :  Sat Jul  7 09:49:28 2001 (serrano)                */
-/*    Copyright   :  2001 Manuel Serrano                               */
+/*    Last change :  Thu Nov 25 17:55:07 2004 (dciabrin)               */
+/*    Copyright   :  2001-04 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    The Biglook Canvas MouseAdapter                                  */
 /*=====================================================================*/
@@ -26,7 +26,7 @@ public class BJCanvasMouseAdapter extends MouseAdapter {
     procedure bglk_press;
     procedure bglk_release;
 
-    BJCanvasMouseAdapter( procedure press, procedure release ) {
+    public BJCanvasMouseAdapter( procedure press, procedure release ) {
 	super();
 	bglk_press = press;
 	bglk_release = release;
@@ -46,7 +46,7 @@ public class BJCanvasMouseAdapter extends MouseAdapter {
     public void mouseExited( MouseEvent e ) {
     }
 
-    static BJCanvasMouseAdapter findAdapter( BJCanvas comp ) {
+    public static BJCanvasMouseAdapter findAdapter( BJCanvas comp ) {
 	MouseListener[] mls = (MouseListener[])(comp.getListeners( MouseListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -59,7 +59,7 @@ public class BJCanvasMouseAdapter extends MouseAdapter {
 	}
     }
 
-    static Object getCanvasMouseAdapterPress( BJCanvas comp ) {
+    public static Object getCanvasMouseAdapterPress( BJCanvas comp ) {
 	BJCanvasMouseAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.bglk_press == null) ) {
@@ -69,7 +69,7 @@ public class BJCanvasMouseAdapter extends MouseAdapter {
 	}
     }
 
-    static Object getCanvasMouseAdapterRelease( BJCanvas comp ) {
+    public static Object getCanvasMouseAdapterRelease( BJCanvas comp ) {
 	BJCanvasMouseAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.bglk_release == null) ) {
@@ -79,7 +79,7 @@ public class BJCanvasMouseAdapter extends MouseAdapter {
 	}
     }
 
-    static void addCanvasMouseAdapter( BJCanvas comp, Object p, Object r ) {
+    public static void addCanvasMouseAdapter( BJCanvas comp, Object p, Object r ) {
 	BJCanvasMouseAdapter a = findAdapter( comp );
 
 	if( a == null ) {

@@ -37,5 +37,6 @@
 				     (print e)))
 			(focus-out (lambda (e)
 				      (print e))))))))
-   (print "Ready..."))
+   (print "Ready...")
+   (widget-visible-set! win #t))
 

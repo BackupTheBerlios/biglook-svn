@@ -25,7 +25,7 @@ public class BJTimerAdapter implements java.awt.event.ActionListener {
     private final static LinkedList timer_list = new LinkedList();
     public procedure thunk;
 
-    BJTimerAdapter( procedure t ) {
+    public BJTimerAdapter( procedure t ) {
 	super();
 	thunk = t;
 	// disable garbage collection for that timer

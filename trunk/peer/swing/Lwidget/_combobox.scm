@@ -23,6 +23,7 @@
 	   __biglook_%widget
 	   __biglook_%entry
 	   __biglook_%color
+	   ;__biglook_%cursor
 	   __biglook_%event
 	   __biglook_%callback)
    

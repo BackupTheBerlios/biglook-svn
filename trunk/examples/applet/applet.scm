@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/examples/applet/applet.scm          */
+;*    applet/applet.scm                                                */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Mon May  7 16:43:38 2001                          */
-;*    Last change :  Mon Sep  3 08:11:36 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Nov 30 16:31:05 2004 (dciabrin)               */
+;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The scheme part of the applet                                    */
 ;*=====================================================================*/
@@ -92,4 +92,5 @@ static char *undisp[] = {
 						(write val)))))
 				 (entry-text-set! entry "")
 				 (label-text-set! label str)))))))
+   (widget-visible-set! win)
    #unspecified)

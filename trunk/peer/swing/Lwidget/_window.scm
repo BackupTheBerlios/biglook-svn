@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Fri Apr 23 14:08:08 2004 (dciabrin)               */
+;*    Last change :  Thu Nov 25 17:40:11 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Jvm peer Window implementation.                              */
@@ -23,6 +23,7 @@
 	   __biglook_%container
 	   __biglook_%error
 	   __biglook_%color
+	   ;__biglook_%cursor
 	   __biglook_%callback)
    
    (static (class %window::%container))
@@ -51,6 +52,7 @@
 ;*---------------------------------------------------------------------*/
 (define-method (%peer-init peer::%window)
    ;; prevent native widget to be made visible
+   ;; windows has to be set visible explicitely by the user
    (let ((tmp (%peer-%builtin peer)))
       (%peer-%builtin-set! peer #unspecified)
       (call-next-method)
@@ -62,6 +64,13 @@
 	  '(%awt-component-location-set! window 200 200)
 	  peer)
        peer))
+
+(define-method (%%widget-visible-set! w::%window v::bool)
+   (if (and v (not (%%widget-visible w)))
+       (with-access::%peer w (%builtin)
+	  (if %builtin (begin (%awt-window-pack %builtin) v))
+	  (call-next-method))
+       (call-next-method)))
 
 ;*---------------------------------------------------------------------*/
 ;*    %make-%window ...                                                */
@@ -115,8 +124,10 @@
    (%install-window-destroy-handler! window 
 				     (lambda (e)
 					(unregister-window! window)
-					;; if this is the last window, kill the
-					;; application
+					(%destroy-widget
+					 (%peer-%bglk-object window))
+					;; if this is the last window, kill
+					;; the application
 					(if (null? *registered-window*)
 					    (exit 0)))))
    

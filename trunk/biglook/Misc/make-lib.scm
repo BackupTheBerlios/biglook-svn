@@ -24,6 +24,7 @@
     __biglook_font
     __biglook_after
     __biglook_port
+    __biglook_cursor
 
     ;; Lwidget
     __biglook_bglk-object

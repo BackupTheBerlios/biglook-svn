@@ -10,5 +10,5 @@
 	      (command (lambda (e)
 			  (with-access::check-button (event-widget e) (on)
 			     (print "on: " on)))))))
-   (print "checkbutton: " bc))
+   (widget-visible-set! win #t))
 

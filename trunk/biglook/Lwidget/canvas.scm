@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/biglook/Lwidget/canvas.scm          */
+;*    biglook/Lwidget/canvas.scm                                       */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Wed Sep  6 08:21:00 2000                          */
-;*    Last change :  Thu Jul 12 06:50:58 2001 (serrano)                */
-;*    Copyright   :  2000-01 Manuel Serrano                            */
+;*    Last change :  Wed Nov 17 14:33:44 2004 (dciabrin)               */
+;*    Copyright   :  2000-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    Biglook Canvas widget                                            */
 ;*    -------------------------------------------------------------    */
@@ -55,7 +55,16 @@
 	       ;; scroll-height
 	       (scroll-height::int
 		(get %canvas-scroll-height)
-		(set %canvas-scroll-height-set!)))))
+		(set %canvas-scroll-height-set!))
+	       ;; zoom x
+	       (zoom-x::float
+		(get %canvas-zoom-x)
+		(set %canvas-zoom-x-set!))
+	       ;; zoom y
+	       (zoom-y::float
+		(get %canvas-zoom-y)
+		(set %canvas-zoom-y-set!))
+	       )))
 
 ;*---------------------------------------------------------------------*/
 ;*    bglk-object-init ::canvas ...                                    */

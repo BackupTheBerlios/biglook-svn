@@ -32,7 +32,8 @@
 		  (parent scroll)))
        (drag-handler (make-drag-event-handler)))
    (setup-texts canvas drag-handler)
-   (setup-images canvas drag-handler))
+   (setup-images canvas drag-handler)
+   (widget-visible-set! win #t))
 
 ;*---------------------------------------------------------------------*/
 ;*    setup-texts ...                                                  */

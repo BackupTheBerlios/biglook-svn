@@ -36,7 +36,7 @@ public class BJListSelectionAdapter implements ListSelectionListener {
 	wrapper = w;
     }
 
-    static Object wrap_event( Object receiver,
+    public static Object wrap_event( Object receiver,
 			      ListSelectionEvent event, 
 			      procedure wrapper ) {
 	int x, y;
@@ -55,7 +55,7 @@ public class BJListSelectionAdapter implements ListSelectionListener {
 	}
     }
 
-    static BJListSelectionAdapter findAdapter( DefaultListSelectionModel comp ) {
+    public static BJListSelectionAdapter findAdapter( DefaultListSelectionModel comp ) {
 	ListSelectionListener[] mls = (ListSelectionListener[])(comp.getListeners( BJListSelectionAdapter.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -68,7 +68,7 @@ public class BJListSelectionAdapter implements ListSelectionListener {
 	}
     }
 
-    static Object getListSelectionAdapterProc( DefaultListSelectionModel comp ) {
+    public static Object getListSelectionAdapterProc( DefaultListSelectionModel comp ) {
 	BJListSelectionAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.proc == null) ) {
@@ -78,7 +78,7 @@ public class BJListSelectionAdapter implements ListSelectionListener {
 	}
     }	
 
-    static void addListSelectionAdapter( DefaultListSelectionModel comp, 
+    public static void addListSelectionAdapter( DefaultListSelectionModel comp, 
 					 Object o, 
 					 Object p, 
 					 procedure w ) { 

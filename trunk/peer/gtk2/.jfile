@@ -1,5 +1,5 @@
-;; /raid/home/alexey/biglook/trunk/peer/gtk2
-;; Mon Sep  6 20:11:16 2004
+;; /home/dciabrin/code/svn/biglook/peer/gtk2
+;; Tue Sep  7 09:01:01 2004
 
 (
   (__biglook_%gtk-misc "bigloo.biglook.peer.Lgtk2.gtk-misc")

@@ -22,7 +22,7 @@ import javax.swing.border.*;
 /*    BJBorder ...                                                     */
 /*---------------------------------------------------------------------*/
 public class BJBorder extends javax.swing.border.CompoundBorder {
-    static EmptyBorder empty_border = new EmptyBorder( 0, 0, 0, 0 );
+    public static EmptyBorder empty_border = new EmptyBorder( 0, 0, 0, 0 );
 
     // constructors
     BJBorder( Border out, String title ) {

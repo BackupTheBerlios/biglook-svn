@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Thu Apr 19 08:57:56 2001                          */
-;*    Last change :  Tue May 11 14:14:48 2004 (dciabrin)               */
+;*    Last change :  Thu Dec  9 14:40:31 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing connection                                             */
@@ -291,12 +291,18 @@
 	      (method revalidate::void
 		      (::%swing-jcomponent)
 		      "revalidate")
+	      (method revalidate!::void
+		      (::%swing-jcomponent)
+		      "revalidate")
 	      (method enabled-set!::void
 		      (::%swing-jcomponent ::bool)
 		      "setEnabled")
-	      (method enabled::bool
-		      (::%swing-jcomponent)
-		      "isEnabled")
+;	      (method enabled::bool
+;		      (::%swing-jcomponent)
+;		      "isEnabled")
+	      (method double-buffer-set!::void
+		      (::%swing-jcomponent ::bool)
+		      "setDoubleBuffered")
 	      "javax.swing.JComponent")
 	   
 	   ;; javax.swing.JFrame
@@ -321,7 +327,7 @@
 	      "javax.swing.JFrame")
 	   
 	   ;; javax.swing.JPanel
-	   (class %swing-jpanel::%awt-panel
+	   (class %swing-jpanel::%swing-jcomponent
 	      (constructor new ())
 	      (constructor new/layout (::%awt-layoutmanager))
 	      "javax.swing.JPanel")
@@ -638,6 +644,9 @@
 	      (method maximum::int
 		      (::%swing-jscrollbar)
 		      "getMaximum")
+	      (method maximum-set!::void
+		      (::%swing-jscrollbar ::int)
+		      "setMaximum")
 	      (method visible::int
 		      (::%swing-jscrollbar)
 		      "getVisibleAmount")
@@ -654,6 +663,9 @@
 	      (constructor new (::%awt-component))
 	      (constructor new/policy (::int ::int))
 	      (constructor new/component (::%awt-component ::int ::int))
+	      (method viewport::%swing-jviewport
+		      (::%swing-jscrollpane)
+		      "getViewport")
 	      (method view-set!::void
 		      (::%swing-jscrollpane ::%awt-component)
 		      "setViewportView")
@@ -682,6 +694,12 @@
 		      (::%swing-jscrollpane ::%swing-jscrollbar)
 		      "setVerticalScrollBar")
 	      "javax.swing.JScrollPane")
+
+	   (class %swing-jviewport::%swing-jcomponent
+	      (method view::%awt-component
+		      (::%swing-jviewport)
+		      "getView")
+	      "javax.swing.JViewport")
 	   
 	   ;; javax.swing.ScrollPaneConstants
 	   (class %swing-jscrollpaneconstants

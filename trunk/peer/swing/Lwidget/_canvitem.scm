@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Sat Jun  5 00:07:45 2004 (braun)                  */
+;*    Last change :  Thu Nov 25 11:42:25 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Canvas items implementation.                      */
@@ -31,7 +31,7 @@
 	      (%y::float (default 0.0))
 	      (%fill-color (default (swing-default-color)))
 	      (%visible::bool (default #t)))
-	   
+  
 	   ;; text
 	   (class %canvas-text::%canvas-figure
 	      (%actual-x::float (default 0.0))
@@ -44,10 +44,11 @@
 	   ;; line
 	   (class %canvas-line::%canvas-figure
 	      %stroke::%awt-stroke
+	      (%smooth (default #f))
 	      (%arrow-path (default #f))
 	      (%arrow-beg (default #f))
 	      (%arrow-end (default #f))
-	      (%shapes::pair-nil (default '())))
+	      (%shapes (default '())))
 	   
 	   ;; rectangle
 	   (class %canvas-rectangle::%canvas-figure
@@ -57,7 +58,7 @@
 	   ;; ellipse
 	   (class %canvas-ellipse::%canvas-figure
 	      %stroke::%awt-stroke
-	      (%outline-color (default (swing-default-color))))
+	      (%outline-color (default #f)))
 
 	   ;; image
 	   (class %canvas-image::%canvas-figure
@@ -67,6 +68,17 @@
 	   ;; widget
 	   (class %canvas-widget::%canvas-figure
 	      (%widget (default #unspecified))))
+
+   
+   (java
+    	   (class %jlo
+	      (method tostring::%jstr (::%jlo) "toString")
+	      "java.lang.Object")
+
+	   (class %jstr
+	      (method getbytes::string (::%jstr) "getBytes")
+	      "java.lang.String"))
+
    
    (export (%make-%canvas-text ::%bglk-object ::%bglk-object)
 	   (%make-%canvas-line ::%bglk-object ::%bglk-object)
@@ -181,7 +193,11 @@
 	   
 	   (%canvas-line-spline-steps::int ::%bglk-object)
 	   (%canvas-line-spline-steps-set! ::%bglk-object ::int)
-	   
+
+	   ;; canvas ellipse
+	   (%canvas-ellipse-style::symbol ::%bglk-object)
+	   (%canvas-ellipse-style-set! ::%bglk-object ::symbol)
+
 	   ;; canvas image
 	   (%canvas-image-x::int ::%bglk-object)
 	   (%canvas-image-x-set! ::%bglk-object ::int)
@@ -262,25 +278,37 @@
    (call-next-method))
 
 ;*---------------------------------------------------------------------*/
+;*    %add-canvas-item ...                                             */
+;*---------------------------------------------------------------------*/
+(define (%add-canvas-item canvas::%bglk-object item::%bglk-object)
+   (with-access::%bglk-object canvas (%peer)
+      (with-access::%canvas %peer (children %lp)
+	 (let ((newp (cons item '())))
+	    (if (null? %lp)
+		(begin
+		   (set! children newp)
+		   (set! %lp newp))
+		(begin
+		   (set-cdr! %lp newp)
+		   (set! %lp newp)))))))
+
+;*---------------------------------------------------------------------*/
 ;*    %make-%canvas-text ...                                           */
 ;*---------------------------------------------------------------------*/
 (define (%make-%canvas-text o::%bglk-object canvas::%bglk-object)
-   (with-access::%bglk-object canvas (%peer)
-      (with-access::%canvas %peer (children)
-	 (set! children (cons o children)))
-      (let* ((graphics (%awt-component-graphics (%peer-%builtin %peer)))
-	     (graphics-2D::%awt-graphics2D graphics)
-	     (fontrender (%awt-graphics2D-fontrender graphics-2D)))
-	 (if (eq? *default-textlayout* #unspecified)
-	     (set! *default-textlayout*
-		   (%awt-textlayout-new 
-		    (%bglk-bstring->jstring "Default TextLayout")
-		    (swing-default-font)
-		    fontrender)))
-	 (instantiate::%canvas-text
-	    (%canvas canvas)
-	    (%bglk-object o)
-	    (%builtin *default-textlayout*)))))
+   (%add-canvas-item canvas o)
+   (instantiate::%canvas-text
+      (%canvas canvas)
+      (%bglk-object o)
+      (%builtin (list #unspecified))))
+;      (let* ((graphics (%awt-component-graphics (%peer-%builtin %peer)))
+;	     (graphics-2D::%awt-graphics2D graphics)
+;	     (fontrender (%bglk-canvas-graphics2D->fontrender graphics-2D)))
+
+(define (tostring obj::obj)
+   (let ((o::%jlo obj))
+      (%jstr-getbytes
+       (%jlo-tostring o))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-item-draw ::%canvas-text ...                             */
@@ -290,12 +318,16 @@
 				  %actual-x %actual-y
 				  %fill-color %font
 				  %visible)
-      (if (and %visible (%awt-graphics2D? g))
+      (if %visible
 	  (begin
+	     (if (pair? %builtin)
+		 (let ((bobj (%peer-%bglk-object ci)))
+		    (%canvas-text-text-set! bobj (%canvas-text-text bobj))))
 	     (%awt-graphics-font-set! g %font)
 	     (%awt-graphics-color-set! g %fill-color)
-	     (%awt-textlayout-draw %builtin g %actual-x %actual-y)
-	     ;(%awt-graphics2D-draw-string g (%bglk-bstring->jstring "Default") %actual-x %actual-y)
+	     ;(print "draw: " (%canvas-text-text (%peer-%bglk-object ci)))
+	     (%awt-textlayout-draw (%canvas-text-%builtin ci)
+				   g %actual-x %actual-y)
 	     ci)
 	  ci)))
 
@@ -303,14 +335,20 @@
 ;*    %canvas-item-contains? ::%canvas-text ...                        */
 ;*---------------------------------------------------------------------*/
 (define-method (%canvas-item-contains?::bool o::%canvas-text x::int y::int)
-   (with-access::%canvas-text o (%actual-x %actual-y %builtin)
-      (let* ((bounds (%awt-textlayout-getbounds %builtin))
-	     (width (flonum->fixnum (%awt-rectangle2D-width bounds)))
-	     (height (flonum->fixnum (%awt-rectangle2D-height bounds)))
-	     (ax (flonum->fixnum %actual-x))
-	     (ay (flonum->fixnum %actual-y)))
-	 (and (>=fx x ax) (<=fx x (+fx ax width))
-	      (>=fx y (-fx ay height)) (<=fx y ay)))))
+   (with-access::%canvas-text o (%actual-x %actual-y %builtin %visible)
+      (if %visible
+	  (begin
+	     (if (pair? %builtin)
+		 (let ((bobj (%peer-%bglk-object o)))
+		    (%canvas-text-text-set! bobj (%canvas-text-text bobj))))
+	     (let* ((bounds (%awt-textlayout-getbounds %builtin))
+		    (width (flonum->fixnum (%awt-rectangle2D-width bounds)))
+		    (height (flonum->fixnum (%awt-rectangle2D-height bounds)))
+		    (ax (flonum->fixnum %actual-x))
+		    (ay (flonum->fixnum %actual-y)))
+		(and (>=fx x ax) (<=fx x (+fx ax width))
+		     (>=fx y (-fx ay height)) (<=fx y ay))))
+	  #f)))
 		      
 ;*---------------------------------------------------------------------*/
 ;*    %make-%canvas-line ...                                           */
@@ -318,14 +356,12 @@
 (define (%make-%canvas-line o::%bglk-object canvas)
    (if (eq? *default-stroke* #unspecified)
        (set! *default-stroke* (%awt-basicstroke-new)))
-   (with-access::%bglk-object canvas (%peer)
-      (with-access::%canvas %peer (children)
-	 (set! children (cons o children)))
-      (instantiate::%canvas-line
-	 (%canvas canvas)
-	 (%bglk-object o)
-	 (%stroke *default-stroke*)
-	 (%builtin (%awt-line2D-double-new)))))
+   (%add-canvas-item canvas o)
+   (instantiate::%canvas-line
+      (%canvas canvas)
+      (%bglk-object o)
+      (%stroke *default-stroke*)
+      (%builtin (%awt-line2D-double-new))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-item-draw ::%canvas-line ...                             */
@@ -339,19 +375,19 @@
 	      (begin
 		 (%awt-graphics-color-set! g %fill-color)
 		 (%awt-graphics2D-stroke-set! g %stroke)
-		 ;( %stroke)
-		 (for-each (lambda (l::%awt-shape)
-			      (%awt-graphics2D-shape-draw g l)
-			      l)
-			   %shapes)
+		 (if (not (null? %shapes))
+		     (begin
+			(%awt-graphics2D-shape-draw g %shapes)
+			g))
 		 (if %arrow-beg
-		     (begin (%awt-graphics2D-shape-fill g %arrow-beg) g))
+		     (begin
+			(%awt-graphics2D-shape-fill g %arrow-beg) g))
 		 (if %arrow-end
 		     (begin (%awt-graphics2D-shape-fill g %arrow-end) g))
 		 ci)))
 	 (else
-	  (warning "%canvas-item-draw(line)"
-		   "Can't draw on graphics"
+	  '(warning "%canvas-item-draw(line)"
+		    "Can't draw on graphics"
 		   (find-runtime-type g))
 	  ci))))
 
@@ -359,7 +395,7 @@
 ;*    %canvas-item-contains? ::%canvas-line ...                        */
 ;*---------------------------------------------------------------------*/
 (define-method (%canvas-item-contains?::bool o::%canvas-line x::int y::int)
-   (let ((dx (fixnum->flonum x))
+   '(let ((dx (fixnum->flonum x))
 	 (dy (fixnum->flonum y)))
       (with-access::%canvas-line o (%shapes)
 	 (let loop ((lines %shapes))
@@ -369,7 +405,12 @@
 	       ((<fl (%awt-line2D-segment-distance (car lines) dx dy) 1.)
 		#t)
 	       (else
-		(loop (cdr lines))))))))
+		(loop (cdr lines)))))))
+   (with-access::%canvas-line o (%shapes %stroke)
+      (let ((r (%bglk-canvas-generalpath-contains?
+		%shapes %stroke (fixnum->flonum x) (fixnum->flonum y))))
+	 r)))
+
 		      
 ;*---------------------------------------------------------------------*/
 ;*    %make-%canvas-polygon ...                                        */
@@ -383,14 +424,12 @@
 (define (%make-%canvas-ellipse o::%bglk-object canvas)
    (if (eq? *default-stroke* #unspecified)
        (set! *default-stroke* (%awt-basicstroke-new)))
-   (with-access::%bglk-object canvas (%peer)
-      (with-access::%canvas %peer (children)
-	 (set! children (cons o children)))
-      (instantiate::%canvas-ellipse
-	 (%canvas canvas)
-	 (%bglk-object o)
-	 (%stroke *default-stroke*)
-	 (%builtin (%awt-ellipse2D-double-new)))))
+   (%add-canvas-item canvas o)
+   (instantiate::%canvas-ellipse
+      (%canvas canvas)
+      (%bglk-object o)
+      (%stroke *default-stroke*)
+      (%builtin (%awt-ellipse2D-double-new))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-item-contains? ::%canvas-ellipse ...                     */
@@ -412,14 +451,20 @@
 	 ((%awt-graphics2D? g)
 	  (if %visible
 	      (begin
-		 (%awt-graphics-color-set! g %outline-color)
-		 (%awt-graphics2D-stroke-set! g %stroke)
-		 (%awt-graphics2D-shape-draw g %builtin)
-		 (%awt-graphics-color-set! g %fill-color)
-		 (%awt-graphics2D-shape-fill g %builtin)
+		 (if %fill-color
+		     (begin
+			(%awt-graphics-color-set! g %fill-color)
+			(%awt-graphics2D-shape-fill g %builtin)
+			#t))
+		 (if %outline-color
+		     (begin
+			(%awt-graphics-color-set! g %outline-color)
+			(%awt-graphics2D-stroke-set! g %stroke)
+			(%awt-graphics2D-shape-draw g %builtin)
+			#t))
 		 ci)))
 	 (else
-	  (warning "%canvas-item-draw(ellipse)"
+	  '(warning "%canvas-item-draw(ellipse)"
 		   "Can't draw on graphics"
 		   (find-runtime-type g))
 	  ci))))
@@ -430,14 +475,12 @@
 (define (%make-%canvas-rectangle o::%bglk-object canvas)
    (if (eq? *default-stroke* #unspecified)
        (set! *default-stroke* (%awt-basicstroke-new)))
-   (with-access::%bglk-object canvas (%peer)
-      (with-access::%canvas %peer (children)
-	 (set! children (cons o children)))
-      (instantiate::%canvas-rectangle
-	 (%canvas canvas)
-	 (%bglk-object o)
-	 (%stroke *default-stroke*)
-	 (%builtin (%awt-rectangle2D-double-new)))))
+   (%add-canvas-item canvas o)
+   (instantiate::%canvas-rectangle
+      (%canvas canvas)
+      (%bglk-object o)
+      (%stroke *default-stroke*)
+      (%builtin (%awt-rectangle2D-double-new))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-item-contains? ::%canvas-rectangle ...                   */
@@ -459,14 +502,20 @@
 	 ((%awt-graphics2D? g)
 	  (if %visible
 	      (begin
-		 (%awt-graphics-color-set! g %outline-color)
-		 (%awt-graphics2D-stroke-set! g %stroke)
-		 (%awt-graphics2D-shape-draw g %builtin)
-		 (%awt-graphics-color-set! g %fill-color)
-		 (%awt-graphics2D-shape-fill g %builtin)
+		 (if %fill-color
+		     (begin
+			(%awt-graphics-color-set! g %fill-color)
+			(%awt-graphics2D-shape-fill g %builtin)
+			#t))
+		 (if %outline-color
+		     (begin
+			(%awt-graphics-color-set! g %outline-color)
+			(%awt-graphics2D-stroke-set! g %stroke)
+			(%awt-graphics2D-shape-draw g %builtin)
+			#t))
 		 ci)))
 	 (else
-	  (warning "%canvas-item-draw(rectangle)"
+	  '(warning "%canvas-item-draw(rectangle)"
 		   "Can't draw on graphics"
 		   (find-runtime-type g))
 	  ci))))
@@ -475,27 +524,25 @@
 ;*    %make-%canvas-image ...                                          */
 ;*---------------------------------------------------------------------*/
 (define (%make-%canvas-image o::%bglk-object canvas::%bglk-object)
-   (with-access::%canvas (%bglk-object-%peer canvas) (children)
-      (set! children (cons o children)))
+   (%add-canvas-item canvas o)
    (instantiate::%canvas-image
       (%canvas canvas)
       (%bglk-object o)
       ;; the %builtin field is fake, this value will be changed as soon
       ;; as an image will be associated to this canvas-image
-      (%builtin (%peer-%builtin (%bglk-object-%peer canvas)))))
+      (%builtin (list #unspecified))));(%peer-%builtin (%bglk-object-%peer canvas)))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %make-%canvas-widget ...                                         */
 ;*---------------------------------------------------------------------*/
 (define (%make-%canvas-widget o::%bglk-object canvas::%bglk-object)
-   (with-access::%canvas (%bglk-object-%peer canvas) (children)
-      (set! children (cons o children)))
+   (%add-canvas-item canvas o)
    (instantiate::%canvas-widget
       (%canvas canvas)
       (%bglk-object o)
       ;; the %builtin field is fake, this value will be changed as soon
       ;; as an image will be associated to this canvas-image
-      (%builtin (%peer-%builtin (%bglk-object-%peer canvas)))))
+      (%builtin (list #unspecified))));(%peer-%builtin (%bglk-object-%peer canvas)))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %register-canvas-item-callback! ...                              */
@@ -529,28 +576,30 @@
 	       (%swing-imageicon? %builtin))
 	  (if (and (not (fixnum? %width)) (not (fixnum? %height)))
 	      (begin
-		 (%awt-graphics-image-draw g
-					   (%swing-imageicon-image %builtin)
-					   (flonum->fixnum %x)
-					   (flonum->fixnum %y)
-					   (%canvas-%builtin
-					    (%bglk-object-%peer %canvas)))
+		 (%awt-graphics-image-draw
+		  g
+		  (%swing-imageicon-image %builtin)
+		  (flonum->fixnum %x)
+		  (flonum->fixnum %y)
+		  (%canvas-%builtin
+		   (%bglk-object-%peer %canvas)))
 		 ci)
 	      (begin
-		 (%awt-graphics-scale-image-draw g
-						 (%swing-imageicon-image %builtin)
-						 (flonum->fixnum %x)
-						 (flonum->fixnum %y)
-						 (if (fixnum? %width)
-						     %width
-						     (%swing-imageicon-width
-						      %builtin))
-						 (if (fixnum? %height)
-						     %height
-						     (%swing-imageicon-height
-						      %builtin))
-						 (%canvas-%builtin
-						  (%bglk-object-%peer %canvas)))
+		 (%awt-graphics-scale-image-draw
+		  g
+		  (%swing-imageicon-image %builtin)
+		  (flonum->fixnum %x)
+		  (flonum->fixnum %y)
+		  (if (fixnum? %width)
+		      %width
+		      (%swing-imageicon-width
+		       %builtin))
+		  (if (fixnum? %height)
+		      %height
+		      (%swing-imageicon-height
+		       %builtin))
+		  (%canvas-%builtin
+		   (%bglk-object-%peer %canvas)))
 		 ci))
 	  ci)))
 
@@ -637,31 +686,41 @@
 ;*    %canvas-text-x-set! ...                                          */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-text-x-set! o::%bglk-object v::int)
+   ;(print "x-set! " v)
    (with-access::%bglk-object o (%peer)
-      (with-access::%canvas-text %peer (%actual-x %anchor %x %canvas)
+      (with-access::%canvas-text %peer (%actual-x %anchor %x %canvas
+						  %visible %builtin)
 	 (set! %x (exact->inexact v))
-	 (let ((width (fixnum->flonum (%canvas-text-width o)))
-	       (lv (fixnum->flonum v)))
-	    (case %anchor
-	       ((center)
-		(set! %actual-x (-fl lv (/fl width 2.0))))
-	       ((c)
-		(set! %actual-x (-fl lv (/fl width 2.0))))
-	       ((n)
-		(set! %actual-x (-fl lv (/fl width 2.0))))
-	       ((s)
-		(set! %actual-x (-fl lv (/fl width 2.0))))
-	       ((nw)
-		(set! %actual-x lv))
-	       ((w)
-		(set! %actual-x lv))
-	       ((sw)
-		(set! %actual-x lv))
-	       (else
-		(set! %actual-x (-fl lv width)))))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (if %visible
+	     (begin
+		(if (pair? %builtin)
+		    (begin
+		       ;(print "created font in x-set!")
+		       (%canvas-text-text-set! o (%canvas-text-text o))))
+		(let ((width (fixnum->flonum (%canvas-text-width o)))
+		      (lv (fixnum->flonum v)))
+		   (case %anchor
+		      ((center)
+		       (set! %actual-x (-fl lv (/fl width 2.0))))
+		      ((c)
+		       (set! %actual-x (-fl lv (/fl width 2.0))))
+		      ((n)
+		       (set! %actual-x (-fl lv (/fl width 2.0))))
+		      ((s)
+		       (set! %actual-x (-fl lv (/fl width 2.0))))
+		      ((nw)
+		       (set! %actual-x lv))
+		      ((w)
+		       (set! %actual-x lv))
+		      ((sw)
+		       (set! %actual-x lv))
+		      (else
+		       (set! %actual-x (-fl lv width)))))
+		(%awt-component-repaint!
+		  (%peer-%builtin (%bglk-object-%peer %canvas)))
+		v))
 	 v)))
-	 
+
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-text-y ...                                               */
 ;*---------------------------------------------------------------------*/
@@ -674,31 +733,41 @@
 ;*    %canvas-text-y-set! ...                                          */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-text-y-set! o::%bglk-object v::int)
+   ;(print "y-set! " v)
    (with-access::%bglk-object o (%peer)
-      (with-access::%canvas-text %peer (%actual-y %anchor %y %canvas)
+      (with-access::%canvas-text %peer (%actual-y %anchor %y %canvas
+						  %visible %builtin)
 	 (set! %y (exact->inexact v))
-	 (let ((height (fixnum->flonum (%canvas-text-height o)))
-	       (lv (fixnum->flonum v)))
-	    (case %anchor
-	       ((center)
-		(set! %actual-y (+fl lv (/fl height 2.0))))
-	       ((c)
-		(set! %actual-y (+fl lv (/fl height 2.0))))
-	       ((e)
-		(set! %actual-y (+fl lv (/fl height 2.0))))
-	       ((w)
-		(set! %actual-y (+fl lv (/fl height 2.0))))
-	       ((nw)
-		(set! %actual-y lv))
-	       ((n)
-		(set! %actual-y lv))
-	       ((ne)
-		(set! %actual-y lv))
-	       (else
-		(set! %actual-y (+fl lv height)))))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (if %visible
+	     (begin
+		(if (pair? %builtin)
+		    (begin
+		       ;(print "created font in y-set!")
+		       (%canvas-text-text-set! o (%canvas-text-text o))))
+		(let ((height (fixnum->flonum (%canvas-text-height o)))
+		      (lv (fixnum->flonum v)))
+		   (case %anchor
+		      ((center)
+		       (set! %actual-y (+fl lv (/fl height 2.0))))
+		      ((c)
+		       (set! %actual-y (+fl lv (/fl height 2.0))))
+		      ((e)
+		       (set! %actual-y (+fl lv (/fl height 2.0))))
+		      ((w)
+		       (set! %actual-y (+fl lv (/fl height 2.0))))
+		      ((nw)
+		       (set! %actual-y lv))
+		      ((n)
+		       (set! %actual-y lv))
+		      ((ne)
+		       (set! %actual-y lv))
+		      (else
+		       (set! %actual-y (+fl lv height)))))
+		(%awt-component-repaint!
+		  (%peer-%builtin (%bglk-object-%peer %canvas)))
+		v))
 	 v)))
-	 
+      
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-text-text ...                                            */
 ;*---------------------------------------------------------------------*/
@@ -711,17 +780,26 @@
 ;*    %canvas-text-text-set! ...                                       */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-text-text-set! o::%bglk-object v::bstring)
+   ;(print "text-set! " v)
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-text %peer (%builtin %text %font %canvas)
-	 (set! %text v)
+	 (set! %text (if (= 0 (string-length v)) "[?]" v))
 	 (let* ((canvas (%canvas-%builtin (%bglk-object-%peer %canvas)))
 		(graphics (%awt-component-graphics canvas))
 		(graphics-2D::%awt-graphics2D graphics)
-		(fontrender (%awt-graphics2D-fontrender graphics-2D))
-		(textlayout (%awt-textlayout-new (%bglk-bstring->jstring %text)
-						 %font
-						 fontrender)))
-	    (set! %builtin textlayout)))))
+		(fontrender (%bglk-canvas-graphics2D->fontrender graphics-2D)))
+	    (if fontrender
+		(begin
+		   ; get a new text layout
+		   (set! %builtin
+			 (%awt-textlayout-new (%bglk-bstring->jstring %text)
+					      %font
+					      fontrender))
+		   (%peer-%bglk-object-set! %peer o)
+		   ; update the anchor position
+		   (%canvas-text-anchor-set! o (%canvas-text-anchor o))
+		   )
+		)))))
  
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-text-font ...                                            */
@@ -741,11 +819,12 @@
 	 (let* ((canvas (%canvas-%builtin (%bglk-object-%peer %canvas)))
 		(graphics (%awt-component-graphics canvas))
 		(graphics-2D::%awt-graphics2D graphics)
-		(fontrender (%awt-graphics2D-fontrender graphics-2D))
-		(textlayout (%awt-textlayout-new (%bglk-bstring->jstring %text)
-						 %font
-						 fontrender)))
-	    (set! %builtin textlayout)))))
+		(fontrender (%bglk-canvas-graphics2D->fontrender graphics-2D)))
+	    (if fontrender
+		(set! %builtin
+		      (%awt-textlayout-new (%bglk-bstring->jstring %text)
+					   %font
+					   fontrender)))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-text-anchor ...                                          */
@@ -797,7 +876,7 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-text %peer (%fill-color %canvas %text)
 	 (set! %fill-color (biglook-color->swing v))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 v)))
 
 ;*---------------------------------------------------------------------*/
@@ -806,9 +885,11 @@
 (define (%canvas-text-width o::%bglk-object)
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-text %peer (%builtin)
-	 (flonum->fixnum
-	  (%awt-rectangle2D-width
-	   (%awt-textlayout-getbounds %builtin))))))
+	 (if (not (pair? %builtin))
+	     (flonum->fixnum
+	      (%awt-rectangle2D-width
+	       (%awt-textlayout-getbounds %builtin)))
+	     0))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-text-width-set! ...                                      */
@@ -822,9 +903,11 @@
 (define (%canvas-text-height o::%bglk-object)
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-text %peer (%builtin)
-	 (flonum->fixnum
-	  (%awt-rectangle2D-height
-	   (%awt-textlayout-getbounds %builtin))))))
+	 (if (not (pair? %builtin))
+	     (flonum->fixnum
+	      (%awt-rectangle2D-height
+	       (%awt-textlayout-getbounds %builtin)))
+	     0))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-text-height-set! ...                                     */
@@ -846,8 +929,8 @@
 (define (%canvas-geometry-color-set! o::%bglk-object v)
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-figure %peer (%fill-color %canvas)
-	 (set! %fill-color (biglook-color->swing v))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (set! %fill-color (and v (biglook-color->swing v)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 v)))
    
 ;*---------------------------------------------------------------------*/
@@ -870,11 +953,11 @@
    (with-access::%bglk-object o (%peer)
       (cond
 	 ((%canvas-rectangle? %peer)
-	  (%canvas-rectangle-%outline-color-set! %peer
-						 (biglook-color->swing v)))
+	  (%canvas-rectangle-%outline-color-set!
+	   %peer (biglook-color->swing v)))
 	 ((%canvas-ellipse? %peer)
-	  (%canvas-ellipse-%outline-color-set! %peer
-					       (biglook-color->swing v)))
+	  (%canvas-ellipse-%outline-color-set!
+	   %peer (and v (biglook-color->swing v))))
 	 (else
 	  #unspecified))))
    
@@ -944,7 +1027,7 @@
 	     v)
 	    (else
 	     (error "%canvas-shape-x-set!" "Illegal shape" o)))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 v)))
 
 ;*---------------------------------------------------------------------*/
@@ -989,7 +1072,7 @@
 	     v)
 	    (else
 	     (error "%canvas-shape-y-set!" "Illegal shape" o)))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 v)))
 
 ;*---------------------------------------------------------------------*/
@@ -1118,57 +1201,99 @@
 (define (%canvas-line-points o::%bglk-object)
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-line %peer (%shapes)
-	 (cond
-	    ((null? %shapes)
-	     '())
-	    ((null? (cdr %shapes))
-	     (list (%awt-line2D-double-getX1 (car %shapes))
-		   (%awt-line2D-double-getY1 (car %shapes))
-		   (%awt-line2D-double-getX2 (car %shapes))
-		   (%awt-line2D-double-getY2 (car %shapes))))
-	    (else
-	     (let loop ((lines (cdr %shapes))
-			(res (list (%awt-line2D-double-getX2 (car %shapes))
-				   (%awt-line2D-double-getY2 (car %shapes)))))
-		(if (null? (cdr lines))
-		    (cons* (%awt-line2D-double-getX1 (car lines))
-			   (%awt-line2D-double-getY1 (car lines))
-			   res)
-		    (loop (cdr lines)
-			  (cons* (%awt-line2D-double-getX2 (car lines))
-				 (%awt-line2D-double-getY2 (car lines))
-				 res)))))))))
+	 (reverse (%bglk-canvas-get-canvas-line-points %shapes)))))
+;	 (cond
+;	    ((null? %shapes)
+;	     '())
+;	    ((null? (cdr %shapes))
+;	     (list (%awt-line2D-double-getX1 (car %shapes))
+;		   (%awt-line2D-double-getY1 (car %shapes))
+;		   (%awt-line2D-double-getX2 (car %shapes))
+;		   (%awt-line2D-double-getY2 (car %shapes))))
+;	    (else
+;	     (let loop ((lines (cdr %shapes))
+;			(res (list (%awt-line2D-double-getX2 (car %shapes))
+;				   (%awt-line2D-double-getY2 (car %shapes)))))
+;		(if (null? (cdr lines))
+;		    (cons* (%awt-line2D-double-getX1 (car lines))
+;			   (%awt-line2D-double-getY1 (car lines))
+;			   res)
+;		    (loop (cdr lines)
+;			  (cons* (%awt-line2D-double-getX2 (car lines))
+;				 (%awt-line2D-double-getY2 (car lines))
+;				 res)))))))))
 	 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-line-points-set! ...                                     */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-line-points-set! o::%bglk-object v)
    (with-access::%bglk-object o (%peer)
-      (with-access::%canvas-line %peer (%shapes %canvas)
-	 (if (null? v)
+      (with-access::%canvas-line %peer (%smooth %shapes %canvas)
+ 	 (if (null? v)
 	     (set! %shapes '())
-	     (let loop ((points (cddddr v))
-			(x0::double (fixnum->flonum (car v)))
-			(y0::double (fixnum->flonum (cadr v)))
-			(x1::double (fixnum->flonum (caddr v)))
-			(y1::double (fixnum->flonum (cadddr v)))
-			(lines '()))
-		(let ((line (%awt-line2D-double-new)))
-		   (%awt-line2D-set! line x0 y0 x1 y1)
-		   (if (null? points)
+	     (begin
+		(set! %shapes (%awt-generalpath-new))
+		(%awt-generalpath-moveto %shapes
+					 (fixnum->flonum (car v))
+					 (fixnum->flonum (cadr v)))
+		(let loop ((points (cddr v)))
+		   (if (not (null? points))
 		       (begin
-			  (set! %shapes (cons line lines))
-			  (%awt-component-repaint
-			   (%peer-%builtin (%bglk-object-%peer %canvas)))
-			  o)
-		       (let ((new-x0 x1)
-			     (new-y0 y1))
-			  (loop (cddr points)
-				new-x0
-				new-y0
-				(fixnum->flonum (car points))
-				(fixnum->flonum (cadr points))
-				(cons line lines))))))))))
+			  ;(print points)
+			  ;(print (fixnum->flonum (car points)) "  "
+			;	 (fixnum->flonum (cadr points)))
+			  (if %smooth
+			      (begin
+				 (%awt-generalpath-curveto
+				  %shapes
+				  (fixnum->flonum (car points))
+				  (fixnum->flonum (cadr points))
+				  (fixnum->flonum (caddr points))
+				  (fixnum->flonum (cadddr points))
+				  (fixnum->flonum (car (cddddr points)))
+				  (fixnum->flonum (cadr (cddddr points))))
+				 (loop (cddr (cddddr points))))
+			      (begin
+				 (%awt-generalpath-lineto
+				  %shapes
+				  (fixnum->flonum (car points))
+				  (fixnum->flonum (cadr points)))
+				 (loop (cddr points)))))))
+		(%awt-component-repaint!
+		 (%peer-%builtin (%bglk-object-%peer %canvas)))
+		o)))))
+
+		
+   ;    (with-access::%bglk-object o (%peer)
+;       (with-access::%canvas-line %peer (%smooth %shapes %canvas)
+; 	 (if (null? v)
+; 	     (set! %shapes '())
+; 	     (let loop ((points (cddddr v))
+; 			(x0::double (fixnum->flonum (car v)))
+; 			(y0::double (fixnum->flonum (cadr v)))
+; 			(x1::double (fixnum->flonum (caddr v)))
+; 			(y1::double (fixnum->flonum (cadddr v)))
+; 			(lines '()))
+; 		(let ((line (if %smooth
+; 				(%awt-cubic-curve2D-double-new)
+; 				(%awt-line2D-double-new))))
+; 		   (if %smooth
+; 		       (%awt-cubic-curve2D-double-set line x0 y0 x0 y0 x1 y1 x1 y1)
+; 		       (%awt-line2D-set! line x0 y0 x1 y1))
+; 		   (if (null? points)
+; 		       (begin
+; 			  (set! %shapes (cons line lines))
+; 			  (%awt-component-repaint!
+; 			   (%peer-%builtin (%bglk-object-%peer %canvas)))
+; 			  o)
+; 		       (let ((new-x0 x1)
+; 			     (new-y0 y1))
+; 			  (loop (cddr points)
+; 				new-x0
+; 				new-y0
+; 				(fixnum->flonum (car points))
+; 				(fixnum->flonum (cadr points))
+; 				(cons line lines))))))))))
 	 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-line-thickness ...                                       */
@@ -1185,7 +1310,7 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-line %peer (%stroke %canvas)
 	 (set! %stroke (%awt-basicstroke-width-new (fixnum->flonum v)))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 o)))
 
 ;*---------------------------------------------------------------------*/
@@ -1251,12 +1376,10 @@
 	     (set! %arrow-path (%bglk-canvas-arrow-path-new a b c))
 	     (and %arrow-beg
 		 (set! %arrow-beg
-		       (%bglk-canvas-arrow-beg-new %arrow-path
-						   (car (last-pair %shapes)))))
+		       (%bglk-canvas-arrow-beg-new %arrow-path %shapes)))
 	     (and %arrow-end
 		 (set! %arrow-end
-		       (%bglk-canvas-arrow-end-new %arrow-path
-						   (car %shapes))))
+		       (%bglk-canvas-arrow-end-new %arrow-path %shapes)))
 	     o)))
       (else
        (error "canvas-line-arrow-shape-set!" "Illegal arrow shape" v))))
@@ -1265,7 +1388,7 @@
 ;*    %canvas-line-style ...                                           */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-line-style o::%bglk-object)
-   'plain)
+   'solid)
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-line-style-set! ...                                      */
@@ -1295,6 +1418,41 @@
 							 10.0 dash 0.0)))
 	       (else
 		(error "line-style-set!" "Illegal style value" v)))))))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-line-style ...                                           */
+;*---------------------------------------------------------------------*/
+(define (%canvas-ellipse-style o::%bglk-object)
+   'solid)
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-line-style-set! ...                                      */
+;*---------------------------------------------------------------------*/
+(define (%canvas-ellipse-style-set! o::%bglk-object v)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas-ellipse %peer (%stroke)
+	 (let* ((width (%awt-basicstroke-line-width %stroke))
+		(join (%awt-basicstroke-line-join %stroke))
+		(cap (%awt-basicstroke-cap-style %stroke))
+		(dot (* width 2.0))
+		(dot2 (* width 4.0))
+		(ldot (* width 10.0))
+		(dash (make-float* 4)))
+	    (case v
+	       ((solid)
+		(%awt-basicstroke-new-ext width cap join))
+	       ((dotted)
+		(float*-set! dash 0 dot)
+		(float*-set! dash 1 dot2)
+		(set! %stroke (%awt-basicstroke-new-full width cap join
+							 10.0 dash 0.0)))
+	       ((dashed)
+		(float*-set! dash 0 ldot)
+		(float*-set! dash 1 ldot)
+		(set! %stroke (%awt-basicstroke-new-full width cap join
+							 10.0 dash 0.0)))
+	       (else
+		(error "ellipse-style-set!" "Illegal style value" v)))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-line-cap-style ...                                       */
@@ -1337,13 +1495,17 @@
 ;*    %canvas-line-smooth? ...                                         */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-line-smooth? o::%bglk-object)
-   #t)
+   (with-access::%bglk-object o (%peer)
+      (%canvas-line-%smooth %peer)))
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-line-smooth?-set! ...                                    */
 ;*---------------------------------------------------------------------*/
 (define (%canvas-line-smooth?-set! o::%bglk-object v)
-   (not-implemented o "%canvas-line-smooth?-set!"))
+   (with-access::%bglk-object o (%peer)
+      (%canvas-line-%smooth-set! %peer v)
+      (%canvas-line-points-set! o (%canvas-line-points o))))
+   ;(%canvas-line-points-set! %peer '())
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-line-spline-steps ...                                    */
@@ -1372,7 +1534,7 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-image %peer (%x %canvas)
 	 (set! %x (fixnum->flonum v))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 v)))
 
 ;*---------------------------------------------------------------------*/
@@ -1390,7 +1552,7 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-image %peer (%y %canvas)
 	 (set! %y (fixnum->flonum v))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 v)))
 
 ;*---------------------------------------------------------------------*/
@@ -1410,7 +1572,7 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas-image %peer (%builtin %canvas)
 	 (set! %builtin (%image-%icon (%bglk-object-%peer v)))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 o)))
 
 ;*---------------------------------------------------------------------*/
@@ -1466,7 +1628,7 @@
 	  (%container-remove! %canvas %widget))
       (set! %widget v)
       (%container-add! %canvas v)
-      (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+      (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
       v))
 
 ;*---------------------------------------------------------------------*/
@@ -1484,7 +1646,7 @@
    (with-access::%canvas-widget (%bglk-object-%peer o) (%widget %canvas)
       (with-access::%peer (%bglk-object-%peer %widget) (%builtin)
 	 (%awt-component-location-set! %builtin v (%awt-component-y %builtin))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 v)))
 
 ;*---------------------------------------------------------------------*/
@@ -1502,7 +1664,7 @@
    (with-access::%canvas-widget (%bglk-object-%peer o) (%widget %canvas)
       (with-access::%peer (%bglk-object-%peer %widget) (%builtin)
 	 (%awt-component-location-set! %builtin (%awt-component-x %builtin) v)
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 v)))
 
 ;*---------------------------------------------------------------------*/
@@ -1563,7 +1725,7 @@
 	    (set! enter-items (remq! ci enter-items))
 	    (set! leave-items (remq! ci leave-items))
 	    (set! key-items (remq! ci key-items))
-	    (%awt-component-repaint
+	    (%awt-component-repaint!
 	     (%peer-%builtin (%bglk-object-%peer %canvas)))
 	    ci))))
 
@@ -1573,14 +1735,16 @@
 (define (%canvas-item-raise ci)
    (with-access::%bglk-object ci (%peer)
       (with-access::%canvas-item %peer (%canvas)
-	 (with-access::%canvas (%bglk-object-%peer %canvas) (children)
+	 (with-access::%canvas (%bglk-object-%peer %canvas) (children %lp)
 	    (if (pair? (cdr children))
 		;; if there is exactly one child in the canvas,
 		;; raising it is useless
-		(begin
+		(let ((newp (cons ci '())))
 		   (set! children (remq! ci children))
-		   (set-cdr! (last-pair children) (cons ci '())))))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+		   (set-cdr! (last-pair children) newp)
+		   ;; update the last pair field
+		   (set! %lp newp) )))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 ci)))
 
 ;*---------------------------------------------------------------------*/
@@ -1589,14 +1753,16 @@
 (define (%canvas-item-lower ci)
    (with-access::%bglk-object ci (%peer)
       (with-access::%canvas-item %peer (%canvas)
-	 (with-access::%canvas (%bglk-object-%peer %canvas) (children)
+	 (with-access::%canvas (%bglk-object-%peer %canvas) (children %lp)
 	    (if (pair? (cdr children))
 		;; if there is exactly one child in the canvas,
 		;; raising it is useless
 		(begin
 		   (set! children (remq! ci children))
-		   (set! children (cons ci children)))))
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+		   (set! children (cons ci children))
+		   ;; update the last pair field
+		   (set! %lp (last-pair children)) )))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 ci)))
 
 ;*---------------------------------------------------------------------*/
@@ -1618,7 +1784,7 @@
    (with-access::%canvas-text %ci (%x %y %canvas)
       (%canvas-text-x-set! ci (+fx (flonum->fixnum %x) deltax))
       (%canvas-text-y-set! ci (+fx (flonum->fixnum %y) deltay))
-      (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+      (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
       ci))
       
 ;*---------------------------------------------------------------------*/
@@ -1637,7 +1803,7 @@
 		      l)
 		   %shapes)
 	 ;; we have to force a repaint
-	 (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+	 (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
 	 ci)))
 
 ;*---------------------------------------------------------------------*/
@@ -1648,7 +1814,7 @@
       (%canvas-image-x-set! ci (+fx (flonum->fixnum %x) deltax))
       (%canvas-image-y-set! ci (+fx (flonum->fixnum %y) deltay))
       ;; we have to force a repaint
-      (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+      (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
       ci))
       
 ;*---------------------------------------------------------------------*/
@@ -1659,7 +1825,7 @@
       (%canvas-widget-x-set! ci (+fx (flonum->fixnum %x) deltax))
       (%canvas-widget-y-set! ci (+fx (flonum->fixnum %y) deltay))
       ;; we have to force a repaint
-      (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+      (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
       ci))
      
 ;*---------------------------------------------------------------------*/
@@ -1670,7 +1836,7 @@
       (%canvas-shape-x-set! ci (+fx (flonum->fixnum %x) deltax))
       (%canvas-shape-y-set! ci (+fx (flonum->fixnum %y) deltay))
       ;; we have to force a repaint
-      (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+      (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
       ci))
 
 ;*---------------------------------------------------------------------*/
@@ -1681,7 +1847,7 @@
       (%canvas-shape-x-set! ci (+fx (flonum->fixnum %x) deltax))
       (%canvas-shape-y-set! ci (+fx (flonum->fixnum %y) deltay))
       ;; we have to force a repaint
-      (%awt-component-repaint (%peer-%builtin (%bglk-object-%peer %canvas)))
+      (%awt-component-repaint! (%peer-%builtin (%bglk-object-%peer %canvas)))
       ci))
      
 

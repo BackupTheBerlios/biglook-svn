@@ -19,4 +19,4 @@
 	      (text "East"))))
    (container-add! area l4 :zone 'south)
    (container-add! area l5 :zone 'east)
-   (print "area:" area))
+   (widget-visible-set! win #t))

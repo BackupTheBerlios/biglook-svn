@@ -58,7 +58,7 @@ public class BJActionAdapter extends javax.swing.AbstractAction {
 	}
     }
 
-    static BJActionAdapter findAdapter( Component comp ) {
+    public static BJActionAdapter findAdapter( Component comp ) {
 	ActionListener[] mls = (ActionListener[])(comp.getListeners( ActionListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -71,7 +71,7 @@ public class BJActionAdapter extends javax.swing.AbstractAction {
 	}
     }
 
-    static Object getActionAdapterProc( Component comp, String e ) {
+    public static Object getActionAdapterProc( Component comp, String e ) {
 	BJActionAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.action_proc == null) ) {
@@ -81,7 +81,7 @@ public class BJActionAdapter extends javax.swing.AbstractAction {
 	}
     }
 
-    static void addActionAdapter( Component comp, 
+    public static void addActionAdapter( Component comp, 
 				  Object p, 
 				  procedure w,
 				  String e ) { 

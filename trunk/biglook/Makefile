@@ -25,7 +25,7 @@ BGLK_BFLAGS	=
 #*---------------------------------------------------------------------*/
 #*    Sources                                                          */
 #*---------------------------------------------------------------------*/
-LLIB		= configure app event color font after port
+LLIB		= configure app event color font after port cursor
 LWIDGET		= bglkobject widget \
                   image \
                   container box grid area layout window frame scroll \

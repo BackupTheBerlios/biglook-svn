@@ -95,5 +95,6 @@ static char * dir_xpm[] = {
 \"                \",
 \"                \"};"))))
    (print "xpm:" i2)
-   (print "gif:" i1))
+   (print "gif:" i1)
+   (widget-visible-set! p #t))
    

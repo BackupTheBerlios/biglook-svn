@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/biglook/Llib/color.scm              */
+;*    biglook/Llib/color.scm                                           */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Tue Oct 10 16:01:38 2000                          */
-;*    Last change :  Sun Dec 15 08:07:26 2002 (serrano)                */
-;*    Copyright   :  2000-02 Manuel Serrano                            */
+;*    Last change :  Thu Oct 14 17:03:16 2004 (dciabrin)               */
+;*    Copyright   :  2000-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The base class for color                                         */
 ;*    -------------------------------------------------------------    */
@@ -84,6 +84,16 @@
 	    (display* "#|rgb-color [red: #x" (integer->string-2 red)
 		      "] [green: #x" (integer->string-2 green)
 		      "] [blue: #x" (integer->string-2 blue) "]|")))))
+
+;*---------------------------------------------------------------------*/
+;*    object-equal? ::rgb-color ...                                    */
+;*---------------------------------------------------------------------*/
+(define-method (object-equal? col::rgb-color obj)
+   (with-access::rgb-color col (red green blue)
+      (and (rgb-color? obj)
+	   (=fx (rgb-color-red obj) red)
+	   (=fx (rgb-color-green obj) green)
+	   (=fx (rgb-color-blue obj) blue))))
 
 ;*---------------------------------------------------------------------*/
 ;*    name->color ...                                                  */

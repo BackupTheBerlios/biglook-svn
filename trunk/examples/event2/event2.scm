@@ -46,6 +46,7 @@
 			      (find-runtime-type (event-widget e)))))
       (set! press (lambda (e)
 		     (print "press: "
-			    (find-runtime-type (event-widget e))))))
+			    (find-runtime-type (event-widget e)))))) 
+   (widget-visible-set! win #t)
    #unspecified)
 				

@@ -12,7 +12,7 @@
    (container-add! notepad (make-tab3 "A pixmap and a text for label")
 		   :image (string->image (pixmap2)) :title "image + text")
    (container-add! notepad (make-position notepad))
-   (print "notpad: " notepad))
+   (widget-visible-set! win #t))
 
 (define (make-tab1)
    (define (make-labeled-entry parent title)

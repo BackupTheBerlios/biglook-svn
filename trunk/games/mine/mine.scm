@@ -112,7 +112,8 @@
 		   (text "Quit")
 		   (command (lambda (_) (exit 0))))))
       (set! *indicator* rem)
-      (start-game grid info)))
+      (start-game grid info)
+      (widget-visible-set! win #t)))
 
 ;*---------------------------------------------------------------------*/
 ;*    field-ref ...                                                    */

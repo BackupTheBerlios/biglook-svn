@@ -21,6 +21,7 @@
 	   __biglook_%bglk-object
 	   __biglook_%widget
 	   __biglook_%color
+	   ;__biglook_%cursor
 	   __biglook_%image
 	   __biglook_%callback)
    

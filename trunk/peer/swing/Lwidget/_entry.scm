@@ -22,6 +22,7 @@
 	   __biglook_%swing
 	   __biglook_%widget
 	   __biglook_%color
+	   ;__biglook_%cursor
 	   __biglook_%event
 	   __biglook_%callback)
    

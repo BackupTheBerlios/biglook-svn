@@ -1,10 +1,10 @@
 /*=====================================================================*/
-/*    .../project/biglook/peer/swing/Jlib/BJWindowAdapter.java         */
+/*    swing/Jlib/BJWindowAdapter.java                                  */
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Wed Apr 18 10:39:08 2001                          */
-/*    Last change :  Sat Jul  7 09:51:39 2001 (serrano)                */
-/*    Copyright   :  2001 Manuel Serrano                               */
+/*    Last change :  Thu Nov 25 17:52:21 2004 (dciabrin)               */
+/*    Copyright   :  2001-04 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    The Biglook WindowAdapter                                        */
 /*=====================================================================*/
@@ -40,7 +40,7 @@ public class BJWindowAdapter extends java.awt.event.WindowAdapter {
 	wrapper = w;
     }
 
-    static Object wrap_event( WindowEvent e, procedure wrapper ) {
+    public static Object wrap_event( WindowEvent e, procedure wrapper ) {
 	Component ec = e.getComponent();
 	Object receiver = Bglk.get_bglk_object( ec );
 	
@@ -48,7 +48,11 @@ public class BJWindowAdapter extends java.awt.event.WindowAdapter {
     }
 
     public void windowClosing( WindowEvent e ) {
-	e.getWindow().dispose();
+	if( destroy_proc != null ) {
+	    destroy_proc.funcall1( wrap_event( e, wrapper ) );
+	} else {
+	    e.getWindow().dispose();
+	}
     }
 
     public void windowClosed( WindowEvent e ) {
@@ -69,7 +73,7 @@ public class BJWindowAdapter extends java.awt.event.WindowAdapter {
 	}
     }
 
-    static Object getWindowAdapterIconify( Window comp ) {
+    public static Object getWindowAdapterIconify( Window comp ) {
 	BJWindowAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.iconified_proc == null) ) {
@@ -79,7 +83,7 @@ public class BJWindowAdapter extends java.awt.event.WindowAdapter {
 	}
     }
 
-    static Object getWindowAdapterDeiconify( Window comp ) {
+    public static Object getWindowAdapterDeiconify( Window comp ) {
 	BJWindowAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.deiconified_proc == null) ) {
@@ -89,7 +93,7 @@ public class BJWindowAdapter extends java.awt.event.WindowAdapter {
 	}
     }
 
-    static Object getWindowAdapterDestroy( Window comp ) {
+    public static Object getWindowAdapterDestroy( Window comp ) {
 	BJWindowAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.destroy_proc == null) ) {
@@ -99,8 +103,8 @@ public class BJWindowAdapter extends java.awt.event.WindowAdapter {
 	}
     }
 
-    static BJWindowAdapter findAdapter( Window comp ) {
-	WindowListener[] mls = (WindowListener[])(comp.getListeners( BJWindowAdapter.class ));
+    public static BJWindowAdapter findAdapter( Window comp ) {
+	WindowListener[] mls = (WindowListener[])(comp.getListeners(WindowListener.class));
 	if( mls.length == 0 ) {
 	    return null;
 	} else {
@@ -112,7 +116,7 @@ public class BJWindowAdapter extends java.awt.event.WindowAdapter {
 	}
     }
 
-    static void addWindowAdapter( Window comp,
+    public static void addWindowAdapter( Window comp,
 				  Object i, Object di, Object de, 
 				  procedure w ) {
 	BJWindowAdapter a = findAdapter( comp );

@@ -34,7 +34,7 @@ public class BJTreeWillExpandAdapter implements TreeWillExpandListener {
 	wrapper = w;
     }
 
-    static Object wrap_event( Object receiver, procedure wrapper ) {
+    public static Object wrap_event( Object receiver, procedure wrapper ) {
 	return wrapper.funcall2( null, receiver );
     }
 	

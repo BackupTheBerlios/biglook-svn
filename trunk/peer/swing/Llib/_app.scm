@@ -25,6 +25,7 @@
 	   __biglook_%container
 	   __biglook_%error
 	   __biglook_%color
+	   ;__biglook_%cursor
 	   __biglook_%window)
    
    (java   (class %bglk

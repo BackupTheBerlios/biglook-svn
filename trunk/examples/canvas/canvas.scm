@@ -5,18 +5,22 @@
 	       (x 200)
 	       (y 200)
 	       (title "Biglook Canvas")))
+;       (sc (instantiate::scroll
+;	      (width 200)
+;	      (height 100)
+;	      (parent `(,win :expand #t :fill #t))))
        (canvas (instantiate::canvas
 		  (width 400)
+		  (height 200)
 		  (tooltips "Foo, Bar ?")
 		  (parent `(,win :expand #t :fill #t))))
        (drag-handler (make-drag-event-handler)))
-   (widget-visible-set! win #t)
-   ;(setup-widgets canvas)
+   (setup-widgets canvas)
    (setup-texts canvas drag-handler)
    (setup-lines canvas drag-handler)
-   ;(setup-shapes canvas drag-handler)
-   ;(setup-images canvas drag-handler)
-   )
+   (setup-shapes canvas drag-handler)
+   (setup-images canvas drag-handler)
+   (widget-visible-set! win #t) )
 
 ;*---------------------------------------------------------------------*/
 ;*    setup-widgets ...                                                */
@@ -102,18 +106,10 @@
 ;*    setup-lines ...                                                  */
 ;*---------------------------------------------------------------------*/
 (define (setup-lines canvas drag-handler)
-   (define x (instantiate::canvas-line
-      (canvas canvas)
-      (style 'dashed)
-      (points '(10 150 200 160))))
-
-   (print (canvas-line-thickness x))
    (instantiate::canvas-line
       (canvas canvas)
-      (points '(10 100 30 140 50 120 45 150))
-      (arrow '<->)
-      (arrow-shape '(18 12 14))
-      (thickness 3)
+      (style 'dashed)
+      (points '(10 150 200 160))
       (event drag-handler))
    
    (instantiate::canvas-line
@@ -123,7 +119,6 @@
       (style 'dotted)
       (arrow-shape '(20 12 10))
       (points '(10 150 200 100)))
-   
    )
 
 ;*---------------------------------------------------------------------*/
@@ -402,9 +397,15 @@ static char * Daemon_xpm[] = {
 		    (with-access::event e (widget x y button)
 		       (if (=fx button 1)
 			   (begin
-			      (canvas-item-move widget
-						(-fx x move-x)
-						(-fx y move-y))
+			      ;; convert from pixel units to canvas unit
+			      (canvas-item-move
+			       widget
+			       (flonum->fixnum (/ (-fx x move-x)
+						  (canvas-zoom-x
+						   (canvas-item-canvas widget))))
+			       (flonum->fixnum (/ (-fx y move-y)
+						  (canvas-zoom-y
+						   (canvas-item-canvas widget)))))
 			      (set! move-x x)
 			      (set! move-y y)))))))))
 

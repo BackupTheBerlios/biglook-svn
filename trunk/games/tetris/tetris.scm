@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/games/tetris/tetris.scm             */
+;*    tetris/tetris.scm                                                */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Tue Jun  5 05:43:15 2001                          */
-;*    Last change :  Thu Sep 19 11:51:48 2002 (serrano)                */
-;*    Copyright   :  2001-02 Manuel Serrano                            */
+;*    Last change :  Tue Nov 30 15:46:36 2004 (dciabrin)               */
+;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    A simple implementation of the "tetris" game.                    */
 ;*=====================================================================*/
@@ -603,4 +603,5 @@ static char *noname[] = {
 					(set! *lost* #t)
 					#t))))
 			  #t)))))
+	    (widget-visible-set! win #t)
 	    (timeout *timeout* dotick)))))

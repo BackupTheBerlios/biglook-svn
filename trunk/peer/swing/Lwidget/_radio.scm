@@ -22,6 +22,7 @@
 	   __biglook_%bglk-object
 	   __biglook_%widget
 	   __biglook_%color
+	   ;__biglook_%cursor
 	   __biglook_%button
 	   __biglook_%check-button
 	   __biglook_%container

@@ -34,7 +34,7 @@ class PortCondition {
 public class BJPort {
     private final static Hashtable table = new Hashtable();
 
-    static void when_char_ready( final input_port port,
+    public static void when_char_ready( final input_port port,
 				 final RandomAccessFile rai, 
 				 final procedure p ) {
 	Thread watch = new Thread( new Runnable () {
@@ -53,7 +53,7 @@ public class BJPort {
 	watch.start();
     }
 
-    static void when_char_ready( final input_port port,
+    public static void when_char_ready( final input_port port,
 				 final InputStream in, 
 				 final procedure p ) {
 	final PortCondition pcond = new PortCondition();
@@ -80,7 +80,7 @@ public class BJPort {
 	watch.start();
     }
 
-    static void when_char_ready( final input_string_port port, 
+    public static void when_char_ready( final input_string_port port, 
 				 final procedure p ) {
 	Thread watch = new Thread( new Runnable () {
 		public void run() {

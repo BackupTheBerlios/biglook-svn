@@ -21,6 +21,7 @@
 	   __biglook_%bglk-object
 	   __biglook_%swing-misc
 	   __biglook_%widget
+	   ;__biglook_%cursor
 	   __biglook_%button
 	   __biglook_%image
 	   __biglook_%container

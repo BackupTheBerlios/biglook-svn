@@ -28,7 +28,7 @@ PEER_OBJ_DIRS	= $(PEER_CLASS_DIRS:%=$(CLASS_DIR)/%)
 #*    Sources                                                          */
 #*---------------------------------------------------------------------*/
 LLIB		= _configure _app _error _event _callback \
-                  _color _font _after _port
+                  _color _font _after _port _cursor
 LWIDGET		= _peer _bglkobject _widget \
                   _image \
                   _container _grid _area _box _window _frame _scroll \

@@ -34,7 +34,7 @@ public class BJFocusAdapter extends java.awt.event.FocusAdapter {
 	wrapper = w;
     }
 
-    static Object wrap_event( FocusEvent e, procedure wrapper ) {
+    public static Object wrap_event( FocusEvent e, procedure wrapper ) {
 	Component ec = e.getComponent();
 	Object receiver = Bglk.get_bglk_object( ec );
 	
@@ -53,7 +53,7 @@ public class BJFocusAdapter extends java.awt.event.FocusAdapter {
 	}
     }
 
-    static BJFocusAdapter findAdapter( Component comp ) {
+    public static BJFocusAdapter findAdapter( Component comp ) {
 	FocusListener[] mls = (FocusListener[])(comp.getListeners( FocusListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -66,7 +66,7 @@ public class BJFocusAdapter extends java.awt.event.FocusAdapter {
 	}
     }
 
-    static Object getFocusAdapterIn( Component comp ) {
+    public static Object getFocusAdapterIn( Component comp ) {
 	BJFocusAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.in_proc == null) ) {
@@ -76,7 +76,7 @@ public class BJFocusAdapter extends java.awt.event.FocusAdapter {
 	}
     }
 
-    static Object getFocusAdapterOut( Component comp ) {
+    public static Object getFocusAdapterOut( Component comp ) {
 	BJFocusAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.out_proc == null) ) {
@@ -86,7 +86,7 @@ public class BJFocusAdapter extends java.awt.event.FocusAdapter {
 	}
     }	
 
-    static void addFocusAdapter( Component comp, Object i, Object o, procedure w ) {
+    public static void addFocusAdapter( Component comp, Object i, Object o, procedure w ) {
 	BJFocusAdapter a = findAdapter( comp );
 
 	if( a == null ) {

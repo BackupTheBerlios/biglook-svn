@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Thu Mar 22 06:57:26 2001                          */
-;*    Last change :  Tue May 11 14:16:58 2004 (dciabrin)               */
+;*    Last change :  Thu Oct 21 11:06:34 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Biglook widget class                                         */
@@ -22,7 +22,9 @@
    (library biglook_peer)
    
    (import  __biglook_bglk-object
-	    __biglook_event)
+	    __biglook_event
+   	    ;__biglook_cursor
+	    )
    
    (use     __biglook_container)
    
@@ -51,7 +53,9 @@
 			       ;; if that event-handler is modified o won't
 			       ;; be impacted
 			       (if (event-handler? oldv)
-				   (disconnect-event-handler! oldv o))
+				   (begin
+				      (print "disconnect old")
+				      (disconnect-event-handler! oldv o)))
 			       ;; if the new value is a legal event-handler, we
 			       ;; just have to connect, all former callbacks
 			       ;; will be automatically disconnected
@@ -82,14 +86,18 @@
 	       (visible
 		(get %widget-visible)
 		(set %widget-visible-set!))
-	       ;; visible
+	       ;; enabled
 	       (enabled
 		(get %widget-enabled)
 		(set %widget-enabled-set!))
 	       ;; can focus
 	       (can-focus
 		(get %widget-can-focus?)
-		(set %widget-can-focus?-set!)))))
+		(set %widget-can-focus?-set!))
+	       (cursor
+		(get %widget-cursor)
+		(set %widget-cursor-set!))
+	       )))
 
 ;*---------------------------------------------------------------------*/
 ;*    bglk-object-init ...                                             */
@@ -150,4 +158,3 @@
    ;; uninstall is not a user function, we don't have to check any error here
    (if (procedure? proc)
        (%uninstall-widget-callback! w evt proc)))
-

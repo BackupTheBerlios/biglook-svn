@@ -12,9 +12,9 @@
 	       (y 50)
 	       (title "Events...")
 	       (event (instantiate::event-handler
-			 (destroy (lambda (e)
-				     (let ((w (event-widget e)))
-					(print "Destroy: " (window-title w)))))
+;			 (destroy (lambda (e)
+;				     (let ((w (event-widget e)))
+;					(print "Destroy: " (window-title w)))))
 			 (iconify (lambda (e)
 				     (let ((w (event-widget e)))
 					(print "iconify: " e)
@@ -77,5 +77,6 @@
 		    (leave (lambda (e)
 			      (print "Replaced leave: " e))))))
 	 (button-event-set! b1 new)))
+   (widget-visible-set! win #t)
    (print "Events set..."))
 

@@ -34,7 +34,7 @@ public class BJTreeSelectionAdapter implements TreeSelectionListener {
 	wrapper = w;
     }
 
-    static Object wrap_event( TreeSelectionEvent event, procedure wrapper ) {
+    public static Object wrap_event( TreeSelectionEvent event, procedure wrapper ) {
 	TreePath the_path = event.getPath();
 	int size = the_path.getPathCount();
 	Object[] path  = the_path.getPath();
@@ -47,7 +47,7 @@ public class BJTreeSelectionAdapter implements TreeSelectionListener {
 	proc.funcall1( wrap_event( e, wrapper ) );
     }
 
-    static BJTreeSelectionAdapter findAdapter( JTree comp ) {
+    public static BJTreeSelectionAdapter findAdapter( JTree comp ) {
 	TreeSelectionListener[] mls = (TreeSelectionListener[])(comp.getListeners( TreeSelectionListener.class ));
 	if( mls.length == 0 ) {
 	    return null;
@@ -60,7 +60,7 @@ public class BJTreeSelectionAdapter implements TreeSelectionListener {
 	}
     }
 
-    static Object getTreeSelectionAdapterProc( JTree comp ) {
+    public static Object getTreeSelectionAdapterProc( JTree comp ) {
 	BJTreeSelectionAdapter a = findAdapter( comp );
 
 	if( (a == null) || (a.proc == null) ) {
@@ -70,7 +70,7 @@ public class BJTreeSelectionAdapter implements TreeSelectionListener {
 	}
     }	
 
-    static void addTreeSelectionAdapter( JTree comp, Object p, procedure w ) { 
+    public static void addTreeSelectionAdapter( JTree comp, Object p, procedure w ) { 
 	BJTreeSelectionAdapter a = findAdapter( comp );
 
 	if( a == null ) {

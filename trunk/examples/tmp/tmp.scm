@@ -4,4 +4,5 @@
 	      (height 300))))
    (print "weiojwejoifjoiewjoifijowefjoiefijojowiijof")
 ;   (print "object?: " (object? p1))
-   (print "Plain window: " p1))
+   (print "Plain window: " p1)
+   (widget-visible-set! p1 #t))

@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/null/Lwidget/_canvas.scm       */
+;*    null/Lwidget/_canvas.scm                                         */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Sun Jun 10 09:48:40 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Wed Nov 17 14:44:38 2004 (dciabrin)               */
+;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Null peer Canvas implementation.                             */
 ;*    definition: @path ../../../biglook/Lwidget/canvas.scm@           */
@@ -38,7 +38,13 @@
 	   
 	   (%canvas-scroll-height::int ::%bglk-object)
 	   (%canvas-scroll-height-set! ::%bglk-object ::int)
-	   
+
+	   (%canvas-zoom-x::float ::%bglk-object)
+	   (%canvas-zoom-x-set! ::%bglk-object ::float)
+
+	   (%canvas-zoom-y::float ::%bglk-object)
+	   (%canvas-zoom-y-set! ::%bglk-object ::float)
+
 	   (%canvas-add! ::%bglk-object ::%bglk-object ::pair-nil)))
 
 ;*---------------------------------------------------------------------*/
@@ -124,4 +130,28 @@
 ;*---------------------------------------------------------------------*/
 (define (%canvas-scroll-height-set! o::%bglk-object v::int)
    (not-implemented o "%canvas-scroll-height-set!"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-x ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-x::float o::%bglk-object)
+   (not-implemented o "%canvas-zoom-x"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-x-set! ...                                          */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-x-set! o::%bglk-object v::float)
+   (not-implemented o "%canvas-zoom-x-set!"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-y ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-y::float o::%bglk-object)
+   (not-implemented o "%canvas-zoom-y"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-zoom-y-set! ...                                          */
+;*---------------------------------------------------------------------*/
+(define (%canvas-zoom-y-set! o::%bglk-object v::float)
+   (not-implemented o "%canvas-zoom-y-set!"))
 
