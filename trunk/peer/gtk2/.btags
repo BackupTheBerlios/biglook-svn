@@ -1,0 +1,1136 @@
+
+-,0
+(meta-define define define0,0
+(meta-define define define-struct0,0
+(meta-define define define0,0
+(meta-define define define-inline0,0
+(meta-define define define-generic0,0
+(meta-define define define-macro0,0
+(meta-define define define-expander0,0
+(meta-define define module0,0
+
+Llib/_configure.scm,189
+(module __biglook_%configure4,78
+(define (%biglook-peer-name11,356
+(define (%biglook-peer-version13,394
+(define (%%biglook-peer-version15,434
+(define (%biglook-library-directory17,493
+
+Llib/_app.scm,202
+(module __biglook_%app16,1037
+(define (%biglook-version36,1742
+(define (%biglook-info42,2020
+(define (%biglook-rc-parse48,2292
+(define (%biglook-start63,2864
+(define (%biglook-peer-special81,3574
+
+Llib/_error.scm,65
+(module __biglook_%error15,963
+(define (not-implemented22,1259
+
+Llib/_event.scm,941
+(module __biglook_%event19,1259
+(define (%event?54,2856
+(define (make-%event54,2856
+(define (fill-%event!54,2856
+   (export (class %event54,2856
+(define (%event-%event::gdkevent*-set!55,2881
+(define (%event-%event::gdkevent*55,2881
+(define (%event-%widget-set!56,2906
+(define (%event-%widget56,2906
+(define *null-event*85,3839
+(define *widget-event*86,3874
+(define *mouse-event*87,3911
+(define *key-event*88,3947
+(define (%initialize-events!93,4204
+(define (%event-type102,4644
+(define (%event-time108,4951
+(define (%event-x114,5255
+(define (%event-y120,5553
+(define (%event-width126,5851
+(define (%event-height132,6157
+(define (%event-mouse-time138,6465
+(define (%event-mouse-button144,6775
+(define (%event-mouse-click-count150,7089
+(define (%event-mouse-modifiers156,7413
+(define (%event-key-time162,7738
+(define (%event-key-modifiers168,8046
+(define (%event-key-keyval174,8369
+(define (%event-key-char180,8681
+
+Llib/_callback.scm,1095
+(module __biglook_%callback19,1259
+(define *widget-event-gtk-name*99,4606
+(define *widget-signal-gtk-name*116,5303
+(define (%connect-widget-callback!128,5766
+(define (%disconnect-widget-callback!145,6531
+(define (%connect-canvas-item-callback!157,7153
+(define-generic (%connect-menu-item-callback!190,8245
+(define-generic (%disconnect-menu-item-callback!196,8589
+(define (%connect-row-select-callback!202,8938
+(define (%disconnect-row-select-callback!208,9265
+(define (%connect-child-callback!214,9603
+(define (%disconnect-child-callback!220,9935
+(define (%install-widget-callback!226,10263
+(define-generic (%%install-widget-callback!233,10615
+(define (%uninstall-widget-callback!240,10982
+(define (%install-canvas-item-callback!248,11399
+(define (%uninstall-canvas-item-callback!256,11803
+(define (%install-menu-item-callback!264,12226
+(define (%uninstall-menu-item-callback!276,12736
+(define (%install-tree-callback!284,13155
+(define (%uninstall-tree-callback!290,13435
+(define (%install-tree-branch-callback!298,13836
+(define (%uninstall-tree-branch-callback!304,14144
+
+Llib/_color.scm,1397
+(module __biglook_%color16,1037
+(define (%rgb-color?69,2829
+(define (make-%rgb-color69,2829
+(define (fill-%rgb-color!69,2829
+	    (class %rgb-color69,2829
+(define (%rgb-color-%red::int-set!70,2860
+(define (%rgb-color-%red::int70,2860
+(define (%rgb-color-%green::int-set!71,2892
+(define (%rgb-color-%green::int71,2892
+(define (%rgb-color-%blue::int-set!72,2926
+(define (%rgb-color-%blue::int72,2926
+(define (%rgb-color-%opacity::int-set!73,2959
+(define (%rgb-color-%opacity::int73,2959
+(define (%name-color?75,3002
+(define (make-%name-color75,3002
+(define (fill-%name-color!75,3002
+	    (class %name-color75,3002
+(define (%name-color-%name::bstring-set!76,3034
+(define (%name-color-%name::bstring76,3034
+(define (%color-rgb-component88,3604
+(define-generic (biglook-color->gtk98,4103
+(define-method (biglook-color->gtk o::%rgb-color104,4396
+(define-method (biglook-color->gtk o::%name-color115,4933
+(define-generic (biglook-color->gdk132,5650
+(define-method (biglook-color->gdk o::%rgb-color138,5943
+(define-method (biglook-color->gdk o::%name-color149,6480
+(define (gdk-color->biglook166,7197
+(define (rgb->rgb-string176,7649
+(define-generic (biglook-color->rgb-string188,8331
+(define-method (biglook-color->rgb-string::string v::%rgb-color194,8627
+(define-method (biglook-color->rgb-string::string v::%name-color201,9018
+(define (rgb-string-color->biglook208,9360
+
+Llib/_font.scm,612
+(module __biglook_%font16,1037
+(define (%font?20,1098
+(define (make-%font20,1098
+(define (fill-%font!20,1098
+   (export (class %font20,1098
+(define (%font-family::bstring-set!23,1206
+(define (%font-family::bstring23,1206
+(define (%font-weight::symbol-set!26,1315
+(define (%font-weight::symbol26,1315
+(define (%font-slant::symbol-set!29,1426
+(define (%font-slant::symbol29,1426
+(define (%font-width::symbol-set!32,1529
+(define (%font-width::symbol32,1529
+(define (%font-size::int-set!35,1619
+(define (%font-size::int35,1619
+(define (%xfld->biglook-font43,1949
+(define (%biglook-font->xfld77,3170
+
+Llib/_after.scm,106
+(module __biglook_%after16,1037
+(define (%after39,1838
+(define (%timeout45,2154
+(define (%idle51,2465
+
+Llib/_port.scm,285
+(module __biglook_%port16,1037
+(define (%when-char-ready41,1904
+(define (%nonblocking56,2447
+(define *user-callbacks*63,2747
+(define *gtk-callbacks*64,2777
+(define (register-user-callback!69,3029
+(define (register-gtk-callback!75,3344
+(define (unregister-port-callback!81,3656
+
+Lwidget/_peer.scm,757
+(module __biglook_%peer15,963
+(define (%peer?335,14984
+(define (make-%peer335,14984
+(define (fill-%peer!335,14984
+   (export (class %peer335,14984
+(define (%peer-%peer-init-set!337,15030
+(define (%peer-%peer-init337,15030
+(define (%peer-%builtin::gtkobject*339,15079
+(define (%peer-%bglk-object-set!342,15169
+(define (%peer-%bglk-object342,15169
+(define (%peer-%event-set!345,15259
+(define (%peer-%event345,15259
+(define-generic (%peer-init361,15760
+(define (peer-%bglk-object373,16301
+(define (peer-%bglk-object-set!380,16664
+(define-method (object-print peer::%peer port print-slot388,17102
+(define (bglkwidget394,17416
+(define (bglkcontainer400,17710
+(define (bglkbox406,18010
+(define (bglktable412,18298
+(define (bglkframe418,18590
+
+Lwidget/_bglkobject.scm,257
+(module __biglook_%bglk-object16,1037
+(define (%bglk-object?18,1069
+(define (make-%bglk-object18,1069
+(define (fill-%bglk-object!18,1069
+   (export (class %bglk-object18,1069
+(define (%bglk-object-%peer-set!20,1161
+(define (%bglk-object-%peer20,1161
+
+Lwidget/_widget.scm,910
+(module __biglook_%widget16,1037
+(define (%widget?74,2884
+(define (make-%widget74,2884
+(define (fill-%widget!74,2884
+   (export (class %widget74,2884
+(define (%widget-parent111,4119
+(define (%widget-event120,4521
+(define (%widget-event-set!127,4854
+(define (%widget-width134,5203
+(define (%widget-width-set!141,5583
+(define (%widget-height147,5916
+(define (%widget-height-set!154,6298
+(define (%widget-tooltips160,6633
+(define (%widget-tooltips-set!168,7056
+(define (%widget-active?181,7545
+(define (%widget-active?-set!189,7961
+(define (%widget-name199,8423
+(define (%widget-name-set!206,8791
+(define (%widget-visible216,9263
+(define (%widget-visible-set!222,9567
+(define (%widget-enabled229,9882
+(define (%widget-enabled-set!235,10265
+(define (%widget-can-focus?243,10677
+(define (%widget-can-focus?-set!249,10986
+(define (%destroy-widget255,11305
+(define (%repaint-widget267,11828
+
+Lwidget/_image.scm,378
+(module __biglook_%image16,1037
+(define (%image?42,1934
+(define (make-%image42,1934
+(define (fill-%image!42,1934
+   (export (class %image42,1934
+(define (%make-%file-image58,2499
+(define (%make-%data-image66,2895
+(define (%duplicate-image74,3302
+(define (%image-parent83,3733
+(define (%image-width89,4019
+(define (%image-height97,4427
+(define (%delete-image105,4837
+
+Lwidget/_container.scm,517
+(module __biglook_%container16,1037
+(define (%container?44,2087
+(define (make-%container44,2087
+(define (fill-%container!44,2087
+   (export (class %container44,2087
+(define (%container-%gc-children::pair-nil-set!45,2123
+(define (%container-%gc-children::pair-nil45,2123
+(define (%container-add!59,2728
+(define (%container-remove!71,3311
+(define (%container-children84,3934
+(define-generic (%%container-children91,4280
+(define (%container-border-width97,4611
+(define (%container-border-width-set!104,4968
+
+Lwidget/_window.scm,814
+(module __biglook_%window16,1037
+(define (%window?59,2536
+(define (make-%window59,2536
+(define (fill-%window!59,2536
+   (static (class %window59,2536
+(define (%window-destroy-command-set!60,2574
+(define (%window-destroy-command60,2574
+(define (%make-%window82,3382
+(define (%make-%applet107,4430
+(define (bglkwindow121,5028
+(define *registered-window*128,5347
+(define (destroy-callback133,5603
+(define (register-window!142,6007
+(define (unregister-window!153,6565
+(define (%window-add!159,6902
+(define (%applet-add!165,7206
+(define (%window-x171,7523
+(define (%window-x-set!178,7858
+(define (%window-y186,8240
+(define (%window-y-set!193,8575
+(define (%window-title201,8957
+(define (%window-title-set!207,9251
+(define (%deiconify213,9564
+(define (%iconify220,9913
+(define (%update227,10256
+
+Lwidget/_frame.scm,422
+(module __biglook_%frame16,1037
+(define (%frame?29,1313
+(define (make-%frame29,1313
+(define (fill-%frame!29,1313
+   (static (class %frame29,1313
+(define (%make-%frame47,1964
+(define (%frame-add!55,2324
+(define (%frame-title63,2741
+(define (%frame-title-set!69,3034
+(define (%frame-title-justify75,3346
+(define (%frame-title-justify-set!81,3691
+(define (%frame-shadow90,4076
+(define (%frame-shadow-set!96,4406
+
+Lwidget/_scroll.scm,874
+(module __biglook_%scroll16,1037
+(define (%scroll?47,2076
+(define (make-%scroll47,2076
+(define (fill-%scroll!47,2076
+   (static (class %scroll47,2076
+(define (%make-%scroll77,3098
+(define (adjustment-fraction99,3941
+(define (adjustment-fraction-set!109,4453
+(define (%scroll-hfraction127,5091
+(define (%scroll-hfraction-set!137,5576
+(define (%scroll-vfraction147,6075
+(define (%scroll-vfraction-set!157,6563
+(define (%scroll-hside167,7062
+(define (%scroll-hside-set!184,7675
+(define (%scroll-vside225,8932
+(define (%scroll-vside-set!242,9545
+(define (%scroll-hpolicy283,10802
+(define (%scroll-hpolicy-set!296,11288
+(define (%scroll-vpolicy316,11881
+(define (%scroll-vpolicy-set!329,12367
+(define (%scroll-hpage-size349,12960
+(define (%scroll-vpage-size359,13475
+(define (%scroll-add!369,13990
+(define-method (%%container-children c::%scroll381,14549
+
+Lwidget/_grid.scm,603
+(module __biglook_%grid16,1037
+(define (%grid?34,1493
+(define (make-%grid34,1493
+(define (fill-%grid!34,1493
+   (static (class %grid34,1493
+(define (%make-%grid61,2382
+(define (%grid-rows69,2744
+(define (%grid-rows-set!75,3041
+(define (%grid-columns81,3348
+(define (%grid-columns-set!87,3651
+(define (%grid-row-spacing93,3964
+(define (%grid-row-spacing-set!99,4273
+(define (%grid-column-spacing105,4592
+(define (%grid-column-spacing-set!111,4907
+(define (%grid-homogeneous117,5232
+(define (%grid-homogeneous-set!123,5542
+(define (gtk-attach-options129,5862
+(define (%grid-add!136,6201
+
+Lwidget/_area.scm,412
+(module __biglook_%area16,1037
+(define (%area?25,1214
+(define (make-%area25,1214
+(define (fill-%area!25,1214
+   (static (class %area25,1214
+(define (%area-%grid::%peer26,1250
+(define (%make-%area41,1837
+(define (%area-horizontal-spacing55,2427
+(define (%area-horizontal-spacing-set!61,2735
+(define (%area-vertical-spacing67,3057
+(define (%area-vertical-spacing-set!73,3360
+(define (%area-add!79,3677
+
+Lwidget/_box.scm,466
+(module __biglook_%box16,1037
+(define (%hbox?43,1688
+(define (make-%hbox43,1688
+(define (fill-%hbox!43,1688
+   (static (class %hbox43,1688
+(define (%vbox?44,1725
+(define (make-%vbox44,1725
+(define (fill-%vbox!44,1725
+	   (class %vbox44,1725
+(define (%make-%hbox58,2301
+(define (%make-%vbox72,2836
+(define (%box-add!86,3371
+(define (%vbox-add!106,4075
+(define (%hbox-add!112,4419
+(define (%box-homogenous118,4763
+(define (%box-homogenous-set!124,5065
+
+Lwidget/_button.scm,617
+(module __biglook_%button16,1037
+(define (%button?29,1336
+(define (make-%button29,1336
+(define (fill-%button!29,1336
+   (export (class %button29,1336
+(define (%button-%command-set!30,1374
+(define (%button-%command30,1374
+(define (%make-%button52,2148
+(define (%button-command64,2762
+(define (%button-command-set!72,3126
+(define (%button-text84,3656
+(define (%button-text-set!90,3949
+(define (%button-image96,4261
+(define (%button-image-set!109,4685
+(define (%button-border-width118,5080
+(define (%button-border-width-set!124,5395
+(define (%button-relief130,5738
+(define (%button-relief-set!136,6064
+
+Lwidget/_checkbutton.scm,380
+(module __biglook_%check-button16,1037
+(define (%check-button?29,1332
+(define (make-%check-button29,1332
+(define (fill-%check-button!29,1332
+   (export (class %check-button29,1332
+(define (%make-%check-button42,1855
+(define (%check-button-active?50,2234
+(define (%check-button-active?-set!56,2545
+(define (%check-button-on?62,2866
+(define (%check-button-on?-set!68,3165
+
+Lwidget/_radio.scm,757
+(module __biglook_%radio16,1037
+(define (%radio?35,1539
+(define (make-%radio35,1539
+(define (fill-%radio!35,1539
+   (static (class %radio35,1539
+(define (%radio-%group::gslist*-set!36,1576
+(define (%radio-%group::gslist*36,1576
+(define (%radio-%frame::%bglk-object37,1642
+(define (%radio-button?38,1683
+(define (make-%radio-button38,1683
+(define (fill-%radio-button!38,1683
+	   (class %radio-button38,1683
+(define (%make-%radio64,2544
+(define (%make-%radio-button73,2957
+(define (%radio-add!85,3534
+(define (%radio-children92,3897
+(define (%radio-value98,4218
+(define (%radio-value-set!111,4681
+(define (%radio-tooltips120,5128
+(define (%radio-tooltips-set!129,5504
+(define (%radio-active?137,5865
+(define (%radio-active?-set!146,6251
+
+Lwidget/_label.scm,312
+(module __biglook_%label16,1037
+(define (%label?27,1287
+(define (make-%label27,1287
+(define (fill-%label!27,1287
+   (static (class %label27,1287
+(define (%make-%label40,1778
+(define (%label-text48,2139
+(define (%label-text-set!54,2431
+(define (%label-justify60,2742
+(define (%label-justify-set!66,3062
+
+Lwidget/_entry.scm,610
+(module __biglook_%entry16,1037
+(define (%entry?34,1497
+(define (make-%entry34,1497
+(define (fill-%entry!34,1497
+   (export (class %entry34,1497
+(define (%entry-%user-command-set!35,1529
+(define (%entry-%user-command35,1529
+(define (%entry-%sys-command-set!36,1565
+(define (%entry-%sys-command36,1565
+(define (%make-%entry55,2232
+(define (%entry-command63,2590
+(define (%entry-command-set!71,2962
+(define (%entry-text88,3701
+(define (%entry-text-set!96,4090
+(define (%entry-active?105,4506
+(define (%entry-active?-set!111,4804
+(define (%entry-width117,5118
+(define (%entry-width-set!124,5484
+
+Lwidget/_listbox.scm,848
+(module __biglook_%listbox16,1037
+(define (%listbox?58,2893
+(define (make-%listbox58,2893
+(define (fill-%listbox!58,2893
+   (static  (class %listbox58,2893
+(define (%listbox-%tree-view::gtktreeview*59,2928
+(define (%listbox-%list::gtkliststore*-set!60,2973
+(define (%listbox-%list::gtkliststore*60,2973
+(define (%listbox-%items::pair-nil-set!61,3004
+(define (%listbox-%items::pair-nil61,3004
+(define-method (%%install-widget-callback! o::%listbox e v82,3804
+(define (%make-%listbox89,4202
+(define (%listbox-active?118,5297
+(define (%listbox-active?-set!124,5590
+(define (%listbox-items130,5897
+(define (%listbox-items-set!138,6260
+(define (%listbox-select-mode153,6846
+(define (%listbox-select-mode-set!162,7312
+(define (%listbox-selection173,7807
+(define (%listbox-selection-set!190,8517
+(define (%listbox-coords->row213,9358
+
+Lwidget/_combobox.scm,569
+(module __biglook_%combobox16,1037
+(define (%combobox?37,1645
+(define (make-%combobox37,1645
+(define (fill-%combobox!37,1645
+   (static (class %combobox37,1645
+(define (%make-%combobox59,2444
+(define (%combobox-text67,2811
+(define (%combobox-text-set!76,3239
+(define (%combobox-width87,3695
+(define (%combobox-width-set!99,4185
+(define (%combobox-active?113,4708
+(define (%combobox-active?-set!119,4999
+(define (%combobox-editable?126,5309
+(define (%combobox-editable?-set!132,5585
+(define (%combobox-items138,5918
+(define (%combobox-items-set!147,6352
+
+Lwidget/_canvas.scm,920
+(module __biglook_%canvas16,1037
+(define (%canvas?87,3596
+(define (make-%canvas87,3596
+(define (fill-%canvas!87,3596
+   (export (class %canvas87,3596
+(define (%canvas-%group::gnomecanvasgroup*-set!88,3634
+(define (%canvas-%group::gnomecanvasgroup*88,3634
+(define (%make-%canvas117,4738
+(define (%canvas-add!142,5742
+(define (%canvas-add-item!148,6067
+(define (%canvas-remove-item!155,6466
+(define-method (%%container-children o::%canvas162,6869
+(define (%canvas-width171,7352
+(define (%canvas-width-set!177,7642
+(define (%canvas-height188,8190
+(define (%canvas-height-set!194,8482
+(define (%canvas-scroll-x203,8886
+(define (%canvas-scroll-x-set!210,9283
+(define (%canvas-scroll-y218,9702
+(define (%canvas-scroll-y-set!225,10099
+(define (%canvas-scroll-width233,10518
+(define (%canvas-scroll-width-set!240,10923
+(define (%canvas-scroll-height248,11350
+(define (%canvas-scroll-height-set!255,11757
+
+Lwidget/_canvitem.scm,5591
+(module __biglook_%canvas-item19,1259
+(define (%canvas-text?101,3793
+(define (make-%canvas-text101,3793
+(define (fill-%canvas-text!101,3793
+	   (class %canvas-text101,3793
+(define (%canvas-text-%font-set!102,3833
+(define (%canvas-text-%font102,3833
+(define (%canvas-line?105,3885
+(define (make-%canvas-line105,3885
+(define (fill-%canvas-line!105,3885
+	   (class %canvas-line105,3885
+(define (%canvas-rectangle?108,3944
+(define (make-%canvas-rectangle108,3944
+(define (fill-%canvas-rectangle!108,3944
+	   (class %canvas-rectangle108,3944
+(define (%canvas-ellipse?111,4006
+(define (make-%canvas-ellipse111,4006
+(define (fill-%canvas-ellipse!111,4006
+	   (class %canvas-ellipse111,4006
+(define (%canvas-image?114,4064
+(define (make-%canvas-image114,4064
+(define (fill-%canvas-image!114,4064
+	   (class %canvas-image114,4064
+(define (%canvas-image-%image-set!115,4105
+(define (%canvas-image-%image115,4105
+(define (%canvas-widget?118,4164
+(define (make-%canvas-widget118,4164
+(define (fill-%canvas-widget!118,4164
+	   (class %canvas-widget118,4164
+(define (%canvas-widget-%widget-set!119,4206
+(define (%canvas-widget-%widget119,4206
+(define-method (%peer-init i::%canvas-item276,9870
+(define *default-item-font*284,10246
+(define *default-gtk-item-font*285,10288
+(define *default-item-fill-color*286,10334
+(define *default-gtk-item-fill-color*287,10382
+(define (%make-%canvas-text292,10657
+(define (%make-%canvas-line323,11831
+(define (%make-%canvas-polygon344,12703
+(define (%make-%canvas-ellipse350,13043
+(define (%make-%canvas-rectangle371,13924
+(define (%make-%canvas-image392,14811
+(define (%make-%canvas-widget406,15415
+(define (%register-canvas-item-callback!421,16043
+(define (%unregister-canvas-item-callback!428,16465
+(define (%registered-canvas-item-callback437,16939
+(define (%canvas-figure-color451,17468
+(define (%canvas-figure-color-set!461,17972
+(define (%canvas-item-width469,18416
+(define (%canvas-item-width-set!475,18740
+(define (%canvas-item-height481,19074
+(define (%canvas-item-height-set!489,19461
+(define (%canvas-item-tooltips495,19797
+(define (%canvas-item-tooltips-set!501,20078
+(define (%canvas-item-visible507,20376
+(define (%canvas-item-visible-set!514,20768
+(define (%canvas-text-x527,21248
+(define (%canvas-text-x-set!533,21561
+(define (%canvas-text-y539,21884
+(define (%canvas-text-y-set!545,22197
+(define (%canvas-text-text551,22520
+(define (%canvas-text-text-set!557,22826
+(define (%canvas-text-font563,23141
+(define (%canvas-text-font-set!573,23622
+(define (%canvas-text-anchor602,24598
+(define (%canvas-text-anchor-set!608,24921
+(define (%canvas-text-justification614,25280
+(define (%canvas-text-justification-set!620,25618
+(define (%canvas-text-color626,25966
+(define (%canvas-text-color-set!632,26263
+(define (%canvas-text-width638,26574
+(define (%canvas-text-width-set!644,26895
+(define (%canvas-text-height650,27226
+(define (%canvas-text-height-set!656,27549
+(define (%canvas-geometry-color662,27882
+(define (%canvas-geometry-color-set!668,28186
+(define (%canvas-geometry-outline674,28504
+(define (%canvas-geometry-outline-set!682,28919
+(define (%canvas-geometry-outline-width688,29273
+(define (%canvas-geometry-outline-width-set!696,29654
+(define (%canvas-geometry-width702,29985
+(define (%canvas-geometry-width-set!708,30267
+(define (%canvas-shape-x714,30587
+(define (%canvas-shape-x-set!720,30900
+(define (%canvas-shape-y726,31220
+(define (%canvas-shape-y-set!732,31533
+(define (%canvas-shape-width738,31853
+(define (%canvas-shape-width-set!745,32233
+(define (%canvas-shape-height754,32685
+(define (%canvas-shape-height-set!761,33066
+(define (%canvas-line-x771,33515
+(define (%canvas-line-x-set!780,33883
+(define (%canvas-line-y788,34259
+(define (%canvas-line-y-set!797,34627
+(define (%canvas-line-points805,35003
+(define (%canvas-line-points-set!815,35417
+(define (%canvas-line-thickness821,35760
+(define (%canvas-line-thickness-set!827,36041
+(define (%canvas-line-arrow833,36379
+(define (%canvas-line-arrow-set!843,36808
+(define (%canvas-line-arrow-shape865,37648
+(define (%canvas-line-arrow-shape-set!873,38049
+(define (%canvas-line-style885,38637
+(define (%canvas-line-style-set!896,39080
+(define (%canvas-line-cap-style919,39836
+(define (%canvas-line-cap-style-set!932,40340
+(define (%canvas-line-join-style960,41222
+(define (%canvas-line-join-style-set!971,41668
+(define (%canvas-line-smooth?994,42415
+(define (%canvas-line-smooth?-set!1000,42717
+(define (%canvas-line-spline-steps1006,43029
+(define (%canvas-line-spline-steps-set!1012,43342
+(define (%canvas-image-x1018,43665
+(define (%canvas-image-x-set!1024,43979
+(define (%canvas-image-y1030,44303
+(define (%canvas-image-y-set!1036,44617
+(define (%canvas-image-image1042,44941
+(define (%canvas-image-image-set!1050,45311
+(define (%canvas-image-width1062,45842
+(define (%canvas-image-width-set!1070,46227
+(define (%canvas-image-height1077,46597
+(define (%canvas-image-height-set!1085,46984
+(define (%canvas-widget-widget1092,47357
+(define (%canvas-widget-widget-set!1099,47709
+(define (%canvas-widget-x1108,48214
+(define (%canvas-widget-x-set!1114,48529
+(define (%canvas-widget-y1120,48854
+(define (%canvas-widget-y-set!1126,49169
+(define (%canvas-widget-width1132,49494
+(define (%canvas-widget-width-set!1138,49791
+(define (%canvas-widget-height1144,50107
+(define (%canvas-widget-height-set!1150,50406
+(define (%canvas-item-destroy1156,50724
+(define (%canvas-item-raise1165,51157
+(define (%canvas-item-lower1173,51556
+(define (%canvas-item-move1181,51958
+
+Lwidget/_gauge.scm,508
+(module __biglook_%gauge16,1037
+(define (%gauge?42,1914
+(define (make-%gauge42,1914
+(define (fill-%gauge!42,1914
+   (static  (class %gauge42,1914
+(define (%gauge-%text-set!43,1947
+(define (%gauge-%text43,1947
+(define (%gauge-%style-set!44,1976
+(define (%gauge-%style44,1976
+(define (%make-%gauge60,2534
+(define (%gauge-text70,2980
+(define (%gauge-text-set!78,3336
+(define (%gauge-style87,3746
+(define (%gauge-style-set!95,4120
+(define (%gauge-value130,5241
+(define (%gauge-value-set!139,5682
+
+Lwidget/_scale.scm,763
+(module __biglook_%scale16,1038
+(define (%scale?31,1412
+(define (make-%scale31,1412
+(define (fill-%scale!31,1412
+   (static (class %scale31,1412
+(define (%scale-%adjustment::gtkadjustment*-set!32,1444
+(define (%scale-%adjustment::gtkadjustment*32,1444
+(define (%scale-%command-set!33,1479
+(define (%scale-%command33,1479
+(define (%make-%scale56,2268
+(define (%make-%hscale73,3048
+(define (%make-%vscale82,3478
+(define (%scale-command91,3908
+(define (%scale-command-set!99,4273
+(define (%scale-value112,4892
+(define (%scale-value-set!120,5308
+(define (%scale-show-value?129,5734
+(define (%scale-show-value?-set!135,6041
+(define (%scale-from141,6358
+(define (%scale-from-set!149,6770
+(define (%scale-to163,7441
+(define (%scale-to-set!171,7859
+
+Lwidget/_notepad.scm,419
+(module __biglook_%notepad16,1037
+(define (%notepad?44,1831
+(define (make-%notepad44,1831
+(define (fill-%notepad!44,1831
+   (static (class %notepad44,1831
+(define (%make-%notepad60,2496
+(define (%notepad-position74,3167
+(define (%notepad-position-set!80,3491
+(define (%notepad-selected-page86,3856
+(define (%notepad-selected-page-set!97,4402
+(define (%notepad-add!107,4921
+(define (%notepad-remove!146,6259
+
+Lwidget/_paned.scm,420
+(module __biglook_%paned16,1038
+(define (%paned?46,1936
+(define (make-%paned46,1936
+(define (fill-%paned!46,1936
+   (static (class %paned46,1936
+(define (%make-%paned62,2545
+(define (%make-%hpaned72,3008
+(define (%make-%vpaned78,3297
+(define (%hpaned-fraction84,3586
+(define (%hpaned-fraction-set!93,4057
+(define (%vpaned-fraction106,4592
+(define (%vpaned-fraction-set!115,5064
+(define (%paned-add!125,5565
+
+Lwidget/_menu.scm,2512
+(module __biglook_%menu16,1037
+(define (%menubar?75,3115
+(define (make-%menubar75,3115
+(define (fill-%menubar!75,3115
+   (static (class %menubar75,3115
+(define (%menu?77,3160
+(define (make-%menu77,3160
+(define (fill-%menu!77,3160
+	   (class %menu77,3160
+(define (%menu-%justify::symbol78,3189
+(define (%menu-%title::%menu-label79,3225
+(define (%menu-%menu::gtkobject*80,3264
+(define (%menu-%tearoff::bool-set!81,3301
+(define (%menu-%tearoff::bool81,3301
+(define (%popup-menu?83,3344
+(define (make-%popup-menu83,3344
+(define (fill-%popup-menu!83,3344
+	   (class %popup-menu83,3344
+(define (%menu-separator?85,3376
+(define (make-%menu-separator85,3376
+(define (fill-%menu-separator!85,3376
+	   (class %menu-separator85,3376
+(define (%menu-label?90,3491
+(define (make-%menu-label90,3491
+(define (fill-%menu-label!90,3491
+	   (class %menu-label90,3491
+(define (%menu-check-button?91,3527
+(define (make-%menu-check-button91,3527
+(define (fill-%menu-check-button!91,3527
+	   (class %menu-check-button91,3527
+(define (%menu-radio?92,3570
+(define (make-%menu-radio92,3570
+(define (fill-%menu-radio!92,3570
+	   (class %menu-radio92,3570
+(define (%menu-radio-%texts::pair-set!93,3605
+(define (%menu-radio-%texts::pair93,3605
+(define (%menu-radio-%radios::pair-set!94,3625
+(define (%menu-radio-%radios::pair94,3625
+(define (%menu-radio-button?95,3647
+(define (make-%menu-radio-button95,3647
+(define (fill-%menu-radio-button!95,3647
+	   (class %menu-radio-button95,3647
+(define (%make-%menubar130,5002
+(define (%make-%popup-menu138,5366
+(define (%make-%menu144,5666
+(define (%make-%menu-separator159,6268
+(define (%make-%menu-label167,6653
+(define (%make-%menu-check-button175,7045
+(define (%make-%menu-radio186,7621
+(define (%menubar-shadow217,8885
+(define (%menubar-shadow-set!223,9212
+(define (%menubar-add!229,9575
+(define (%popup-menu-add!248,10419
+(define (%menu-add!254,10744
+(define-method (%%container-children::obj c::%menu272,11516
+(define (%menu-item-command284,12103
+(define (%menu-item-command-set!292,12476
+(define (%menu-tearoff304,13025
+(define (%menu-tearoff-set!312,13385
+(define (%menu-check-button-on?326,14009
+(define (%menu-check-button-on?-set!334,14446
+(define (%menu-radio-value343,14906
+(define (%menu-radio-value-set!361,15548
+(define-method (%connect-menu-item-callback! peer::%menu-radio builtin v385,16525
+(define-method (%disconnect-menu-item-callback! peer::%menu-radio builtin v394,16967
+(define (%popup-menu-show!404,17450
+
+Lwidget/_toolbar.scm,834
+(module __biglook_%toolbar16,1037
+(define (%toolbar-floating?130,4581
+(define (make-%toolbar-floating130,4581
+(define (fill-%toolbar-floating!130,4581
+	   (class %toolbar-floating130,4581
+(define (%toolbar-still?132,4626
+(define (make-%toolbar-still132,4626
+(define (fill-%toolbar-still!132,4626
+	   (class %toolbar-still132,4626
+(define (%make-%toolbar154,5496
+(define (%make-floating-toolbar163,5889
+(define (%make-still-toolbar179,6621
+(define (%toolbar-shadow188,7039
+(define (%toolbar-shadow-set!199,7535
+(define (%toolbar-relief210,8037
+(define (%toolbar-relief-set!217,8436
+(define (%toolbar-orientation224,8761
+(define (%toolbar-orientation-set!238,9394
+(define (%toolbar-space-size266,10424
+(define (%toolbar-space-size-set!273,10807
+(define (%toolbar-add!280,11132
+(define (%toolbar-item-add!301,12057
+
+Lwidget/_fileselector.scm,774
+(module __biglook_%file-selector16,1037
+(define (%file-selector?42,1839
+(define (make-%file-selector42,1839
+(define (fill-%file-selector!42,1839
+   (static (class %file-selector42,1839
+(define (%file-selector-%ok-command-set!43,1879
+(define (%file-selector-%ok-command43,1879
+(define (%file-selector-%cancel-command-set!44,1913
+(define (%file-selector-%cancel-command44,1913
+(define (%make-%file-selector63,2688
+(define (%file-selector-file71,3069
+(define (%file-selector-file-set!79,3460
+(define (%file-selector-path87,3861
+(define (%file-selector-path-set!94,4255
+(define (%file-selector-ok-command103,4694
+(define (%file-selector-ok-command-set!110,5044
+(define (%file-selector-cancel-command129,5922
+(define (%file-selector-cancel-command-set!136,6284
+
+Lwidget/_colorselector.scm,317
+(module __biglook_%color-selector16,1037
+(define (%color-selector?33,1538
+(define (make-%color-selector33,1538
+(define (fill-%color-selector!33,1538
+   (static (class %color-selector33,1538
+(define (%make-%color-selector43,1982
+(define (%color-selector-color52,2380
+(define (%color-selector-color-set!64,2992
+
+Lwidget/_tree.scm,2116
+(module __biglook_%tree16,1037
+(define (%tree-node?73,2681
+(define (make-%tree-node73,2681
+(define (fill-%tree-node!73,2681
+	   (class %tree-node73,2681
+(define (%tree-seed?75,2721
+(define (make-%tree-seed75,2721
+(define (fill-%tree-seed!75,2721
+	   (class %tree-seed75,2721
+(define (%tree-seed-%node-expand::procedure76,2755
+(define (%tree-seed-%node-collapse::procedure77,2798
+(define (%tree-seed-%node-label::procedure78,2843
+(define (%tree-seed-%node-image::procedure79,2885
+(define (%tree-seed-%node-tooltips::procedure80,2927
+(define (%tree-seed-%command-set!81,2972
+(define (%tree-seed-%command81,2972
+(define (%tree-seed-%select-mode-set!82,3003
+(define (%tree-seed-%select-mode82,3003
+(define (%tree-branch?84,3049
+(define (make-%tree-branch84,3049
+(define (fill-%tree-branch!84,3049
+	   (class %tree-branch84,3049
+(define (%tree-branch-%seed::%tree-seed85,3085
+(define (%tree-branch-%branch::gtkobject*86,3122
+(define (%tree-branch-expd-command-set!87,3161
+(define (%tree-branch-expd-command87,3161
+(define (%tree-branch-col-command-set!88,3196
+(define (%tree-branch-col-command88,3196
+(define (%tree-leaf?90,3236
+(define (make-%tree-leaf90,3236
+(define (fill-%tree-leaf!90,3236
+	   (class %tree-leaf90,3236
+(define (%tree-leaf-%seed::%tree-seed91,3270
+(define (%make-%tree-seed129,4650
+(define (%make-%tree-branch147,5277
+(define (%make-%tree-leaf183,6905
+(define (%tree-render192,7334
+(define (%tree-branch-render235,8624
+(define (%tree-leaf-render246,9176
+(define (%tree-seed-command257,9720
+(define (%tree-seed-command-set!267,10289
+(define (%tree-select-mode295,11394
+(define (%tree-select-mode-set!302,11756
+(define (%tree-selection311,12236
+(define (%tree-seed-event318,12650
+(define (%tree-seed-event-set!324,12959
+(define (%tree-leaf-add!330,13280
+(define (%tree-seed-add!339,13724
+(define (%tree-branch-add!357,14516
+(define (%tree-node-items375,15301
+(define (%tree-node-expand385,15757
+(define (%tree-node-select393,16150
+(define (%tree-node-collapse422,17323
+(define (%tree-node-remove-item!430,17720
+(define (%tree-coords->item441,18250
+
+Lwidget/_table.scm,1862
+(module __biglook_%table16,1037
+(define (%table?83,3177
+(define (make-%table83,3177
+(define (fill-%table!83,3177
+   (static (class %table83,3177
+(define (%table-%command-set!84,3209
+(define (%table-%command84,3209
+(define (%table-%value-changed-set!85,3240
+(define (%table-%value-changed85,3240
+(define (%table-%cell-value::procedure86,3277
+(define (%table-%column-titles::pair87,3319
+(define (%table-%column-number::int88,3359
+(define (%table-%column-widths::pair-nil-set!89,3398
+(define (%table-%column-widths::pair-nil89,3398
+(define (%table-%rows::int-set!90,3446
+(define (%table-%rows::int90,3446
+(define (%table-%true-image91,3478
+(define (%table-%false-image92,3509
+(define (%table-%foreground-set!93,3541
+(define (%table-%foreground93,3541
+(define (%table-%background-set!94,3575
+(define (%table-%background94,3575
+(define (%make-%table134,5041
+(define (%table-rows150,5687
+(define (%table-rows-set!160,6239
+(define (%table-row-height199,7512
+(define (%table-row-height-set!205,7815
+(define (%table-shadow211,8128
+(define (%table-shadow-set!217,8458
+(define (%table-row-background225,8832
+(define (%table-row-background-set!232,9184
+(define (%table-row-foreground247,9755
+(define (%table-row-foreground-set!254,10107
+(define (%table-column-width269,10678
+(define (%table-column-width-set!278,11139
+(define (%table-select-mode302,11929
+(define (%table-select-mode-set!308,12270
+(define (%%table-update-titles317,12662
+(define (%%table-update-row352,13909
+(define (%%table-update-row-colors422,16538
+(define (%table-command441,17326
+(define (%table-command-set!448,17665
+(define (%table-value-changed460,18222
+(define (%table-value-changed-set!467,18579
+(define (%table-cell-value478,19143
+(define (%table-cell-value-set!484,19474
+(define (%table-coords->row490,19818
+(define (%table-coords->column496,20144
+
+Lwidget/_text.scm,688
+(module __biglook_%text16,1037
+(define (%text?26,1229
+(define (make-%text26,1229
+(define (fill-%text!26,1229
+   (static (class %text26,1229
+(define (%make-%text87,3476
+(define (%text-background93,3636
+(define (%text-background-set!96,3687
+(define (%text-font99,3761
+(define (%text-font-set!102,3806
+(define (%text-text113,4256
+(define (%text-text-set!118,4458
+(define (%text-editable?123,4671
+(define (%text-editable?-set!127,4840
+(define (%text-pixels-coords->caret-location132,5033
+(define (%text-caret->line/column140,5343
+(define (%text-caret-pos148,5687
+(define (%text-caret-pos-set!155,5960
+(define (%text-insert-string162,6269
+(define (%text-put-props!168,6504
+
+Lgtk2/gtk-misc.scm,778
+(module __biglook_%gtk-misc15,963
+(define (g-property-get136,4732
+(define (g-property-set!143,5122
+(define (g-property-type-set!150,5519
+(define (biglook-relief->gtk157,5935
+(define (gtk-relief->biglook171,6374
+(define (biglook-position->gtk185,6812
+(define (gtk-position->biglook196,7293
+(define (biglook-justify->gtk212,7835
+(define (gtk-justify->biglook223,8311
+(define (biglook-shadow->gtk239,8848
+(define (gtk-shadow->biglook257,9422
+(define (biglook-title-justify->gtk275,10002
+(define (gtk-title-justify->biglook285,10416
+(define *bglk-anchor-opts*297,10789
+(define *gtk-anchor-opts*312,11355
+(define (gtk-anchor->biglook326,11885
+(define (biglook-anchor->gtk337,12325
+(define (gtk-selection->biglook348,12776
+(define (biglook-selection->gtk360,13187
+
+Clib/start.c,78
+int biglook_mainloopp 25,1323
+biglook_panic(32,1652
+bglk_gtk_start(41,2000
+
+Clib/gtkarg.c,135
+bglk_g_property_get(25,1379
+bglk_g_property_set(125,4262
+bglk_g_property_type_set(167,5619
+bglk_g_property_gtkobject_set(321,10094
+
+Clib/gtkimage.c,194
+gtk_pixbuf_to_gtk_pixmap(19,1102
+buffer_to_data(39,1821
+bglk_gtk_file_image_new(80,2849
+bglk_gtk_data_image_new(96,3408
+bglk_gtk_image_to_pixbuf(113,4002
+bglk_gtk_image_duplicate(122,4406
+
+Clib/gtkcall.c,180
+double gtk_color_buffer[18,1030
+GdkColor gdk_color_buffer;19,1060
+bglk_gtk_container_remove_all(29,1611
+bglk_gtk_container_children(48,2204
+bglk_gtk_viewport_children(79,3082
+
+Clib/gtkevent.c,1277
+bglk_g_object_get_user_data 26,1375
+bglk_event_type(40,1916
+bglk_event_time(86,4557
+bglk_event_button(117,5404
+bglk_event_click_count(150,6256
+bglk_event_keyval(175,6864
+bglk_event_char(197,7468
+bglk_event_modifiers(223,8152
+bglk_event_x(286,9854
+bglk_event_y(316,10688
+bglk_event_width(346,11522
+bglk_event_height(363,12036
+bglk_event_wrap(380,12561
+static gboolean bglk_event_callback(415,13865
+static void bglk_child_callback(427,14421
+static void bglk_signal_callback(438,14956
+static void bglk_canvas_item_event_callback(454,15848
+bglk_toolbar_callback(475,16643
+static void bglk_menu_item_event_callback(485,17125
+bglk_select_row_callback(498,17856
+bglk_click_column_callback(522,18679
+bglk_install_widget_event_handler(531,19101
+bglk_uninstall_widget_event_handler(540,19548
+bglk_install_widget_signal_handler(549,19979
+bglk_uninstall_widget_signal_handler(558,20415
+bglk_install_child_handler(567,20848
+bglk_uninstall_child_handler(576,21283
+bglk_install_canvas_item_event_handler(587,21855
+bglk_uninstall_canvas_item_event_handler(598,22453
+obj_t bglk_install_menu_item_event_handler(608,23049
+obj_t bglk_uninstall_menu_item_event_handler(618,23640
+bglk_install_row_select_handler(627,24090
+bglk_uninstall_row_select_handler(637,24538
+
+Clib/gnomecanvas.c,608
+bglk_gnome_canvas_get_scroll_region(21,1129
+bglk_gnome_canvas_get_scroll_region_x(40,1816
+bglk_gnome_canvas_get_scroll_region_y(53,2294
+bglk_gnome_canvas_get_scroll_region_width(66,2772
+bglk_gnome_canvas_get_scroll_region_height(79,3261
+bglk_gnome_canvas_scroll_region_x_set(92,3752
+bglk_gnome_canvas_scroll_region_y_set(105,4315
+bglk_gnome_canvas_scroll_region_width_set(118,4878
+bglk_gnome_canvas_scroll_region_height_set(131,5447
+bglk_list_to_point(144,6033
+bglk_point_to_list(167,6822
+bglk_gnome_canvas_item_new(185,7447
+gnome_canvas_add_widget 230,8865
+gnome_canvas_text_font_set 244,9196
+
+Clib/gtkafter.c,165
+bglk_timeout_func(22,1256
+obj_t registered_proc 30,1659
+bglk_register_proc(37,2001
+bglk_unregister_proc(46,2404
+bglk_timeout_add(65,3006
+bglk_idle_add(79,3552
+
+Clib/gtklist.c,277
+bglk_gtk_glist_item_get_string(19,1097
+bglk_gtk_glist_strings(37,1664
+bglk_gtk_glist_objs(56,2260
+bglk_gtk_list_selection(77,2835
+bglk_glist_strings_new(89,3283
+bglk_gtk_list_add_view_column(101,3482
+bglk_gtk_list_add_item(116,3843
+bglk_gtk_list_coords_to_row(126,4050
+
+Clib/gtktable.c,126
+bglk_gtk_clist_add_row(19,1088
+column_from_xpixel(36,1829
+#   define CELL_SPACING 38,1891
+#   define COLUMN_INSET 39,1917
+
+Clib/gtkport.c,479
+#define BUFFER_SIZE 16,930
+static int event_handler_num 30,1621
+static int *feofs 31,1655
+static int *filled 32,1679
+static int *bufidx 33,1703
+static int *bufsiz 34,1727
+static int *count 35,1751
+static char **buffers 36,1774
+bglk_invoke_callback(43,2111
+bglk_add_input_port_handler(80,3328
+bglk_add_input_port_events(97,4024
+event_handler_setup(139,5193
+event_handler_feof(175,6260
+event_handler_fgetc(186,6671
+event_handler_fread(213,7372
+fill_buffer(235,7979
+
+Clib/gtktoolbar.c,68
+bglk_toolbar_space_size 16,814
+bglk_toolbar_button_relief 25,1070
+
+Clib/gtkwindow.c,87
+bglk_window_x 6,83
+bglk_window_y 15,205
+bglk_window_reshow_with_initial_size(24,327
+
+Clib/gtkmenu.c,22
+bglk_menu_popup(5,52
+
+Clib/gtktext.c,147
+bglk_gtk_text_buffer_get_text(5,53
+bglk_gtk_get_iter_at_location(19,519
+bglk_gtk_get_iter_at_cursor(30,766
+bglk_gtk_get_iter_at_offset(43,1070

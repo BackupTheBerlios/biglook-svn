@@ -1,0 +1,161 @@
+#!/bin/sh
+#*=====================================================================*/
+#*    serrano/prgm/project/biglook/peer/gtk/configure                  */
+#*    -------------------------------------------------------------    */
+#*    Author      :  Manuel Serrano                                    */
+#*    Creation    :  Tue Jan 25 16:05:10 1994                          */
+#*    Last change :  Sat Jul 14 08:59:56 2001 (serrano)                */
+#*    Copyright   :  1994-2001 Manuel Serrano, see LICENSE file        */
+#*    -------------------------------------------------------------    */
+#*    The Biglook GTk peer configuration file                          */
+#*=====================================================================*/
+
+#*---------------------------------------------------------------------*/
+#*               !!! DON'T EDIT AFTER THIS COMMENT !!!                 */
+#*---------------------------------------------------------------------*/
+peer_name="GTk+"
+peer_release=0.0
+action=all
+biglook_config=Llib/_configure.scm
+makefile_config=Makefile.gtkconfig
+biglook_peer=Init/biglook_peer.init
+summary=yes
+libdir=
+
+autoconfdir=`dirname $0 2> /dev/null`/../../autoconf
+
+if [ $? != "0" ]; then
+   autoconfdir="autoconf"
+fi
+
+# Argument parsing
+while : ; do
+  case $1 in
+    "")
+      break;;
+
+    --biglook_config=*)
+      action="biglook_config";
+      biglook_config="`echo $1 | sed 's/^[-a-z_.]*=//'`";;
+
+    --makefile.gtkconfig=*)
+      action="Makefile.gtkconfig";
+      makefile_config="`echo $1 | sed 's/^[-Da-z.]*=//'`";;
+
+    --biglook_peer.init=*)
+      action="biglook_peer.init";
+      bigloo_peer="`echo $1 | sed 's/^[-Da-z.]*=//'`";;
+
+    --libdir=*)
+      libdir="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --no-summary)
+      summary=no;;
+
+    -*)
+      echo "Usage: configure [options]" >&2;
+      echo "   --biglook_config=file" >&2;
+      echo "   --Makefile.gtkconfig=file" >&2;
+      echo "   --biglook_peer.init=file" >&2;
+      echo "   --libdir=file" >&2;
+      echo "   --no-summary" >&2;
+      exit -1;
+  esac
+  shift
+done
+
+#*---------------------------------------------------------------------*/
+#*    biglook_config                                                   */
+#*    -------------------------------------------------------------    */
+#*    This part of the configure script produces the file              */
+#*    runtime/Include/biglook_config. This file contains all the       */
+#*    machine dependant information used by Biglook.                   */
+#*---------------------------------------------------------------------*/
+if [ $action = "all" -o $action = "biglook_config" ]; then
+
+  # We first cleanup the file
+  rm -f $biglook_config 2> /dev/null
+  echo ";; Automatically generated file (don't edit)" > $biglook_config
+  echo ";; `date`" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(module __biglook_%configure" >> $biglook_config
+  echo "   (extern (export %%biglook-peer-version \"biglook_peer_version\"))" >> $biglook_config
+  echo "   (export (%biglook-peer-name::bstring)" >> $biglook_config
+  echo "           (%biglook-peer-version::bstring)" >> $biglook_config
+  echo "           (%%biglook-peer-version::bstring)" >> $biglook_config
+  echo "           (%biglook-library-directory::bstring)))" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(define (%biglook-peer-name) \"$peer_name\")" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(define (%biglook-peer-version) \"$peer_release\")" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(define (%%biglook-peer-version) (%biglook-peer-version))" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(define (%biglook-library-directory) \"$libdir\")" >> $biglook_config
+  echo "" >> $biglook_config
+fi
+
+#*---------------------------------------------------------------------*/
+#*    makefile_config                                                  */
+#*    -------------------------------------------------------------    */
+#*    This part of the configure script produces the file              */
+#*    Makefile.kconfig. This file contains machine dependant           */
+#*    informations and location where Gtk/Gdk/Gnome are installed.     */
+#*---------------------------------------------------------------------*/
+if [ $action = "all" -o $action = "Makefile.gtkconfig" ]; then
+
+  # We first cleanup the file
+  rm -f $makefile_config 2> /dev/null
+  touch $makefile_config
+
+  echo "GTK_CFLAGS=`gtk-config --cflags`" >> $makefile_config
+  echo "GLIB_CFLAGS=`glib-config --cflags`" >> $makefile_config
+  echo "GNOME_CFLAGS=`gnome-config --cflags gnomeui`" >> $makefile_config
+fi
+
+#*---------------------------------------------------------------------*/
+#*    biglook_peer.init                                                */
+#*    -------------------------------------------------------------    */
+#*    This part patches the biglook_peer.init file in order to install */
+#*    the correct copt option (to avoid, at user compile time, to run  */
+#*    the GTk config scripts).                                         */
+#*---------------------------------------------------------------------*/
+if [ $action = "all" -o $action = "biglook_peer.init" ]; then
+
+  # We first cleanup the file
+  rm -f $biglook_peer 2> /dev/null
+  touch $biglook_peer
+
+  gtkconfiglibs=`gtk-config --libs | sed 's/\//(=)/'g`
+  gtkconfigcflags=`gtk-config --cflags | sed 's/\//(=)/'g`
+  glibconfigcflags=`glib-config --cflags | sed 's/\//(=)/'g`
+  gnomeconfiglibs=`gnome-config --libs gnomeui | sed 's/\//(=)/'g`
+  gnomeconfigcflags=`gnome-config --cflags gnomeui | sed 's/\//(=)/'g`
+  gdkpixbufconfiglibs=`gdk-pixbuf-config --libs | sed 's/\//(=)/'g`
+  gdkpixbufconfigcflags=`gdk-pixbuf-config --cflags | sed 's/\//(=)/'g`
+
+  cat Init/biglook_peer.scm | \
+   sed -e "s/<gtk-config-libs>/$gtkconfiglibs/g" | \
+   sed -e "s/<gtk-config-cflags>/$gtkconfigcflags/g" | \
+   sed -e "s/<glib-config-cflags>/$glibconfigcflags/g" | \
+   sed -e "s/<gnome-config-libs>/$gnomeconfiglibs/g" | \
+   sed -e "s/<gnome-config-cflags>/$gnomeconfigcflags/g" | \
+   sed -e "s/<gdk-pixbuf-config-libs>/$gdkpixbufconfiglibs -lgnomecanvaspixbuf/g" | \
+   sed -e "s/<gdk-pixbuf-config-cflags>/$glibconfigcflags/g" | \
+   sed -e "s/(=)/\//g" > Init/biglook_peer.init
+fi
+
+#*---------------------------------------------------------------------*/
+#*    Ok, we are done now                                              */
+#*---------------------------------------------------------------------*/
+if [ "$summary" = "yes" ]; then
+  echo "** GTk Configuration summary **"
+  echo 
+  echo "Peer info:"
+  echo "  Peer name............................. $peer_name"
+  echo "  Peer release number................... $peer_release"
+  echo
+  echo "Configuration file:"
+  echo "  configure............................. $biglook_config"
+  echo 
+fi

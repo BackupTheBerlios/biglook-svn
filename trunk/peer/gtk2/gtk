@@ -1,0 +1,92 @@
+âÉÎÁÒÎÙÊ ÆÁÊÌ ./objs/Lgtk2/gtk-misc.o ÓÏ×ĞÁÄÁÅÔ
+âÉÎÁÒÎÙÊ ÆÁÊÌ ./objs/Lwidget/_table.o ÓÏ×ĞÁÄÁÅÔ
+âÉÎÁÒÎÙÊ ÆÁÊÌ ./objs/Lwidget/_frame.o ÓÏ×ĞÁÄÁÅÔ
+./Lgtk2/gtk-misc.scm:	   (biglook-shadow->gtk::int ::symbol)
+./Lgtk2/gtk-misc.scm:	   (gtk-shadow->biglook::symbol ::int)
+./Lgtk2/gtk-misc.scm:;*    biglook-shadow->gtk ...                                          */
+./Lgtk2/gtk-misc.scm:(define (biglook-shadow->gtk v)
+./Lgtk2/gtk-misc.scm:       gtk-shadow-none)
+./Lgtk2/gtk-misc.scm:      ((in shadow-in)
+./Lgtk2/gtk-misc.scm:       gtk-shadow-in)
+./Lgtk2/gtk-misc.scm:      ((out shadow-out)
+./Lgtk2/gtk-misc.scm:       gtk-shadow-out)
+./Lgtk2/gtk-misc.scm:       gtk-shadow-etched-in)
+./Lgtk2/gtk-misc.scm:       gtk-shadow-etched-out)
+./Lgtk2/gtk-misc.scm:       (error "biglook-shadow->gtk" "Illegal shadow" v))))
+./Lgtk2/gtk-misc.scm:;*    gtk-shadow->biglook ...                                          */
+./Lgtk2/gtk-misc.scm:(define (gtk-shadow->biglook v)
+./Lgtk2/gtk-misc.scm:      ((=fx v gtk-shadow-none)
+./Lgtk2/gtk-misc.scm:      ((=fx v gtk-shadow-in)
+./Lgtk2/gtk-misc.scm:      ((=fx v gtk-shadow-out)
+./Lgtk2/gtk-misc.scm:      ((=fx v gtk-shadow-etched-in)
+./Lgtk2/gtk-misc.scm:      ((=fx v gtk-shadow-etched-out)
+./Lgtk2/gtk-misc.scm:       (error "gtk-shadow->biglook" "Illegal shadow" v))))
+./Lgtk2/gtk-misc.scm~:	   (biglook-shadow->gtk::int ::symbol)
+./Lgtk2/gtk-misc.scm~:	   (gtk-shadow->biglook::symbol ::int)
+./Lgtk2/gtk-misc.scm~:;*    biglook-shadow->gtk ...                                          */
+./Lgtk2/gtk-misc.scm~:(define (biglook-shadow->gtk v)
+./Lgtk2/gtk-misc.scm~:       gtk-shadow-none)
+./Lgtk2/gtk-misc.scm~:      ((in shadow-in)
+./Lgtk2/gtk-misc.scm~:       gtk-shadow-in)
+./Lgtk2/gtk-misc.scm~:      ((out shadow-out)
+./Lgtk2/gtk-misc.scm~:       gtk-shadow-out)
+./Lgtk2/gtk-misc.scm~:       gtk-shadow-etched-in)
+./Lgtk2/gtk-misc.scm~:       gtk-shadow-etched-out)
+./Lgtk2/gtk-misc.scm~:       (error "biglook-shadow->gtk" "Illegal shadow" v))))
+./Lgtk2/gtk-misc.scm~:;*    gtk-shadow->biglook ...                                          */
+./Lgtk2/gtk-misc.scm~:(define (gtk-shadow->biglook v)
+./Lgtk2/gtk-misc.scm~:      ((=fx v gtk-shadow-none)
+./Lgtk2/gtk-misc.scm~:      ((=fx v gtk-shadow-in)
+./Lgtk2/gtk-misc.scm~:      ((=fx v gtk-shadow-out)
+./Lgtk2/gtk-misc.scm~:      ((=fx v gtk-shadow-etched-in)
+./Lgtk2/gtk-misc.scm~:      ((=fx v gtk-shadow-etched-out)
+./Lgtk2/gtk-misc.scm~:       (error "gtk-shadow->biglook" "Illegal shadow" v))))
+./.btags:(define (%frame-shadow-set!96,4401
+./.btags:(define (%menubar-shadow-set!208,8642
+./.btags:(define (%toolbar-shadow-set!199,7535
+./.btags:(define (%table-shadow-set!206,8075
+./.btags:(define (biglook-shadow->gtk236,8754
+./.btags:(define (gtk-shadow->biglook254,9328
+./Lwidget/_frame.scm:	   (%frame-shadow-set! ::%bglk-object ::symbol)))
+./Lwidget/_frame.scm:   (gtk-shadow->biglook (g-property-get o "shadow")))
+./Lwidget/_frame.scm:;*    %frame-shadow-set! ...                                           */
+./Lwidget/_frame.scm:(define (%frame-shadow-set! o::%bglk-object v::symbol)
+./Lwidget/_frame.scm:   (g-property-type-set! o "shadow" (biglook-shadow->gtk v) GTK-TYPE-SHADOW-TYPE))
+./Lwidget/_toolbar.scm:	   (%toolbar-shadow-set! ::%bglk-object ::symbol)
+./Lwidget/_toolbar.scm:	     (gtk-shadow->biglook
+./Lwidget/_toolbar.scm:;*    %toolbar-shadow-set! ...                                         */
+./Lwidget/_toolbar.scm:(define (%toolbar-shadow-set! o::%bglk-object v::symbol)
+./Lwidget/_toolbar.scm:				      (biglook-shadow->gtk v))
+./Lwidget/_peer.scm:    (macro gtk-shadow-none::int       "GTK_SHADOW_NONE")
+./Lwidget/_peer.scm:    (macro gtk-shadow-in::int         "GTK_SHADOW_IN")
+./Lwidget/_peer.scm:    (macro gtk-shadow-out::int        "GTK_SHADOW_OUT")
+./Lwidget/_peer.scm:    (macro gtk-shadow-etched-in::int  "GTK_SHADOW_ETCHED_IN")
+./Lwidget/_peer.scm:    (macro gtk-shadow-etched-out::int "GTK_SHADOW_ETCHED_OUT")
+./Lwidget/_toolbar.scm~:	   (%toolbar-shadow-set! ::%bglk-object ::symbol)
+./Lwidget/_toolbar.scm~:	     (gtk-shadow->biglook
+./Lwidget/_toolbar.scm~:;*    %toolbar-shadow-set! ...                                         */
+./Lwidget/_toolbar.scm~:(define (%toolbar-shadow-set! o::%bglk-object v::symbol)
+./Lwidget/_toolbar.scm~:				      (biglook-shadow->gtk v))
+./Lwidget/_menu.scm:	   (%menubar-shadow-set! ::%bglk-object ::symbol)
+./Lwidget/_menu.scm:   (gtk-shadow->biglook (g-property-get o "shadow")))
+./Lwidget/_menu.scm:;*    %menubar-shadow-set! ...                                         */
+./Lwidget/_menu.scm:(define (%menubar-shadow-set! o::%bglk-object v::symbol)
+./Lwidget/_menu.scm:   (g-property-type-set! o "shadow" (biglook-shadow->gtk v) GTK-TYPE-SHADOW-TYPE))
+./Lwidget/_frame.scm~:	   (%frame-shadow-set! ::%bglk-object ::symbol)))
+./Lwidget/_frame.scm~:   (gtk-shadow->biglook (g-property-get o "shadow")))
+./Lwidget/_frame.scm~:;*    %frame-shadow-set! ...                                           */
+./Lwidget/_frame.scm~:(define (%frame-shadow-set! o::%bglk-object v::symbol)
+./Lwidget/_frame.scm~:   (g-property-type-set! o "shadow" (biglook-shadow->gtk v) GTK-TYPE-SHADOW-TYPE))
+./Lwidget/_peer.scm~:    (macro gtk-shadow-none::int       "GTK_SHADOW_NONE")
+./Lwidget/_peer.scm~:    (macro gtk-shadow-in::int         "GTK_SHADOW_IN")
+./Lwidget/_peer.scm~:    (macro gtk-shadow-out::int        "GTK_SHADOW_OUT")
+./Lwidget/_peer.scm~:    (macro gtk-shadow-etched-in::int  "GTK_SHADOW_ETCHED_IN")
+./Lwidget/_peer.scm~:    (macro gtk-shadow-etched-out::int "GTK_SHADOW_ETCHED_OUT")
+./Lwidget/_table.scm:	   (macro %%bglk-gtk-clist-shadow-type::int
+./Lwidget/_table.scm:	   (macro %%gtk-clist-set-shadow-type::void
+./Lwidget/_table.scm:	   (%table-shadow-set! ::%bglk-object ::symbol)
+./Lwidget/_table.scm:   (gtk-shadow->biglook (g-property-get o "shadow-type")))
+./Lwidget/_table.scm:;*    %table-shadow-set! ...                                           */
+./Lwidget/_table.scm:(define (%table-shadow-set! o::%bglk-object v::symbol)
+./Lwidget/_table.scm:   (g-property-type-set! o "shadow-type"
+./Lwidget/_table.scm:			 (biglook-shadow->gtk v)

@@ -1,0 +1,57 @@
+;*=====================================================================*/
+;*    serrano/prgm/project/biglook/peer/gtk/Init/biglook_peer.scm      */
+;*    -------------------------------------------------------------    */
+;*    Author      :  Manuel Serrano                                    */
+;*    Creation    :  Sat Oct 17 10:43:10 1998                          */
+;*    Last change :  Sat Dec  1 08:22:07 2001 (serrano)                */
+;*    -------------------------------------------------------------    */
+;*    The initialization for the Biglook (GTK back-end) library.       */
+;*=====================================================================*/
+
+;*---------------------------------------------------------------------*/
+;*    GTK CC options                                                   */
+;*---------------------------------------------------------------------*/
+;; linking
+(let ((gtk-ld-options "-lgtk-x11-2.0   "))
+   (set! *ld-options* (string-append *ld-options*
+				     gtk-ld-options
+				     " -L/usr/X11R6/lib ")))
+
+;; compiling
+(let ((gtk-cc-options "-I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   ")
+      (glib-cc-options "-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   "))
+   (set! *cc-options* (string-append gtk-cc-options
+				     glib-cc-options
+				     *cc-options*)))
+
+(set! *cc-options* (string-append " -I" *peer-dir* " " *cc-options*))
+(set! *additional-include-foreign* (cons "biglook_peer.h"
+					 *additional-include-foreign*))
+
+;*---------------------------------------------------------------------*/
+;*    GNOMEUI CC options                                               */
+;*---------------------------------------------------------------------*/
+;; linking
+(let ((gnome-ld-options "-L/usr/X11R6/lib -lgnomeui-2 -lSM -lICE -lgnomecanvas-2   "))
+   (set! *ld-options* (string-append *ld-options* gnome-ld-options)))
+
+;; compiling
+(let ((gnome-cc-options "-DORBIT2=1 -pthread -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/gconf/2 -I/usr/include/libbonoboui-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libbonobo-2.0 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/libxml2   "))
+   (set! *cc-options* (string-append gnome-cc-options *cc-options*)))
+
+;*---------------------------------------------------------------------*/
+;*    GdkPixbuf CC options                                             */
+;*---------------------------------------------------------------------*/
+;; linking
+(let ((pixbuf-ld-options "-lgdk_pixbuf-2.0 -lm   "))
+   (set! *ld-options* (string-append *ld-options* pixbuf-ld-options)))
+  
+;; compiling
+(let ((pixbuf-cc-options "-I/usr/include/gtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include   "))
+   (set! *cc-options* (string-append pixbuf-cc-options *cc-options*)))
+
+;*---------------------------------------------------------------------*/
+;*    Additional libraries                                             */
+;*---------------------------------------------------------------------*/
+(set! *bigloo-user-lib* (append '("-lm" "-lX11") *bigloo-user-lib*))
+
