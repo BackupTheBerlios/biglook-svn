@@ -1,0 +1,92 @@
+;*---------------------------------------------------------------------*/
+;*    The basename of the native fthread library name                  */
+;*---------------------------------------------------------------------*/
+(set! *bigloo-libraries-translation-table*
+      (cons* (cons "biglook" (cons "biglook" "<KRELEASE>"))
+	     (cons "biglook_peer" (cons "biglook_peer" "<KRELEASE>"))
+             *bigloo-libraries-translation-table*))
+
+;*---------------------------------------------------------------------*/
+;*    The used peer                                                    */
+;*---------------------------------------------------------------------*/
+(define *biglook-peer*
+   (cond
+      ((eq? *target-language* 'jvm)
+       (let ((cell (assq 'biglook-peer *eval-options*)))
+	  (if (pair? cell)
+	      (cadr cell)
+	      "swing")))
+      ((string? (getenv "BIGLOOK_PEER"))
+       (getenv "BIGLOOK_PEER"))
+      (else
+       (let ((cell (assq 'biglook-peer *eval-options*)))
+	  (if (pair? cell)
+	      (cadr cell)
+	      "gtk")))))
+
+;*---------------------------------------------------------------------*/
+;*    .biglook runtime command file                                    */
+;*---------------------------------------------------------------------*/
+(define (load-rc dir)
+   (let ((f (make-file-name dir ".bigloorc")))
+      (if (file-exists? f)
+	  (begin
+	     (loadq f)
+	     #t)
+	  #f)))
+
+(if (not (load-rc "."))
+    (if (not (load-rc (getenv "HOME")))
+	(load-rc "/etc")))
+
+;*---------------------------------------------------------------------*/
+;*    Default lib-dir path                                             */
+;*---------------------------------------------------------------------*/
+;; the peer library path
+(define *peer-dir*
+   (let ((env (getenv "BIGLOOK_PEER_PATH")))
+      (if (string? env)
+	  env
+	  (let loop ((path *lib-dir*))
+	     (if (pair? path)
+		 (let ((f (make-file-name (car path) *biglook-peer*)))
+		    (if (and (file-exists? f) (directory? f))
+			f
+			(loop (cdr path)))))))))
+
+;; we add the peer library path to the library path
+(if (string? *peer-dir*) (set! *lib-dir* (cons *peer-dir* *lib-dir*)))
+
+;*---------------------------------------------------------------------*/
+;*    The peer library                                                 */
+;*---------------------------------------------------------------------*/
+(set! *additional-bigloo-libraries*
+      (cons "biglook_peer" *additional-bigloo-libraries*))
+
+;*---------------------------------------------------------------------*/
+;*    The peer .init file                                              */
+;*---------------------------------------------------------------------*/
+(let ((f (find-file/path "biglook_peer.init" *lib-dir*)))
+   (if (string? f)
+       (loadq f)))
+
+;*---------------------------------------------------------------------*/
+;*    The zip files                                                    */
+;*---------------------------------------------------------------------*/
+(if (eq? *target-language* 'jvm)
+    (let ((biglook.zip (find-file/path "biglook_s.zip" *lib-dir*))
+	  (biglook_peer.zip (find-file/path "biglook_peer_s.zip" *lib-dir*)))
+       (cond
+	  ((not (string? biglook.zip))
+	   (error "biglook.init"
+		  "Can't find `biglook_s.zip' in path"
+		  *lib-dir*))
+	  ((not (string? biglook_peer.zip))
+	   (error "biglook.init"
+		  "Can't find `biglook_peer_s.zip' in path"
+		  *lib-dir*))
+	  (else
+	   (set! *additional-bigloo-zips* (cons* biglook.zip
+						 biglook_peer.zip
+						 *additional-bigloo-zips*))))))
+

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+CLASSPATH=.:$BIGLOOCLASSPATH:$BUGLOOCLASSPATH:'/home/dciabrin/local/lib/bigloo/2.6b/bigloo_s.zip':'/home/dciabrin/code/biglook/lib/swing/biglook_peer_s.zip':'/home/dciabrin/code/biglook/lib/biglook_s.zip':'/home/dciabrin/code/biglook/lib/biglook_s.zip':'/home/dciabrin/code/biglook/lib/swing/biglook_peer_s.zip'
+export CLASSPATH
+
+exec java -noverify $BIGLOOJAVAOPT $BUGLOOJAVAOPT   JVMMAIN $*

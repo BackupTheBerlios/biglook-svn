@@ -1,0 +1,29 @@
+/* XPM */
+static char *lost[] = {
+/* width height num_colors chars_per_pixel */
+"    16    16        6            1",
+/* colors */
+". c #020204",
+"# c #fefefc",
+"a c #864644",
+"b c #363634",
+"c c #fe0204",
+"d c #522a2c",
+/* pixels */
+"bbbbbbbbbbbbbbbb",
+"bccccccccccccccb",
+"bccccccccccccccb",
+"bcc.ccc..ccc.ccb",
+"bccc.ad..da.cccb",
+"bccca......acccb",
+"bcccd.#....dcccb",
+"bcc..........ccb",
+"bcc..........ccb",
+"bcccd......dcccb",
+"bccca......acccb",
+"bccc.ad..da.cccb",
+"bcc.ccc..ccc.ccb",
+"bccccccccccccccb",
+"bccccccccccccccb",
+"bbbbbbbbbbbbbbbb"
+};

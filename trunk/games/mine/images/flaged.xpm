@@ -1,0 +1,29 @@
+/* XPM */
+static char *flaged[] = {
+/* width height num_colors chars_per_pixel */
+"    16    16        6            1",
+/* colors */
+". c #020204",
+"# c #aaaaac",
+"a c #fe0204",
+"b c #6a6a6c",
+"c c #e6e6e4",
+"d c #222224",
+/* pixels */
+"ccccccccccccccc.",
+"cccccccccccccc..",
+"cc############..",
+"cc######a#####..",
+"cc#####aa#####..",
+"cc####aaa#####..",
+"cc###aaaa#####..",
+"cc####aaa#####..",
+"cc#####aa#####..",
+"cc######a#####..",
+"cc##bd....db##..",
+"cc#d........d#..",
+"cc#d........d#..",
+"cc############..",
+"c...............",
+"................"
+};

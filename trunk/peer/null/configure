@@ -1,0 +1,91 @@
+#!/bin/sh
+#*=====================================================================*/
+#*    serrano/prgm/project/biglook/peer/null/configure                 */
+#*    -------------------------------------------------------------    */
+#*    Author      :  Manuel Serrano                                    */
+#*    Creation    :  Tue Jan 25 16:05:10 1994                          */
+#*    Last change :  Tue May 22 12:14:15 2001 (serrano)                */
+#*    Copyright   :  1994-2001 Manuel Serrano, see LICENSE file        */
+#*    -------------------------------------------------------------    */
+#*    The Biglook Null peer configuration file                         */
+#*=====================================================================*/
+
+#*---------------------------------------------------------------------*/
+#*               !!! DON'T EDIT AFTER THIS COMMENT !!!                 */
+#*---------------------------------------------------------------------*/
+peer_name="Null"
+peer_release=0.0
+action=all
+biglook_config=Llib/_configure.scm
+libdir=
+summary=yes
+
+autoconfdir=`dirname $0 2> /dev/null`/../../autoconf
+
+if [ $? != "0" ]; then
+   autoconfdir="autoconf"
+fi
+
+# Argument parsing
+while : ; do
+  case $1 in
+    "")
+      break;;
+
+    --biglook_config=*)
+      action="biglook_config";
+      biglook_config="`echo $1 | sed 's/^[-a-z_.]*=//'`";;
+
+    --libdir=*)
+      libdir="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --no-summary)
+      summary=no;;
+
+    -*)
+      echo "Usage: configure [options]" >&2;
+      echo "   --biglook_config=file" >&2;
+      echo "   --libdir=file" >&2;
+      echo "   --no-summary" >&2;
+      exit -1;
+  esac
+  shift
+done
+
+#*---------------------------------------------------------------------*/
+#*    biglook_config                                                   */
+#*    -------------------------------------------------------------    */
+#*    This part of the configure script produces the file              */
+#*    runtime/Include/biglook_config. This file contains all the       */
+#*    machine dependant information used by Biglook.                   */
+#*---------------------------------------------------------------------*/
+if [ $action = "all" -o $action = "biglook_config" ]; then
+
+  # We first cleanup the file
+  rm -f $biglook_config 2> /dev/null
+  echo ";; Automatically generated file (don't edit)" > $biglook_config
+  echo ";; `date`" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(module __biglook_%configure" >> $biglook_config
+  echo "   (export (%biglook-peer-name::bstring)" >> $biglook_config
+  echo "           (%biglook-peer-version::bstring)))" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(define (%biglook-peer-name) \"$peer_name\")" >> $biglook_config
+  echo "(define (%biglook-peer-version) \"$peer_release\")" >> $biglook_config
+  echo "" >> $biglook_config
+fi
+
+#*---------------------------------------------------------------------*/
+#*    Ok, we are done now                                              */
+#*---------------------------------------------------------------------*/
+if [ "$summary" = "yes" ]; then
+  echo "** Null Configuration summary **"
+  echo 
+  echo "Peer info:"
+  echo "  Peer name............................. $peer_name"
+  echo "  Peer release number................... $peer_release"
+  echo
+  echo "Configuration file:"
+  echo "  configure............................. $biglook_config"
+  echo 
+fi

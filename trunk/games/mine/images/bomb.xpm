@@ -1,0 +1,28 @@
+/* XPM */
+static char *bomb[] = {
+/* width height num_colors chars_per_pixel */
+"    16    16        5            1",
+/* colors */
+". c #030304",
+"# c #8a8a8c",
+"a c #aaaaac",
+"b c #353533",
+"c c #fefefc",
+/* pixels */
+"bbbbbbbbbbbbbbbb",
+"baaaaaaaaaaaaaab",
+"baaaaaaaaaaaaaab",
+"baa.aaa..aaa.aab",
+"baaa.#b..b#.aaab",
+"baaa#......#aaab",
+"baaab.c....baaab",
+"baa..........aab",
+"baa..........aab",
+"baaab......baaab",
+"baaa#......#aaab",
+"baaa.#b..b#.aaab",
+"baa.aaa..aaa.aab",
+"baaaaaaaaaaaaaab",
+"baaaaaaaaaaaaaab",
+"bbbbbbbbbbbbbbbb"
+};

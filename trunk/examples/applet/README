@@ -1,0 +1,31 @@
+To run the Biglook applet with appletviewer:
+
+   appletviewer BiglookApplet.html
+
+
+To run the Biglook applet with Netscape:
+
+   netscape file:$PWD/BiglookApplet.html
+
+
+Required policy (file $HOME/.java.policy)
+
+-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----
+grant {
+	permission java.io.FilePermission "/users/serrano/prgm/project/bigloo/lib/4.3a/bigloo.zip", "read";
+	permission java.io.FilePermission "/users/serrano/prgm/project/biglook/lib/biglook.zip", "read";
+	permission java.io.FilePermission "/users/serrano/prgm/project/biglook/lib/swing/biglook_peer.zip", "read";
+	permission java.util.PropertyPermission "*", "read,write";
+};
+-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----
+
+Another, dangerous, way to grant the correct permission in order to check
+this applet is:
+
+-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----
+grant {
+	permission java.security.AllPermission;
+};
+-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----
+
+However, YOU SHOULD KNOW WHAT YOU ARE DOING before using this.

@@ -1,0 +1,11 @@
+;*=====================================================================*/
+;*    swt/Init/biglook_peer.init                                       */
+;*    -------------------------------------------------------------    */
+;*    Author      :  Manuel Serrano                                    */
+;*    Creation    :  Sat Oct 17 10:43:10 1998                          */
+;*    Last change :  Wed Oct  8 16:14:00 2003 (dciabrin)               */
+;*    -------------------------------------------------------------    */
+;*    The initialization for the Biglook (SWT back-end) library.       */
+;*=====================================================================*/
+
+;(set! *additional-bigloo-zips* (cons ":$CLASSPATH" *additional-bigloo-zips*))

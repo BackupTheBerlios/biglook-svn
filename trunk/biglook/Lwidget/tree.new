@@ -1,0 +1,368 @@
+;*=====================================================================*/
+;*    serrano/prgm/project/biglook/biglook/Lwidget/tree.new            */
+;*    -------------------------------------------------------------    */
+;*    Author      :  Manuel Serrano                                    */
+;*    Creation    :  Wed Sep  6 08:21:00 2000                          */
+;*    Last change :  Fri May 25 11:13:23 2001 (serrano)                */
+;*    Copyright   :  2000-01 Manuel Serrano                            */
+;*    -------------------------------------------------------------    */
+;*    Biglook Tree widget                                              */
+;*    -------------------------------------------------------------    */
+;*    Source documentations:                                           */
+;*       @path ../../manual/tree.texi@                                 */
+;*       @node Tree@                                                   */
+;*    Examples:                                                        */
+;*       @path ../../examples/tree/tree.scm@                           */
+;*    -------------------------------------------------------------    */
+;*    Implementation: @label tree@                                     */
+;*    null: @path ../../peer/null/Lwidget/_tree.scm@                   */
+;*    gtk: @path ../../peer/gtk/Lwidget/_tree.scm@                     */
+;*    swing: @path ../../peer/swing/Lwidget/_tree.scm@                 */
+;*=====================================================================*/
+
+;*---------------------------------------------------------------------*/
+;*    The module                                                       */
+;*---------------------------------------------------------------------*/
+(module __biglook_tree
+   
+   (library biglook_peer)
+   
+   (import  __biglook_bglk-object
+	    __biglook_container
+	    __biglook_widget
+	    __biglook_image
+	    __biglook_label
+	    __biglook_button
+	    __biglook_layout
+	    __biglook_frame
+	    __biglook_box
+	    __biglook_event
+	    __biglook_scroll)
+   
+   
+   (export  (class tree::container
+	       ;; the command
+	       (%command (default #f))
+	       ;; the contained widgets
+	       (children::pair-nil
+		read-only
+		(get (lambda (o)
+			(with-access::tree o (%branch)
+			   (container-children %branch)))))
+	       ;; %tooltips
+	       (%tooltips (default #f))
+	       ;; root
+	       (root::obj read-only)
+	       ;; the function to be applied to nodes to fetch labels
+	       (node-label::procedure read-only (default (lambda (x) x)))
+	       ;; the function to be applied to node to fetch children
+	       (node-children::procedure read-only)
+	       ;; node-render
+	       (node-render::procedure
+		read-only
+		(default tree-default-node-render))
+	       ;; node-image
+	       (node-image::procedure
+		read-only
+		(default tree-default-node-image))
+	       ;; auto-collapse
+	       (auto-collapse (default #t))
+	       ;; command
+	       (command
+		(get tree-%command)
+		(set (lambda (o v)
+			;; the root items have already been added
+			;; so we have to enforce the tooltips for them
+			(if (not (correct-arity? v 1))
+			    (error "tree-command-set!"
+				   "Illegal command arity"
+				   v)
+			    (begin
+			       (set-tree-branch-command! (tree-%branch o) v)
+			       (tree-%command-set! o v))))))
+	       ;; event handler
+	       (event
+		(get widget-%event)
+		(set (lambda (o v)
+			;; the root items have already been added
+			;; so we have to enforce the tooltips for them
+			(for-each (lambda (i)
+				     (widget-event-set! i v))
+				  (container-children o))
+			(widget-%event-set! o v))))
+	       ;; tooltips
+	       (tooltips
+		(get tree-%tooltips)
+		(set (lambda (o v)
+			;; the root items have already been added
+			;; so we have to enforce the tooltips for them
+			(for-each (lambda (i)
+				     (widget-tooltips-set! i v))
+				  (container-children o))
+			(tree-%tooltips-set! o v)))))
+
+	    (abstract-class tree-item::container
+	       value)
+	    (class tree-branch::tree-item)
+	    (class tree-leaf::tree-item))
+
+	    (tree-default-node-render ::tree ::tree-item ::symbol)
+	    (tree-default-node-image::image ::symbol)))
+
+;*---------------------------------------------------------------------*/
+;*    bglk-object-init ::tree ...                                      */
+;*---------------------------------------------------------------------*/
+(define-method (bglk-object-init o::tree)
+   ;; construct and initialize the surounding scroll
+   (call-next-method)
+   ;; construct and initialize the tree
+   (with-access::tree o (root)
+      ;; add the root to the tree
+      (tree-set-root! o)
+      ;; we are done with this tree
+      o))
+
+;*---------------------------------------------------------------------*/
+;*    bglk-object-init ::tree-item ...                                 */
+;*---------------------------------------------------------------------*/
+(define-method (bglk-object-init o::tree-item)
+   (with-access::tree-item o (%peer)
+      (set! %peer (%make-%tree-item o))
+      (call-next-method)
+      o))
+
+;*---------------------------------------------------------------------*/
+;*    bglk-object-init ::tree-branch ...                               */
+;*---------------------------------------------------------------------*/
+(define-method (bglk-object-init o::tree-branch)
+   (with-access::tree-branch o (%peer)
+      (set! %peer (%make-%tree o))
+      (call-next-method)
+      o))
+
+;*---------------------------------------------------------------------*/
+;*    tree-set-root! ...                                               */
+;*---------------------------------------------------------------------*/
+(define (tree-set-root! o::tree)
+   (with-access::tree o (root node-children node-render %branch auto-collapse %command)
+      (define (add-subtree! branch::tree-branch user-item::obj)
+	 ;; generic function to add a node to the subtree
+	 (define (add-node! branch)
+	    (let ((tree-item (instantiate::tree-item
+				(value user-item)
+				(parent branch))))
+	       (with-access::tree o (event %tooltips)
+		  ;; user event
+		  (if (event-handler? event)
+		      (tree-item-event-set! tree-item event))
+		  ;; the user tooltips
+		  (if %tooltips
+		      (tree-item-tooltips-set! tree-item %tooltips))
+		  tree-item)))
+	 ;; adding a branch to a tree
+	 (define (add-branch! children)
+	    (let* ((tree-item (add-node! branch))
+		   (tree (instantiate::tree-branch
+			    (parent tree-item)))
+		   (expanded? #f)
+		   (expand (lambda (e)
+			      (node-render o tree-item 'open)
+			      (if (not expanded?)
+				  (begin
+				     (for-each (lambda (child)
+						  (add-subtree! tree child))
+					       children)
+				     (set! expanded? #t)))))
+		   (collapse (lambda (e)
+				(node-render o tree-item 'close)
+				(if auto-collapse
+				    (begin
+				       (container-remove! tree-item tree)
+				       (set! tree (instantiate::tree-branch
+						     (parent tree-item)))
+				       (if (procedure? %command)
+					   (set-tree-branch-command! tree %command))
+				       (set! expanded? #f))))))
+	       ;; user-command
+	       (if (procedure? %command)
+		   (set-tree-branch-command! tree %command))
+	       (node-render o tree-item 'close)
+	       (install-event-handler! tree-item 'expand expand)
+	       (install-event-handler! tree-item 'collapse collapse)))
+	 ;; adding a leaf to a tree
+	 (define (add-leaf!)
+	    (let ((tree-item (add-node! branch)))
+	       (node-render o tree-item 'leaf)))
+	 ;; the node is a branch if it has children and a leaf otherwise
+	 (let ((children (node-children user-item)))
+	    (if (pair? children)
+		;; this is a branch
+		(add-branch! children)
+		;; this is a leaf
+		(add-leaf!))))
+      ;; allocatei the first branch
+      (set! %branch (instantiate::tree-branch
+		       (parent o)))
+      (if (pair? root)
+	  (for-each (lambda (ui) (add-subtree! %branch ui)) root)
+	  (add-subtree! %branch root))))
+
+;*---------------------------------------------------------------------*/
+;*    container-add! ::tree ...                                        */
+;*---------------------------------------------------------------------*/
+(define-method (container-add! c::tree w::widget . options)
+   (with-access::tree c (%branch)
+      (if (not %branch)
+	  (call-next-method)
+	  (error "container-add!(tree)" "Illegal container-add!" c))))
+
+;*---------------------------------------------------------------------*/
+;*    container-add! ::tree-branch ...                                 */
+;*---------------------------------------------------------------------*/
+(define-method (container-add! c::tree-branch w::widget . options)
+   (%tree-add! c w))
+
+;*---------------------------------------------------------------------*/
+;*    container-add! ::tree-item ...                                   */
+;*---------------------------------------------------------------------*/
+(define-method (container-add! c::tree-item w::widget . options)
+   (if (tree-branch? w)
+       (%tree-item-add! c w)
+       (%container-add! c w)))
+
+;*---------------------------------------------------------------------*/
+;*    container-remove! ...                                            */
+;*---------------------------------------------------------------------*/
+(define-method (container-remove! c::tree-item w::widget)
+   (if (tree-branch? w)
+       (%tree-item-remove! c w)
+       (%container-remove! c w)))
+
+;*---------------------------------------------------------------------*/
+;*    tree-default-node-render ...                                     */
+;*---------------------------------------------------------------------*/
+(define (tree-default-node-render o::tree tree-item::tree-item kind::symbol)
+   (define (node-label->string id)
+      (cond
+	 ((string? id)
+	  id)
+	 ((symbol? id)
+	  (symbol->string id))
+	 ((number? id)
+	  (number->string id))
+	 (else
+	  (let ((port (open-output-string)))
+	     (display id port)
+	     (close-output-port port)))))
+   (with-access::tree o (node-label node-image)
+      (let* ((box (instantiate::hbox
+		     (parent tree-item)))
+	     (ibut (let ((image (node-image kind)))
+		      (image-parent-set! image box)
+		      image))
+	     (uitem (tree-item-value tree-item))
+	     (tbut (instantiate::label
+		      (parent box)
+		      (text (node-label->string (node-label uitem))))))
+	 tree-item)))
+
+;*---------------------------------------------------------------------*/
+;*    tree-default-node-image ...                                      */
+;*---------------------------------------------------------------------*/
+(define (tree-default-node-image::image kind::symbol)
+   (case kind
+      ((leaf)
+       (string->image (tree-leaf-image-data)))
+      ((open)
+       (string->image (tree-open-image-data)))
+      ((close)
+       (string->image (tree-close-image-data)))
+      (else
+       (error "node-kind->image" "Illegal node kind" kind))))
+
+;*---------------------------------------------------------------------*/
+;*    tree-close-image-data ...                                        */
+;*---------------------------------------------------------------------*/
+(define (tree-close-image-data)
+   "/* XPM */
+static char * dir_xpm[] = {
+\"16 16 5 1\",
+\" 	c None\",
+\".	c grey51\",
+\"X	c goldenrod1\",
+\"o	c white\",
+\"O	c grey4\",
+\"                \",
+\"  .....         \",
+\" .XXXXX.        \",
+\".XXXXXXX......  \",
+\".oooooooooooo.O \",
+\".oXXXXXXXXXXX.O \",
+\".oXXXXXXXXXXX.O \",
+\".oXXXXXXXXXXX.O \",
+\".oXXXXXXXXXXX.O \",
+\".oXXXXXXXXXXX.O \",
+\".oXXXXXXXXXXX.O \",
+\".oXXXXXXXXXXX.O \",
+\"..............O \",
+\" OOOOOOOOOOOOOO \",
+\"                \",
+\"                \"};")
+
+;*---------------------------------------------------------------------*/
+;*    tree-open-image-data ...                                         */
+;*---------------------------------------------------------------------*/
+(define (tree-open-image-data)
+   "/* XPM */
+static char * diropen_xpm[] = {
+\"16 16 5 1\",
+\" 	c None\",
+\".	c grey51\",
+\"X	c white\",
+\"o	c goldenrod1\",
+\"O	c grey4\",
+\"                \",
+\"   ....         \",
+\"  .XXXX.        \",
+\" .XooooX......  \",
+\" .XoooooXXXXX.O \",
+\" .Xoooooooooo.O \",
+\"...........oo.O \",
+\".XXXXXXXXX.Oo.O \",
+\".XoooooooooO..O \",
+\" .Xoooooooo.O.O \",
+\" .XoooooooooO.O \",
+\"  .Xoooooooo.OO \",
+\"  ...........OO \",
+\"   OOOOOOOOOOOO \",
+\"                \",
+\"                \"};")
+
+;*---------------------------------------------------------------------*/
+;*    tree-leaf-image-data ...                                         */
+;*---------------------------------------------------------------------*/
+(define (tree-leaf-image-data)
+   "/* XPM */
+static char * file_xpm[] = {
+\"12 12 3 1\",
+\" 	c None\",
+\".	c black\",
+\"X	c #FFFFCE\",
+\" ........   \",
+\" .XXXXXX.   \",
+\" .XXXXXX... \",
+\" .XXXXXXXX. \",
+\" .XXXXXXXX. \",
+\" .XXXXXXXX. \",
+\" .XXXXXXXX. \",
+\" .XXXXXXXX. \",
+\" .XXXXXXXX. \",
+\" .XXXXXXXX. \",
+\" .XXXXXXXX. \",
+\" .......... \"};")
+
+;*---------------------------------------------------------------------*/
+;*    set-tree-branch-command! ...                                     */
+;*---------------------------------------------------------------------*/
+(define (set-tree-branch-command! o::tree-branch v::procedure)
+   (install-event-handler! o 'select v))

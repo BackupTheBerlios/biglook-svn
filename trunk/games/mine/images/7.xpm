@@ -1,0 +1,31 @@
+/* XPM */
+static char *7[] = {
+/* width height num_colors chars_per_pixel */
+"    16    16        8            1",
+/* colors */
+". c #020204",
+"# c #5a5a5c",
+"a c #898987",
+"b c #3a3a3c",
+"c c #aaaaac",
+"d c #727274",
+"e c #4e4e4c",
+"f c #121214",
+/* pixels */
+"################",
+"#cccccccccccccc#",
+"#cccccccccccccc#",
+"#ccccddddddcccc#",
+"#cccc......cccc#",
+"#cccceacce.cccc#",
+"#ccccccccfbcccc#",
+"#ccccccca.dcccc#",
+"#ccccccce.ccccc#",
+"#cccccccfbccccc#",
+"#cccccca.dccccc#",
+"#ccccccefcccccc#",
+"#ccccccaacccccc#",
+"#cccccccccccccc#",
+"#cccccccccccccc#",
+"################"
+};

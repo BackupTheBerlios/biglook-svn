@@ -1,0 +1,323 @@
+#!/bin/sh
+#*=====================================================================*/
+#*    serrano/prgm/project/biglook/configure                           */
+#*    -------------------------------------------------------------    */
+#*    Author      :  Manuel Serrano                                    */
+#*    Creation    :  Tue Jan 25 16:05:10 1994                          */
+#*    Last change :  Tue May  6 14:01:59 2003 (serrano)                */
+#*    Copyright   :  1994-2003 Manuel Serrano, see LICENSE file        */
+#*    -------------------------------------------------------------    */
+#*    The Biglook configuration file                                   */
+#*=====================================================================*/
+
+# configure back-end list
+backends="gtk swing"
+
+# the name of the current bigloo compiler
+bigloo=bigloo
+
+# bigloo compilation flags
+boptflags="-jvm-purify -unsafe -O3 -L $""(BOOTKDIR)/lib/null -L $""(BOOTKDIR)/lib -copt \"-I $""(BOOTKDIR)/lib\" -copt \"$""(CPICFLAGS)\""
+bdbgflags="-g -L $""(BOOTKDIR)/lib/null -L $""(BOOTKDIR)/lib -copt \"-I $""(BOOTKDIR)/lib\" -copt \"$""(CPICFLAGS)\""
+bflags=$boptflags
+bheapflags="-unsafe -q -mkaddheap -mkaddlib -L $""(BOOTKDIR)/lib"
+
+# the afile, jfile and btags binaries
+afile=afile
+jfile=jfile
+btags=btags
+
+# C compilation (left blank for automatic configuration (from Bigloo setup))
+cc=
+cflags=
+ldopt=
+
+# path (left blank for automatic configuration (from Bigloo setup))
+libdir=
+docdir=
+
+#*---------------------------------------------------------------------*/
+#*               !!! DON'T EDIT AFTER THIS COMMENT !!!                 */
+#*---------------------------------------------------------------------*/
+release=1.0
+requiredbigloo=2.5d
+
+action=all
+makefile_config=Makefile.kconfig
+biglook_config=biglook/Llib/configure.scm
+summary=yes
+
+http="http://www.inria.fr/mimosa/fp/Bigloo"
+autoconfdir=`dirname $0 2> /dev/null`/autoconf
+
+if [ $? != "0" ]; then
+   autoconfdir="autoconf"
+fi
+
+# Argument parsing
+while : ; do
+  case $1 in
+    "")
+      break;;
+
+    --biglook_config=*)
+      action="biglook_config";
+      biglook_config="`echo $1 | sed 's/^[-a-z_.]*=//'`";;
+
+    --makefile.kconfig=*)
+      action="Makefile.kconfig";
+      makefile_config="`echo $1 | sed 's/^[-Da-z.]*=//'`";;
+
+    --libdir=*)
+      libdir="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --docdir=*)
+      docdir="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --bigloo=*)
+      bigloo="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --afile=*)
+      afile="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --jfile=*)
+      jfile="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --btags=*)
+      btags="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --cc=*)
+      cc="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --cflags=*)
+      cflags="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --ldopt=*)
+      ldopt="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --backends=*)
+      backends="`echo $1 | sed 's/^[-a-z]*=//'`";;
+
+    --no-summary)
+      summary=no;;
+
+    --debug)
+      bflags=$bdbgflags;;
+
+    --bootconfig)
+      ;;
+
+    -*)
+      echo "Usage: configure [options]" >&2;
+      echo "   --biglook_config=file" >&2;
+      echo "   --Makefile.kconfig=file" >&2;
+      echo "   --libdir=file" >&2;
+      echo "   --docdir=file" >&2;
+      echo "   --bigloo=comp" >&2;
+      echo "   --afile=afile" >&2;
+      echo "   --jfile=jfile" >&2;
+      echo "   --btags=btags" >&2;
+      echo "   --cc=comp" >&2;
+      echo "   --cflags=args" >&2;
+      echo "   --ldopt=args" >&2;
+      echo "   --backends=backends" >&2;
+      echo "   --no-summary" >&2;
+      echo "   --debug" >&2;
+      echo "   --bootconfig" >&2;
+      exit -1;
+  esac
+  shift
+done
+
+#*---------------------------------------------------------------------*/
+#*    First check if bigloo exists and if it is recent enough          */
+#*---------------------------------------------------------------------*/
+if [ ! -f $bigloo ]; then
+   which $bigloo > /dev/null 2> /dev/null
+   if [ "$?" != "0" ]; then
+      echo "*** ERROR:configure:bigloo. Aborting"
+      echo "Can't find bigloo."
+      exit 1;
+   fi
+fi
+
+installedbigloo=`$autoconfdir/bversion --bigloo=$bigloo --version=$requiredbigloo`
+
+if [ $? != "0" ]; then
+  echo "*** ERROR:configure:bigloo. Aborting"
+  echo "Your version ($installedbigloo) of Bigloo is too old."
+  echo "Release $requiredbigloo or more recent is required."
+  echo "Bigloo may be downloaded from $http"
+  exit 1;
+fi
+
+#*---------------------------------------------------------------------*/
+#*    The library directory                                            */
+#*---------------------------------------------------------------------*/
+if [ "$libdir " = " " ]; then
+   libdir=`$autoconfdir/blibdir --bigloo="$bigloo"`
+fi
+
+#*---------------------------------------------------------------------*/
+#*    We check the installed Bigloo Makefile.config file               */
+#*---------------------------------------------------------------------*/
+if [ ! -f $libdir/Makefile.config ]; then
+   echo "*** ERROR:configure:Can't find Makefile.config file"
+   echo "Should be $libdir/Makefile.config."
+   exit 1;
+fi
+
+#*---------------------------------------------------------------------*/
+#*    We are now able to set the correct value for cc since we know    */
+#*    what Bigloo is.                                                  */
+#*---------------------------------------------------------------------*/
+if [ "$cc " = " " ]; then
+  cc=`$bigloo -eval '(begin (print *cc*) (exit 0))'`
+fi
+
+if [ "$cflags " = " " ]; then
+  cflags=`grep '^CFLAGS=' $libdir/Makefile.config | sed 's/^[A-Z]*=//'`
+fi
+
+ldflags=`grep '^EXTRALIBS=' $libdir/Makefile.config | sed 's/^[A-Z]*=//'`
+cpicflags=`grep '^CPICFLAGS=' $libdir/Makefile.config | sed 's/^[A-Z]*=//'`
+
+if [ "$ldopt " = " " ]; then
+  ldopt=`grep '^LD=' $libdir/Makefile.config | sed 's/^[A-Z]*=//'`
+fi
+
+#*---------------------------------------------------------------------*/
+#*    biglook_config                                                   */
+#*    -------------------------------------------------------------    */
+#*    This part of the configure script produces the file              */
+#*    runtime/Include/biglook_config.h. This file contains all the     */
+#*    machine dependant information used by Biglook.                   */
+#*---------------------------------------------------------------------*/
+if [ $action = "all" -o $action = "biglook_config" ]; then
+
+  # We first cleanup the file
+  rm -f $biglook_config 2> /dev/null
+  echo ";; Automatically generated file (don't edit)" > $biglook_config
+  echo ";; `date`" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(module __biglook_configure" >> $biglook_config
+  echo "   (export (biglook-version::bstring)" >> $biglook_config
+  echo "           (biglook-library-directory::bstring)))" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(define (biglook-version) \"$release\")" >> $biglook_config
+  echo "" >> $biglook_config
+  echo "(define (biglook-library-directory) \"$libdir\")" >> $biglook_config
+  echo "" >> $biglook_config
+
+fi
+
+#*---------------------------------------------------------------------*/
+#*    Makefile.kconfig                                                 */
+#*    -------------------------------------------------------------    */
+#*    This part of the configure script produces the file              */
+#*    Makefile.kconfig. This file contains machine dependant           */
+#*    informations and location where Bigloo is to be installed.       */
+#*---------------------------------------------------------------------*/
+if [ $action = "all" -o $action = "Makefile.kconfig" ]; then
+
+  # We create an unexisting temporary file name
+  name=foo
+  while( test -f "$name.c" -o -f "$name.o" ); do 
+    name="$name"x;
+  done
+
+  # We check the C compiler
+  cat > $name.c <<EOF
+     int foobar( int x ) {
+        return x;
+  }
+EOF
+
+  if $cc $cflags -c $name.c >/dev/null 2>&1
+  then
+     true 
+  else
+     echo "***ERROR:configure:$cc:Can't compile c file -- $cc $cflags -c $name.c";
+     /bin/rm -f $name.c $name.o $name.a; 
+     exit 1
+  fi
+  /bin/rm -f $name.c $name.o $name.a; 
+
+  # We first cleanup the file
+  rm -f $makefile_config 2> /dev/null
+  touch $makefile_config
+
+  # The release number
+  echo "KRELEASE=$release" >> $makefile_config
+  echo >> $makefile_config
+
+  # The configured back-ends
+  echo "BACKENDS=$backends" >> $makefile_config
+  echo >> $makefile_config
+
+  # The bigloo compiler
+  echo "BIGLOO=$bigloo" >> $makefile_config
+  echo "BHEAPFLAGS=$bheapflags" >> $makefile_config
+  echo "AFILE=$afile" >> $makefile_config
+  echo "JFILE=$jfile" >> $makefile_config
+  echo "BTAGS=$btags" >> $makefile_config
+  echo >> $makefile_config
+
+  # The boot directory
+  echo "BOOTKDIR=`pwd`" >> $makefile_config
+  echo >> $makefile_config
+ 
+  # The bigloo lib directory
+  echo "BGLLIBDIR=$libdir" >> $makefile_config
+  echo >> $makefile_config
+ 
+  # The name of the library
+  echo "LIBRARYKNAME=biglook" >> $makefile_config
+  echo >> $makefile_config
+
+  # The bigloo configuration
+  echo "include $libdir/Makefile.config" >> $makefile_config
+  echo >> $makefile_config
+
+  # The Bigloo compilation options
+  echo "BFLAGS=$bflags" >> $makefile_config
+  echo >> $makefile_config
+
+  # The doc directory
+  if [ ! "$docdir " = " " ]; then
+    echo "BDOCDIR=$docdir" >> $makefile_config;
+  fi
+fi
+
+#*---------------------------------------------------------------------*/
+#*    Ok, we are done now                                              */
+#*---------------------------------------------------------------------*/
+if [ "$summary" = "yes" ]; then
+  echo 
+  echo 
+  echo "** Configuration summary **"
+  echo 
+  echo "Release number:"
+  echo "  Biglook release number................ $release"
+  echo "  Minimum Bigloo version required....... $requiredbigloo"
+  echo "  Installed version .................... $installedbigloo"
+  echo
+  echo "Back Ends:"
+  echo "  configured back-ends.................. $backends"
+  echo
+  echo "Compilers:"
+  echo "  Bigloo................................ $bigloo"
+  echo "  Bigloo compilation flags.............. $bflags"
+  echo "  Bigloo heap flags..................... $bheapflags"
+  echo "  afile................................. $afile"
+  echo "  jfile................................. $jfile"
+  echo "  btags................................. $btags"
+  echo "  cc.................................... $cc"
+  echo "  cc compilation flags.................. $cflags"
+  echo "  link options.......................... $ldopt"
+  echo 
+  echo "Path:"
+  echo "  Library directory..................... $libdir"
+  echo "  Documentation directory............... $docdir"
+  echo 
+fi

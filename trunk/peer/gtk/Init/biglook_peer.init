@@ -1,0 +1,57 @@
+;*=====================================================================*/
+;*    serrano/prgm/project/biglook/peer/gtk/Init/biglook_peer.scm      */
+;*    -------------------------------------------------------------    */
+;*    Author      :  Manuel Serrano                                    */
+;*    Creation    :  Sat Oct 17 10:43:10 1998                          */
+;*    Last change :  Sat Dec  1 08:22:07 2001 (serrano)                */
+;*    -------------------------------------------------------------    */
+;*    The initialization for the Biglook (GTK back-end) library.       */
+;*=====================================================================*/
+
+;*---------------------------------------------------------------------*/
+;*    GTK CC options                                                   */
+;*---------------------------------------------------------------------*/
+;; linking
+(let ((gtk-ld-options "-L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm "))
+   (set! *ld-options* (string-append *ld-options*
+				     gtk-ld-options
+				     " -L/usr/X11R6/lib ")))
+
+;; compiling
+(let ((gtk-cc-options "-I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib/glib/include ")
+      (glib-cc-options "-I/usr/include/glib-1.2 -I/usr/lib/glib/include "))
+   (set! *cc-options* (string-append gtk-cc-options
+				     glib-cc-options
+				     *cc-options*)))
+
+(set! *cc-options* (string-append " -I" *peer-dir* " " *cc-options*))
+(set! *additional-include-foreign* (cons "biglook_peer.h"
+					 *additional-include-foreign*))
+
+;*---------------------------------------------------------------------*/
+;*    GNOMEUI CC options                                               */
+;*---------------------------------------------------------------------*/
+;; linking
+(let ((gnome-ld-options "-rdynamic -L/usr/lib -L/usr/X11R6/lib -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -ldl -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb-3 -lglib "))
+   (set! *ld-options* (string-append *ld-options* gnome-ld-options)))
+
+;; compiling
+(let ((gnome-cc-options "-I/usr/include/gnome-1.0 -DNEED_GNOMESUPPORT_H -I/usr/lib/gnome-libs/include -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib/glib/include "))
+   (set! *cc-options* (string-append gnome-cc-options *cc-options*)))
+
+;*---------------------------------------------------------------------*/
+;*    GdkPixbuf CC options                                             */
+;*---------------------------------------------------------------------*/
+;; linking
+(let ((pixbuf-ld-options "-L/usr/lib -lgdk_pixbuf -L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm -lgnomecanvaspixbuf "))
+   (set! *ld-options* (string-append *ld-options* pixbuf-ld-options)))
+  
+;; compiling
+(let ((pixbuf-cc-options "-I/usr/include/gdk-pixbuf-1.0 -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib/glib/include "))
+   (set! *cc-options* (string-append pixbuf-cc-options *cc-options*)))
+
+;*---------------------------------------------------------------------*/
+;*    Additional libraries                                             */
+;*---------------------------------------------------------------------*/
+(set! *bigloo-user-lib* (append '("-lm" "-lX11") *bigloo-user-lib*))
+

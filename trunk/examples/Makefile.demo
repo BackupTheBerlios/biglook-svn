@@ -1,0 +1,79 @@
+#*=====================================================================*/
+#*    examples/Makefile.demo                                           */
+#*    -------------------------------------------------------------    */
+#*    Author      :  Manuel Serrano                                    */
+#*    Creation    :  Thu Jan  7 10:36:01 1999                          */
+#*    Last change :  Mon Jun 14 16:20:00 2004 (dciabrin)               */
+#*    -------------------------------------------------------------    */
+#*    The standard Makefile for all Biglook demonstrations.            */
+#*    -------------------------------------------------------------    */
+#*    This Makefile has to be executed in the directories containing   */
+#*    the demo. For instance:                                          */
+#*      (cd label; make -f ../Makefile PEER=null DEMO=simple0)         */
+#*=====================================================================*/
+
+#*---------------------------------------------------------------------*/
+#*    Standard path                                                    */
+#*---------------------------------------------------------------------*/
+include ../../Makefile.kconfig 
+
+#*---------------------------------------------------------------------*/
+#*    flags                                                            */
+#*---------------------------------------------------------------------*/
+PEER		= null
+DEMO		= the-demo
+BGLOPTFLAGS	= -O3
+VERBOSE		= 
+BFLAGS		+= $(BGLOPTFLAGS) -L $(BOOTKDIR)/lib -L $(BOOTKDIR)/lib/$(PEER) -eval \
+                  "(set! *eval-options* (cons (list 'biglook-peer \"$(PEER)\") *eval-options*))"
+LDFLAGS		= -library biglook -w -suffix bgl
+O		= o
+
+#*---------------------------------------------------------------------*/
+#*    Objects and sources                                              */
+#*---------------------------------------------------------------------*/
+SCM_FILE	= $(DEMO)
+
+SCM_OBJ		= $(SCM_FILE:%=%.$(O))
+SCM_SRC		= $(SCM_FILE:%=%.bgl) $(SCM_FILE:%=%.scm)
+
+#*---------------------------------------------------------------------*/
+#*    All objects and sources                                          */
+#*---------------------------------------------------------------------*/
+OBJ		= $(C_OBJ) $(SCM_OBJ)
+SRC		= $(C_SRC) $(SCM_SRC)
+
+POPULATION	= $(SRC:%=demos/$(DEMO)/%)
+
+#*---------------------------------------------------------------------*/
+#*    the goals.                                                       */
+#*---------------------------------------------------------------------*/
+a.$(PEER): $(OBJ) 
+	$(BIGLOO) $(BJFLAGS) $(VERBOSE) $(LDFLAGS) $(BFLAGS) $(OBJ) -o a.$(PEER)
+
+pop:
+	@ echo $(POPULATION)
+
+clean:
+	@- \rm -f *~ '#*#' core
+	@- \rm -f *.escm *.ast a.out
+	@- \rm -f $(SCM_FILE:%=%.o)
+	@- \rm -f $(SCM_FILE:%=%.class)
+	@- \rm -f JVMMAIN.class *.class
+	@- \rm -f a.null a.gtk a.swing a.swt a.jar Manifest
+
+#*---------------------------------------------------------------------*/
+#*    Suffixes                                                         */
+#*---------------------------------------------------------------------*/
+.SUFFIXES:
+.SUFFIXES: .bgl .scm .o .class
+
+#*---------------------------------------------------------------------*/
+#*    .scm.o                                                           */
+#*---------------------------------------------------------------------*/
+.scm.o: $*.scm
+	$(BIGLOO) $(VERBOSE) -c $(BFLAGS) $*.bgl $*.scm -o $*.o
+
+.scm.class: $*.scm
+	$(BIGLOO) $(BJFLAGS) $(VERBOSE) -c $(BFLAGS) $*.bgl $*.scm -o $*.class
+

@@ -1,0 +1,58 @@
+# pixmap_path "<dir 1>:<dir 2>:<dir 3>:..."
+#
+# include "rc-file"
+#
+# style <name> [= <name>]
+# {
+#   <option>
+# }
+#
+# widget <widget_set> style <style_name>
+# widget_class <widget_class_set> style <style_name>
+
+# testgtkrc2 sets all the buttons in the main window to blue by default
+#include "testgtkrc2"
+
+style "default"
+{
+  font = "-*-helvetica-medium-r-normal--10-*-*-*-*-*-*-*"
+}
+
+style "white_background" {
+  bg[NORMAL] = { 1.00, 1.00, 1.00 }
+  bg[PRELIGHT] = { 1.00, 1.00, 1.00 }
+  bg[ACTIVE] = { 1.00, 1.00, 1.00 }
+  bg[SELECTED] = { 1.00, 1.00, 1.00 }
+}
+
+style "color_background" {
+  bg[NORMAL] = { 0.30, 0.20, 0.20 }
+  bg[PRELIGHT] = { 0.80, 0.30, 0.00 }
+  bg[ACTIVE] = { 0.40, 0.00, 0.80 }
+  bg[SELECTED] = { 0.20, 0.90, 0.20 }
+  fg[NORMAL] = { 0.90, 0.80, 0.80 }
+  fg[PRELIGHT] = { 0.40, 0.00, 0.80 }
+  fg[ACTIVE] = { 0.50, 0.30, 0.20 }
+  fg[SELECTED] = { 0.20, 0.90, 0.20 }
+}
+
+style "toggle_button" 
+{
+  fg[NORMAL] = { 1.0, 0, 0 }
+  bg[SELECTED] = { 1.0, 0, 0 }
+  fg[PRELIGHT] = { 1.0, 0, 0 }
+  fg[ACTIVE] = { 1.0, 0, 0 }
+}
+
+style "scrollbar"
+{
+  engine "redmond95" 
+  {
+  }
+}
+
+class "GtkRadioButton" style "toggle_button"
+class "GtkCheckButton" style "toggle_button"
+
+widget "*.canvas" style "white_background"
+widget "*.entry" style "color_background"

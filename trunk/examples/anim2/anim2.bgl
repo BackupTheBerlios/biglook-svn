@@ -1,0 +1,8 @@
+;; the module declaration with a new class
+(module biglook-demo-runner
+   (library biglook)
+   (static  (class runner::canvas-image
+	       (number (default (symbol->string (gensym 'runner))))
+	       (images (default *runner-image-list*))
+	       (speed  (default (random 100)) read-only))))
+

@@ -1,0 +1,408 @@
+;*=====================================================================*/
+;*    serrano/prgm/project/biglook/peer/null/Init/biglook.init         */
+;*    -------------------------------------------------------------    */
+;*    Author      :  Manuel Serrano                                    */
+;*    Creation    :  Sat Oct 17 10:43:10 1998                          */
+;*    Last change :  Sat Mar 31 15:20:30 2001 (serrano)                */
+;*    -------------------------------------------------------------    */
+;*    The initialization for the Biglook (GTK back-end) library.       */
+;*=====================================================================*/
+
+;*---------------------------------------------------------------------*/
+;*    *biglook-key-events* ...                                         */
+;*    -------------------------------------------------------------    */
+;*    This is the list of the KEY events that are not characters.      */
+;*---------------------------------------------------------------------*/
+(define *biglook-key-events*
+   '(control meta alt backspace escape
+	     left right up down
+	     page-up page-down home end
+	     f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12))
+
+;*---------------------------------------------------------------------*/
+;*    *bigloo-events* ...                                              */
+;*    -------------------------------------------------------------    */
+;*    The list of all the event that are known to Biglook associated   */
+;*    with their GTK name.                                             */
+;*---------------------------------------------------------------------*/
+(define *biglook-events*
+   (append '((key-press . key-press-event)
+	     (key-release . key-press-event)
+	     (enter . enter-notify-event)
+	     (leave . leave-notify-event)
+	     (configure . configure-event)
+	     (destroy . destroy-event)
+	     (button-press . button-press-event)
+	     (button-release . button-release-event)
+	     (button1 . button-press-event)
+	     (button2 . button-press-event)
+	     (button3 . button-press-event)
+	     (button-release1 . button-release-event)
+	     (button-release2 . button-release-event)
+	     (button-release3 . button-release-event)
+	     (readable . file-event)
+	     (writable . file-event)
+	     (exception . file-event))
+	   (map (lambda (x) (cons x 'key-press-event)) *biglook-key-events*)))
+   
+;*---------------------------------------------------------------------*/
+;*    *biglook-event-modifiers* ...                                    */
+;*---------------------------------------------------------------------*/
+(define *biglook-event-modifiers* 
+   '((control . %%gtk-control-modifier)
+     (alt . %%gtk-alt-modifier)
+     (meta . %%gtk-meta-modifier)
+     (lock . %%gtk-lock-modifier)
+     (shift . %%gtk-shift-modifier)))
+
+;*---------------------------------------------------------------------*/
+;*    biglook-parse-event ...                                          */
+;*    -------------------------------------------------------------    */
+;*    Parse an event description. This function returns three values:  */
+;*     - a symbol that is gtk event (e.g. key-press-event)             */
+;*     - an expression that evaluate to a number which is the gtk      */
+;*       modifiers                                                     */
+;*     - a value to be tested for that event (e.g. a character for     */
+;*       an key-press-event or a button number for a button-event)     */
+;*---------------------------------------------------------------------*/
+(define (biglook-parse-event evt)
+   (if (null? evt)
+       (error "on-event" "Illegal event" evt)
+       (let loop ((evt evt)
+		  (mods 0))
+	  (if (null? (cdr evt))
+	      ;; this is the gtk event part or the value part
+	      (if (char? (car evt))
+		  (values 'key-press-event mods (car evt))
+		  (let ((cell (assq (car evt) *biglook-events*)))
+		     (if (pair? cell)
+			 (values (cdr cell) mods (car evt))
+			 (error "on-event" "Illegal event" evt))))
+	      ;; the first element is a modifier
+	      (let ((cell (assq (car evt) *biglook-event-modifiers*)))
+		 (if (pair? cell)
+		     (loop (cdr evt)
+			   `(bit-or ,(cdr cell) ,mods))
+		     (error "on-event" "Illegal event modifier" evt)))))))
+	      
+;*---------------------------------------------------------------------*/
+;*    make-key-callback ...                                            */
+;*    -------------------------------------------------------------    */
+;*    This function generates the correct callback associated          */
+;*    with a key-press-event. This function generates a kind           */
+;*    of direct automata that manages the KEY and MODIFIERS+KEY.       */
+;*    -------------------------------------------------------------    */
+;*    KEY-EVENTS is a list of tuples: < id x modifiers x body >        */
+;*    ID is either a symbol or a char                                  */
+;*    -------------------------------------------------------------    */
+;*    To test this function:                                           */
+;*      (make-key-callback '((#\a 0 'toto)))                           */
+;*      (make-key-callback '((#\a 1 'toto)                             */
+;*    			     (#\a 2 'tutu)                             */
+;*    			     (#\a 4 'tata)))                           */
+;*      (make-key-callback '((#\a 4 'toto)                             */
+;*    			     (#\a 0 'tutu)                             */
+;*    			     (#\b 0 'titi)))                           */
+;*      (make-key-callback '((#\a 4 'toto)                             */
+;*    			     (#\a 0 'tutu)                             */
+;*    			     (#\b 0 'titi)                             */
+;*    			     (#\c 4 'tyty)))                           */
+;*---------------------------------------------------------------------*/
+(define (make-key-callback gtk-event obj key-events)
+   (define (key-event<? ev1 ev2)
+      (let ((id1 (car ev1))
+	    (id2 (car ev2)))
+	 (cond
+	    ((and (char? id1) (char? id2))
+	     (char<? id1 id2))
+	    ((and (symbol? id1) (symbol? id2))
+	     (string<? (symbol->string id1) (symbol->string id2)))
+	    (else 
+	     #f))))
+   (define (make-key-clause modif evts)
+      (let ((val (car (car evts))))
+	 `(,(if (or (eq? val 'key-press) (eq? val 'key-release))
+		'else
+		(list val))
+	   ,@(if (and (null? (cdr evts)) (eq? (cadr (car evts)) 0))
+		 ;; there is no need to generate a cond here
+		 (caddr (car evts))
+		 (let loop ((evts evts)
+			    (clauses '())
+			    (defaults '()))
+		    (if (null? evts)
+			`((cond ,@clauses
+				(else ,@(if (pair? defaults)
+					    defaults
+					    '(#unspecified)))))
+			(let ((evt (car evts)))
+			   (if (eq? (cadr evt) 0)
+			       ;; there is no modifier for that event
+			       (loop (cdr evts)
+				     clauses
+				     (append (caddr evt) defaults))
+			       (loop (cdr evts)
+				     (cons `((=fx ,modif ,(cadr evt))
+					     ,@(caddr evt))
+					   clauses)
+				     defaults)))))))))
+   (define (make-key-callback obj body)
+      ;; generate the code that implement the GTK callback
+      (let ((self (gensym 'self))
+	    (event-descr (gensym 'event-descr)))
+	 `(bglk-object-event-connect
+	   ,obj
+	   ',gtk-event
+	   ,(string-downcase (symbol->string gtk-event))
+	   (lambda (,event-descr ,self)
+	      (define (the-event-widget)
+		 ,self)
+	      (define (the-event-x)
+		 (warning "the-event-x: not implemented yet"))
+	      (define (the-event-y)
+		 (warning "the-event-y: not implemented yet"))
+	      (define (the-event-root-x)
+		 (warning "the-root-x: not implemented yet"))
+	      (define (the-event-root-y)
+		 (warning "the-root-y: not implemented yet"))
+	      (define (the-event-window)
+		 (warning "the-event-window: not implemented yet"))
+	      (define (the-event-key)
+		 (%%bglk-gdk-event-key ,event-descr))
+	      (define (the-event-key-modifiers)
+		 (%%bglk-gdk-event-key-modifiers ,event-descr))
+	      ,body))))
+   (if (null? key-events)
+       #unspecified
+       (let ((key-events (sort key-events key-event<?))
+	     (c (gensym 'the-event-char))
+	     (m (gensym 'the-event-modifier)))
+	  (let loop ((evts key-events)
+		     (clauses '()))
+	     (if (null? evts)
+		 (make-key-callback obj
+				    `(let ((,c (the-event-key))
+					   (,m (the-event-key-modifiers)))
+					(case ,c ,@clauses)))
+		 (let ((id (car (car evts))))
+		    ;; we collect all the event for which the identifier is ID
+		    (let laap ((id-evts (list (car evts)))
+			       (evts (cdr evts)))
+		       (if (or (null? evts)
+			       (not (eq? (car (car evts)) id)))
+			   ;; we are done, we have collected everthing
+			   (loop evts
+				 (cons (make-key-clause m id-evts)
+				       clauses))
+			   ;; we have to collect some moe
+			   (laap (cons (car evts) id-evts)
+				 (cdr evts))))))))))
+
+;*---------------------------------------------------------------------*/
+;*    make-button-callback ...                                         */
+;*    -------------------------------------------------------------    */
+;*    This function generates the correct callback associated          */
+;*    with a button-press-event. This function generates a kind        */
+;*    of direct automata that manages the BUTTON and MODIFIERS+BUTTON. */
+;*    -------------------------------------------------------------    */
+;*    BUTTON-EVENTS is a list of tuples: < id x modifiers x body >     */
+;*    ID is either a symbol or a char                                  */
+;*    -------------------------------------------------------------    */
+;*    To test this function:                                           */
+;*      (make-button-callback '((button1 0 'toto)))                    */
+;*      (make-button-callback '((button1 1 'toto)                      */
+;*    			        (button1 2 'tutu)                      */
+;*    			        (button1 4 'tata)))                    */
+;*      (make-button-callback '((button1 4 'toto)                      */
+;*    			        (button1 0 'tutu)                      */
+;*    			        (button2 0 'titi)))                    */
+;*      (make-button-callback '((button1 4 'toto)                      */
+;*    			        (button1 0 'tutu)                      */
+;*    			        (button2 0 'titi)                      */
+;*    			        (button3 4 'tyty)))                    */
+;*---------------------------------------------------------------------*/
+(define (make-button-callback gtk-event obj button-events)
+   (define (button-event<? ev1 ev2)
+      (string<? (symbol->string (car ev1)) (symbol->string (car ev2))))
+   (define (make-button-clause modif evts)
+      (let ((val (car (car evts))))
+	 `(,(if (or (eq? val 'button-press) (eq? val 'button-release))
+		'else
+		(list val))
+	   ,@(if (and (null? (cdr evts)) (eq? (cadr (car evts)) 0))
+		 ;; there is no need to generate a cond here
+		 (caddr (car evts))
+		 (let loop ((evts evts)
+			    (clauses '())
+			    (defaults '()))
+		    (if (null? evts)
+			`((cond ,@clauses
+				(else ,@(if (pair? defaults)
+					    defaults
+					    '(#unspecified)))))
+			(let ((evt (car evts)))
+			   (if (eq? (cadr evt) 0)
+			       ;; there is no modifier for that event
+			       (loop (cdr evts)
+				     clauses
+				     (append (caddr evt) defaults))
+			       (loop (cdr evts)
+				     (cons `((=fx ,modif ,(cadr evt))
+					     ,@(caddr evt))
+					   clauses)
+				     defaults)))))))))
+   (define (make-button-callback obj body)
+      ;; generate the code that implement the GTK callback
+      (let ((self (gensym 'self))
+	    (event-descr (gensym 'event-descr)))
+	 `(bglk-object-event-connect
+	   ,obj
+	   ',gtk-event
+	   ,(string-downcase (symbol->string gtk-event))
+	   (lambda (,event-descr ,self)
+	      (define (the-event-widget)
+		 ,self)
+	      (define (the-event-x)
+		 (warning "the-event-x: not implemented yet"))
+	      (define (the-event-y)
+		 (warning "the-event-y: not implemented yet"))
+	      (define (the-event-root-x)
+		 (warning "the-root-x: not implemented yet"))
+	      (define (the-event-root-y)
+		 (warning "the-root-y: not implemented yet"))
+	      (define (the-event-window)
+		 (warning "the-event-window: not implemented yet"))
+	      (define (the-event-button)
+		 (%%bglk-gdk-event-button ,event-descr))
+	      (define (the-event-button-modifiers)
+		 (%%bglk-gdk-event-button-modifiers ,event-descr))
+	      ,body))))
+   (if (null? button-events)
+       #unspecified
+       (let ((button-events (sort button-events button-event<?))
+	     (c (gensym 'the-event-button))
+	     (m (gensym 'the-event-modifier)))
+	  (let loop ((evts button-events)
+		     (clauses '()))
+	     (if (null? evts)
+		 (make-button-callback obj
+				    `(let ((,c (the-event-button))
+					   (,m (the-event-button-modifiers)))
+					(case ,c ,@clauses)))
+		 (let ((id (car (car evts))))
+		    ;; we collect all the event for which the identifier is ID
+		    (let laap ((id-evts (list (car evts)))
+			       (evts (cdr evts)))
+		       (if (or (null? evts)
+			       (not (eq? (car (car evts)) id)))
+			   ;; we are done, we have collected everthing
+			   (loop evts
+				 (cons (make-button-clause m id-evts)
+				       clauses))
+			   ;; we have to collect some moe
+			   (laap (cons (car evts) id-evts)
+				 (cdr evts))))))))))
+
+;*---------------------------------------------------------------------*/
+;*    make-file-callback ...                                           */
+;*---------------------------------------------------------------------*/
+(define (make-file-callback gtk-event obj file-events)
+   (define (make-file-callback evt)
+      (case (car evt)
+	 ((readable)
+	  `(bglk-add-input-port-event-handler! ,obj
+					       ',gtk-event
+					       (lambda (p) ,(caddr evt))))
+	 ((writable)
+	  (warning "`WRITABLE' event is not implemented yet")
+	  #unspecified)
+	 ((exception)
+	  (warning "`WRITABLE' event is not implemented yet")
+	  #unspecified)))
+   `(begin ,@(map make-file-callback file-events)))
+
+;*---------------------------------------------------------------------*/
+;*    make-other-callback ...                                          */
+;*    -------------------------------------------------------------    */
+;*    This function generates the correct callback associated          */
+;*    with a other-event (e.g. enter, leave). This function generates  */
+;*    a kind of direct automata that manages the event and             */
+;*    MODIFIERS+EVENT.                                                 */
+;*    -------------------------------------------------------------    */
+;*    KEY-EVENTS is a list of tuples: < id x modifiers x body >        */
+;*    -------------------------------------------------------------    */
+;*    To test this function:                                           */
+;*      (make-other-callback '((enter 0 'toto)))                       */
+;*      (make-other-callback '((enter 1 'toto)                         */
+;*    			       (enter 2 'tutu)                         */
+;*    			       (enter 4 'tata)))                       */
+;*      (make-other-callback '((enter 4 'toto)                         */
+;*    			       (enter 0 'tutu)                         */
+;*    			       (leave 0 'titi)))                       */
+;*---------------------------------------------------------------------*/
+(define (make-other-callback gtk-event obj other-events)
+   (define (other-event<? ev1 ev2)
+      (let ((id1 (car ev1))
+	    (id2 (car ev2)))
+	 (string<? (symbol->string id1) (symbol->string id2))))
+   (define (make-other-clause evts)
+      (if (and (null? (cdr evts)) (eq? (cadr (car evts)) 0))
+	  ;; there is no need to generate a cond here
+	  (caddr (car evts))
+	  (let loop ((evts evts)
+		     (clauses '())
+		     (defaults '()))
+	     (if (null? evts)
+		 `((cond ,@clauses
+			 (else ,@(if (pair? defaults)
+				     defaults
+				     '(#unspecified)))))
+		 (let ((evt (car evts)))
+		    (if (eq? (cadr evt) 0)
+			;; there is no modifier for that event
+			(loop (cdr evts)
+			      clauses
+			      (append (caddr evt) defaults))
+			(error "on-event" "Illegal modifier" (cadr evt))))))))
+   (define (make-other-callback obj body)
+      ;; generate the code that implement the GTK callback
+      (let ((self (gensym 'self))
+	    (event-descr (gensym 'event-descr)))
+	 `(bglk-object-event-connect
+	   ,obj
+	   ',gtk-event
+	   ,(string-downcase (symbol->string gtk-event))
+	   (lambda (,event-descr ,self)
+	      (define (the-event-widget)
+		 ,self)
+	      (define (the-event-x)
+		 (warning "the-event-x: not implemented yet"))
+	      (define (the-event-y)
+		 (warning "the-event-y: not implemented yet"))
+	      (define (the-event-root-x)
+		 (warning "the-root-x: not implemented yet"))
+	      (define (the-event-root-y)
+		 (warning "the-root-y: not implemented yet"))
+	      (define (the-event-window)
+		 (warning "the-event-window: not implemented yet"))
+	      ,body))))
+   (if (null? other-events)
+       #unspecified
+       (let ((other-events (sort other-events other-event<?)))
+	  (let loop ((evts other-events)
+		     (clauses '()))
+	     (if (null? evts)
+		 (make-other-callback obj `(begin ,@clauses))
+		 (let ((id (car (car evts))))
+		    ;; we collect all the event for which the identifier is ID
+		    (let laap ((id-evts (list (car evts)))
+			       (evts (cdr evts)))
+		       (if (or (null? evts)
+			       (not (eq? (car (car evts)) id)))
+			   ;; we are done, we have collected everthing
+			   (loop evts
+				 (append (make-other-clause id-evts) clauses))
+			   ;; we have to collect some moe
+			   (laap (cons (car evts) id-evts)
+				 (cdr evts))))))))))
+

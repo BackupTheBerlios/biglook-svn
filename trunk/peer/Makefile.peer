@@ -1,0 +1,194 @@
+#*=====================================================================*/
+#*    peer/Makefile.peer                                               */
+#*    -------------------------------------------------------------    */
+#*    Author      :  Manuel Serrano                                    */
+#*    Creation    :  Sat Mar 24 10:09:42 2001                          */
+#*    Last change :  Sun May 30 19:27:34 2004 (braun)                  */
+#*    Copyright   :  2001-04 Manuel Serrano                            */
+#*    -------------------------------------------------------------    */
+#*    The (gmake) Makefile to build the Biglook peers.                 */
+#*    This Makefile can't be processed directly. It is included by     */
+#*    Makefiles that are located in peer directories (e.g. null        */
+#*    directory).                                                      */
+#*=====================================================================*/
+
+#*---------------------------------------------------------------------*/
+#*    The default configuration                                        */
+#*---------------------------------------------------------------------*/
+include ../../Makefile.kconfig
+
+#*---------------------------------------------------------------------*/
+#*    Local configuration                                              */
+#*---------------------------------------------------------------------*/
+PEER_HEAP_FILE	= $(BOOTKDIR)/peer/heap/%make-lib.scm
+PEER_PBASE	= bigloo.biglook.peer
+PEER_CDIR	= objs/class_s/bigloo/biglook/peer
+ALL_PEERS	= null
+
+#*---------------------------------------------------------------------*/
+#*    duumy:                                                           */
+#*---------------------------------------------------------------------*/
+dummy:
+	@ echo "***ERROR: This Makefile can't be used to compile target"
+	@ echo "Instead, use the Makefiles that are located in the peer directories"
+	@ exit 1
+
+#*---------------------------------------------------------------------*/
+#*    init                                                             */
+#*---------------------------------------------------------------------*/
+init: $(BOOTKDIR)/lib/$(PEER_NAME)/biglook_peer.init
+
+$(BOOTKDIR)/lib/$(PEER_NAME)/biglook_peer.init: $(BOOTKDIR)/lib/$(PEER_NAME) \
+                                                Init/biglook_peer.init
+	@ cp Init/biglook_peer.init $@
+	@ echo "Init done... ($@)"
+	@ echo "-------------------------------"
+
+#*---------------------------------------------------------------------*/
+#*    heap                                                             */
+#*---------------------------------------------------------------------*/
+heap: .afile $(BOOTKDIR)/lib/biglook_peer.heap
+
+$(BOOTKDIR)/lib/biglook_peer.heap: $(PEER_HEAP_FILE) $(PEER_SOURCES)
+	@ $(BIGLOO) $(BHEAPFLAGS) \
+                    $(PEER_HEAP_FILE) \
+                    -addheap $(BOOTKDIR)/lib/biglook_peer.heap
+	@ echo "Heap Done... ($(BOOTKDIR)/lib/biglook_peer.heap)"
+	@ echo "-------------------------------"
+
+#*---------------------------------------------------------------------*/
+#*    jheap                                                            */
+#*---------------------------------------------------------------------*/
+jheap: .afile .jfile $(BOOTKDIR)/lib/biglook_peer.jheap
+
+$(BOOTKDIR)/lib/biglook_peer.jheap: $(PEER_HEAP_FILE) $(PEER_SOURCES)
+	@ $(BIGLOO) $(BHEAPFLAGS) \
+                    $(PEER_HEAP_FILE) \
+                    -jvm -g -no-saw -addheap $(BOOTKDIR)/lib/biglook_peer.jheap
+	@ echo "JHeap Done... ($(BOOTKDIR)/lib/biglook_peer.jheap)"
+	@ echo "-------------------------------"
+
+#*---------------------------------------------------------------------*/
+#*    lib                                                              */
+#*---------------------------------------------------------------------*/
+lib: dirs \
+     $(BOOTKDIR)/lib/$(PEER_NAME)/libbiglook_peer_s-$(KRELEASE).$(SHAREDSUFFIX) \
+     $(BOOTKDIR)/lib/$(PEER_NAME)/libbiglook_peer_s-$(KRELEASE).a
+
+$(BOOTKDIR)/lib/$(PEER_NAME)/libbiglook_peer_s-$(KRELEASE).$(SHAREDSUFFIX): $(PEER_OBJECTS)
+	@ /bin/rm -f $@
+	@ $(LD) -o $@ $(PEER_OBJECTS) -lm -lc
+	@ echo "biglook_peer_s-$(KRELEASE).$(SHAREDSUFFIX) done...($@)"
+	@ echo "-------------------------------"
+
+$(BOOTKDIR)/lib/$(PEER_NAME)/libbiglook_peer_s-$(KRELEASE).a: $(PEER_OBJECTS)
+	@ /bin/rm -f $@
+	@ $(AR) $(ARFLAGS) $@ $(PEER_OBJECTS)
+	@ $(RANLIB) $@
+	@ echo "biglook_peer_s-$(KRELEASE).a done...($@)"
+	@ echo "-------------------------------"
+
+#*---------------------------------------------------------------------*/
+#*    zip                                                              */
+#*---------------------------------------------------------------------*/
+jvm: zip
+zip: dirs .jfile $(BOOTKDIR)/lib/$(PEER_NAME)/biglook_peer_s.zip
+
+$(BOOTKDIR)/lib/$(PEER_NAME)/biglook_peer_s.zip: $(PEER_CLASSES) 
+	@ /bin/rm -f $@
+	@ (cd objs/class_s; \
+	  $(ZIP) -q $(ZFLAGS) $@ $(PEER_CDIR:objs/class_s/%=%)/*/*.class)
+	@ echo "biglook_peer_s.zip done...($@)"
+	@ echo "-------------------------------"
+
+#*---------------------------------------------------------------------*/
+#*    bee                                                              */
+#*---------------------------------------------------------------------*/
+bee: .afile .jfile .btags
+
+#*---------------------------------------------------------------------*/
+#*    .afile                                                           */
+#*---------------------------------------------------------------------*/
+.afile: $(PEER_SOURCES)
+	$(AFILE) $(PEER_SOURCES) -o .afile
+ 
+#*---------------------------------------------------------------------*/
+#*    .jfile                                                           */
+#*---------------------------------------------------------------------*/
+.jfile: $(PEER_SOURCES)
+	$(JFILE) -pbase $(PEER_PBASE) $(PEER_SOURCES) -o .jfile
+
+#*---------------------------------------------------------------------*/
+#*    .btags                                                           */
+#*---------------------------------------------------------------------*/
+.btags: $(PEER_SOURCES)
+	@$(BTAGS) $(PEER_SOURCES) -o .btags
+
+#*---------------------------------------------------------------------*/
+#*    population                                                       */
+#*---------------------------------------------------------------------*/
+pop:
+	@ echo "Makefile.peer"
+	@ echo $(PEER_HEAP_FILE)
+	@ for p in $(ALL_PEERS); do \
+            (cd $$p; $(MAKE) peer_pop PEER_DIRECTORY=$$p); \
+          done
+
+peer_pop:
+	@ echo $(PEER_POPULATION:%=$(PEER_DIRECTORY)/%)
+
+#*---------------------------------------------------------------------*/
+#*    directories                                                      */
+#*---------------------------------------------------------------------*/
+$(BOOTKDIR)/lib/$(PEER_NAME):
+	mkdir -p $(BOOTKDIR)/lib/$(PEER_NAME)
+
+#*---------------------------------------------------------------------*/
+#*    directories                                                      */
+#*---------------------------------------------------------------------*/
+dirs: objs/Llib objs/Lwidget $(PEER_OBJ_DIRS)
+
+objs/Llib:
+	mkdir -p $@
+
+objs/Lwidget:
+	mkdir -p $@
+
+#*---------------------------------------------------------------------*/
+#*    Llib/%configure.scm                                              */
+#*---------------------------------------------------------------------*/
+Llib/%configure.scm:
+	./configure --libdir=$(BGLLIBDIR)
+
+#*---------------------------------------------------------------------*/
+#*    clean:                                                           */
+#*---------------------------------------------------------------------*/
+clean:
+	/bin/rm -rf objs $(PEER_CLEAN)
+	/bin/rm -rf .afile .jfile .btags
+	/bin/rm -f Llib/_configure.scm
+
+cleanall: clean
+	/bin/rm -f $(BOOTKDIR)/lib/$(PEER_NAME)/biglook_peer_s.zip
+	/bin/rm -f $(BOOTKDIR)/lib/$(PEER_NAME)/libbiglook_peer_s-$(KRELEASE).a
+	/bin/rm -f $(BOOTKDIR)/lib/$(PEER_NAME)/libbiglook_peer_s-$(KRELEASE).$(SHAREDSUFFIX)
+	/bin/rm -f $(BOOTKDIR)/lib/$(PEER_NAME)/biglook_peer.init
+	/bin/rm -f $(BOOTKDIR)/lib/$(PEER_NAME)/biglook_peer.h
+	/bin/rm -f $(BOOTKDIR)/lib/biglook_peer.heap
+	/bin/rm -f $(BOOTKDIR)/lib/biglook_peer.jheap
+	/bin/rm -f Makefile.$(PEER_NAME)config
+
+distclean: cleanall
+
+#*---------------------------------------------------------------------*/
+#*    Automatic rules                                                  */
+#*---------------------------------------------------------------------*/
+# .scm -> .class
+$(PEER_CDIR)/%.class: %.scm
+	$(BIGLOO) -s -jvm -g -no-saw $(BFLAGS) $(PEER_BFLAGS) -c $< -o $@
+# .scm -> .o
+objs/%.o: %.scm
+	$(BIGLOO) -s $(BFLAGS) $(PEER_BFLAGS) -c $< -o $@
+# .c -> .o
+objs/%.o: %.c
+	$(CC) -s -I$(FILDIR) $(CFLAGS) $(PEER_CFLAGS) $(CPICFLAGS) -c $< -o $@

@@ -1,0 +1,1317 @@
+;; =========================================================
+;; The AST (Reduction)
+;; Bigloo (2.3b)
+;; Manuel Serrano        Sat Jul 7 11:58:47 EDT 2001 
+;; =========================================================
+
+;; module-initialization@__biglook_button
+;; long x string -> obj
+;; [export  side-effect: #t  occ: 0  rm: now  loc: #f  user?: #t]
+(define (module-initialization@__biglook_button
+         checksum
+         from)
+  (if (=fx@__r4_numbers_6_5_fixnum
+        (bint->long@foreign
+          (long->bint@foreign
+            (bit-and@__bit checksum 51573)))
+        checksum)
+    (if (obj->bool@foreign
+          require-initialization@__biglook_button)
+      (begin
+        (set! require-initialization@__biglook_button
+          (bool->bbool@foreign #f))
+        #unspecified
+        (library-modules-init@__biglook_button)
+        (cnst-init@__biglook_button)
+        (imported-modules-init@__biglook_button)
+        (object-init@__biglook_button)
+        (method-init@__biglook_button)
+        (toplevel-init@__biglook_button)
+        #unspecified)
+      #unspecified)
+    (module-init-error@__error
+      #"__biglook_button"
+      from)))
+
+;; library-modules-init@__biglook_button
+;;  -> obj
+;; [static  side-effect: #t  occ: 1  rm: cgen  loc: #{location Lwidget/button.scm 1778 26}  user?: #f]
+(define (library-modules-init@__biglook_button)
+  (begin
+    (module-initialization@__object
+      0
+      #"__biglook_button")
+    (module-initialization@__reader
+      0
+      #"__biglook_button")
+    (module-initialization@__biglook_%widget
+      0
+      #"__biglook_button")
+    (module-initialization@__biglook_%button
+      0
+      #"__biglook_button")
+    (module-initialization@__biglook_%bglk-object
+      0
+      #"__biglook_button")
+    (module-initialization@__r4_pairs_and_lists_6_3
+      0
+      #"__biglook_button")
+    (module-initialization@__r4_vectors_6_8
+      0
+      #"__biglook_button")
+    (module-initialization@__error
+      0
+      #"__biglook_button")
+    #unspecified))
+
+;; cnst-init@__biglook_button
+;;  -> obj
+;; [static  side-effect: #t  occ: 1  rm: cgen  loc: #{location Lwidget/button.scm 1778 26}  user?: #f]
+(define (cnst-init@__biglook_button)
+  (let ((cport (c-open-input-string@foreign
+                 string1709@__biglook_button)))
+    (labels
+      ((loop (i)
+             (if (c-=fx@foreign i -1)
+               #unspecified
+               (begin
+                 (cnst-table-set!@foreign
+                   (long->int@foreign i)
+                   (read@__reader (c-cons@foreign cport '())))
+                 (loop (int->long@foreign
+                         (long->int@foreign (c--fx@foreign i 1))))))))
+      (loop 34))))
+
+;; toplevel-init@__biglook_button
+;;  -> obj
+;; [static  side-effect: #f  occ: 1  rm: cgen  loc: #{location Lwidget/button.scm 1778 26}  user?: #t]
+(define (toplevel-init@__biglook_button)
+  #unspecified)
+
+;; set-button-command!@__biglook_button
+;; button x procedure -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 3640 86}  user?: #t]
+(define (set-button-command!@__biglook_button o v)
+  (if (correct-arity?@foreign v (long->int@foreign 1))
+    (let ((arg1524
+            (make-event-handler@__biglook_event
+              #unspecified
+              #unspecified
+              #unspecified
+              #unspecified
+              #unspecified
+              (begin v)
+              #unspecified
+              #unspecified
+              #unspecified
+              #unspecified
+              #unspecified
+              #unspecified
+              #unspecified)))
+      (call-virtual-setter@__object
+        (cast::object o)
+        (long->int@foreign 1)
+        (cast::obj arg1524)))
+    (failure
+      string1690@__biglook_button
+      string1691@__biglook_button
+      v)))
+
+;; _set-button-command!@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 3640 86}  user?: #t]
+(define (_set-button-command!@__biglook_button env o v)
+  (set-button-command!@__biglook_button
+    (if (button?@__biglook_button o)
+      (cast::button o)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 0)
+          string1692@__biglook_button
+          o)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))
+    (if (c-procedure?@foreign v)
+      v
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 0)
+          string1693@__biglook_button
+          v)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))))
+
+;; object-init@__biglook_button
+;;  -> obj
+;; [static  side-effect: #t  occ: 1  rm: cgen  loc: #{location Lwidget/button.scm 1778 26}  user?: #f]
+(define (object-init@__biglook_button)
+  (begin
+    (set! button@__biglook_button
+      (let ((arg1526 (cnst-table-ref@foreign 1))
+            (arg1527 container@__biglook_container)
+            (arg1531
+              (let ((arg1533
+                      (make-class-field@__object
+                        (cnst-table-ref@foreign 2)
+                        button-%command-env@__biglook_button
+                        button-%command-set!-env@__biglook_button
+                        #unspecified
+                        #f
+                        bfalse@foreign))
+                    (arg1534
+                      (make-class-field@__object
+                        (cnst-table-ref@foreign 3)
+                        button-command-env@__biglook_button
+                        button-command-set!-env@__biglook_button
+                        #unspecified
+                        #t
+                        bfalse@foreign))
+                    (arg1535
+                      (make-class-field@__object
+                        (cnst-table-ref@foreign 4)
+                        button-text-env@__biglook_button
+                        button-text-set!-env@__biglook_button
+                        #unspecified
+                        #t
+                        bfalse@foreign))
+                    (arg1536
+                      (make-class-field@__object
+                        (cnst-table-ref@foreign 5)
+                        button-image-env@__biglook_button
+                        button-image-set!-env@__biglook_button
+                        #unspecified
+                        #t
+                        bfalse@foreign))
+                    (arg1537
+                      (make-class-field@__object
+                        (cnst-table-ref@foreign 6)
+                        button-border-width-env@__biglook_button
+                        button-border-width-set!-env@__biglook_button
+                        #unspecified
+                        #t
+                        bfalse@foreign))
+                    (arg1538
+                      (make-class-field@__object
+                        (cnst-table-ref@foreign 7)
+                        button-relief-env@__biglook_button
+                        button-relief-set!-env@__biglook_button
+                        #unspecified
+                        #t
+                        bfalse@foreign))
+                    (arg1539
+                      (make-class-field@__object
+                        (cnst-table-ref@foreign 8)
+                        button-active-env@__biglook_button
+                        button-active-set!-env@__biglook_button
+                        #unspecified
+                        #t
+                        bfalse@foreign)))
+                (let ((list1540
+                        (c-cons@foreign
+                          arg1533
+                          (c-cons@foreign
+                            arg1534
+                            (c-cons@foreign
+                              arg1535
+                              (c-cons@foreign
+                                arg1536
+                                (c-cons@foreign
+                                  arg1537
+                                  (c-cons@foreign
+                                    arg1538
+                                    (c-cons@foreign arg1539 '())))))))))
+                  (let ((res1595
+                          (if (pair-or-null?@__r4_pairs_and_lists_6_3 list1540)
+                            list1540
+                            (begin
+                              (bigloo-type-error@__error
+                                (cnst-table-ref@foreign 9)
+                                string1694@__biglook_button
+                                list1540)
+                              (failure
+                                bfalse@foreign
+                                bfalse@foreign
+                                bfalse@foreign)))))
+                    res1595))))
+            (arg1532
+              (let ((arg1550
+                      (c-cons@foreign
+                        (long->bint@foreign 10)
+                        (c-cons@foreign
+                          button-%command-env@__biglook_button
+                          set-button-command!-env@__biglook_button)))
+                    (arg1551
+                      (c-cons@foreign
+                        (long->bint@foreign 11)
+                        (c-cons@foreign
+                          %button-text-env@__biglook_%button
+                          %button-text-set!-env@__biglook_%button)))
+                    (arg1552
+                      (c-cons@foreign
+                        (long->bint@foreign 12)
+                        (c-cons@foreign
+                          %button-image-env@__biglook_%button
+                          proc1695@__biglook_button)))
+                    (arg1553
+                      (c-cons@foreign
+                        (long->bint@foreign 9)
+                        (c-cons@foreign
+                          proc1697@__biglook_button
+                          proc1696@__biglook_button)))
+                    (arg1554
+                      (c-cons@foreign
+                        (long->bint@foreign 14)
+                        (c-cons@foreign
+                          %button-relief-env@__biglook_%button
+                          %button-relief-set!-env@__biglook_%button)))
+                    (arg1555
+                      (c-cons@foreign
+                        (long->bint@foreign 15)
+                        (c-cons@foreign
+                          %widget-active?-env@__biglook_%widget
+                          %widget-active?-set!-env@__biglook_%widget))))
+                (list->vector@__r4_vectors_6_8
+                  (c-cons@foreign
+                    arg1550
+                    (c-cons@foreign
+                      arg1551
+                      (c-cons@foreign
+                        arg1552
+                        (c-cons@foreign
+                          arg1553
+                          (c-cons@foreign
+                            arg1554
+                            (c-cons@foreign arg1555 '()))))))))))
+        (register-class!@__object
+          arg1526
+          arg1527
+          make-button-env@__biglook_button
+          allocate-button-env@__biglook_button
+          50470
+          arg1531
+          bfalse@foreign
+          arg1532)))
+    #unspecified
+    #unspecified))
+
+;; <anonymous:1579>@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define (<anonymous:1579>@__biglook_button
+         env
+         sobj1456
+         sval1457)
+  (labels
+    ((<anonymous:1579>
+       (sobj1456 sval1457)
+       (%button-border-width-set!@__biglook_%button
+         (if (%bglk-object?@__biglook_%bglk-object sobj1456)
+           (cast::%bglk-object sobj1456)
+           (begin
+             (bigloo-type-error@__error
+               (cnst-table-ref@foreign 10)
+               string1698@__biglook_button
+               sobj1456)
+             (failure
+               bfalse@foreign
+               bfalse@foreign
+               bfalse@foreign)))
+         (bint->int@foreign
+           (if (c-fixnum?@foreign sval1457)
+             sval1457
+             (begin
+               (bigloo-type-error@__error
+                 (cnst-table-ref@foreign 10)
+                 string1699@__biglook_button
+                 sval1457)
+               (failure
+                 bfalse@foreign
+                 bfalse@foreign
+                 bfalse@foreign)))))))
+    (<anonymous:1579> sobj1456 sval1457)))
+
+;; <anonymous:1577>@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define (<anonymous:1577>@__biglook_button env obj1453)
+  (labels
+    ((<anonymous:1577>
+       (obj1453)
+       (%button-border-width@__biglook_%button
+         (if (%bglk-object?@__biglook_%bglk-object obj1453)
+           (cast::%bglk-object obj1453)
+           (begin
+             (bigloo-type-error@__error
+               (cnst-table-ref@foreign 11)
+               string1698@__biglook_button
+               obj1453)
+             (failure
+               bfalse@foreign
+               bfalse@foreign
+               bfalse@foreign))))))
+    (int->bint@foreign (<anonymous:1577> obj1453))))
+
+;; <anonymous:1570>@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2330 50}  user?: #t]
+(define (<anonymous:1570>@__biglook_button env o v)
+  (labels
+    ((<anonymous:1570>
+       (o v)
+       (let ((test1571
+               (let ((arg1572
+                       (call-virtual-getter@__object
+                         (cast::object v)
+                         (long->int@foreign 0))))
+                 (is-a?@__object
+                   arg1572
+                   bglk-object@__biglook_bglk-object))))
+         (if test1571
+           (failure
+             string1700@__biglook_button
+             string1701@__biglook_button
+             (cast::obj v))
+           (%button-image-set!@__biglook_%button
+             (if (%bglk-object?@__biglook_%bglk-object o)
+               (cast::%bglk-object o)
+               (begin
+                 (bigloo-type-error@__error
+                   (cnst-table-ref@foreign 12)
+                   string1698@__biglook_button
+                   o)
+                 (failure
+                   bfalse@foreign
+                   bfalse@foreign
+                   bfalse@foreign)))
+             (cast::%bglk-object v))))))
+    (<anonymous:1570>
+      o
+      (if (image?@__biglook_button v)
+        (cast::image v)
+        (begin
+          (bigloo-type-error@__error
+            (cnst-table-ref@foreign 12)
+            string1702@__biglook_button
+            v)
+          (failure
+            bfalse@foreign
+            bfalse@foreign
+            bfalse@foreign))))))
+
+;; button?@__biglook_button
+;; obj -> bool
+;; [export  side-effect: #f  predicate-of: button  occ: 20  rm: coerce  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define-inline (button?@__biglook_button obj1499)
+  (is-a?@__object obj1499 button@__biglook_button))
+
+;; _button?@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #f  occ: 0  rm: never  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define (_button?@__biglook_button env obj1499)
+  (bool->bbool@foreign
+    (button?@__biglook_button obj1499)))
+
+;; fill-button!@__biglook_button
+;; button x obj x int x int x obj -> button
+;; [export  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define-inline (fill-button!@__biglook_button
+                new1468
+                %peer1464
+                padx1465
+                pady1466
+                %command1467)
+  (begin
+    (setfield
+      (#"bgl_z52peerz52" obj)
+      button
+      (cast::obj new1468)
+      %peer1464)
+    (setfield
+      (#"bgl_padxz00" int)
+      button
+      (cast::obj new1468)
+      padx1465)
+    (setfield
+      (#"bgl_padyz00" int)
+      button
+      (cast::obj new1468)
+      pady1466)
+    (setfield
+      (#"bgl_z52commandz52" obj)
+      button
+      (cast::obj new1468)
+      %command1467)
+    new1468))
+
+;; _fill-button!@__biglook_button
+;; procedure x obj x obj x obj x obj x obj -> obj
+;; [static  side-effect: #t  occ: 0  rm: never  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define (_fill-button!@__biglook_button
+         env
+         new1468
+         %peer1464
+         padx1465
+         pady1466
+         %command1467)
+  (let ((x (fill-button!@__biglook_button
+             (if (button?@__biglook_button new1468)
+               (cast::button new1468)
+               (begin
+                 (bigloo-type-error@__error
+                   (cnst-table-ref@foreign 13)
+                   string1692@__biglook_button
+                   new1468)
+                 (failure
+                   bfalse@foreign
+                   bfalse@foreign
+                   bfalse@foreign)))
+             %peer1464
+             (bint->int@foreign
+               (if (c-fixnum?@foreign padx1465)
+                 padx1465
+                 (begin
+                   (bigloo-type-error@__error
+                     (cnst-table-ref@foreign 13)
+                     string1699@__biglook_button
+                     padx1465)
+                   (failure
+                     bfalse@foreign
+                     bfalse@foreign
+                     bfalse@foreign))))
+             (bint->int@foreign
+               (if (c-fixnum?@foreign pady1466)
+                 pady1466
+                 (begin
+                   (bigloo-type-error@__error
+                     (cnst-table-ref@foreign 13)
+                     string1699@__biglook_button
+                     pady1466)
+                   (failure
+                     bfalse@foreign
+                     bfalse@foreign
+                     bfalse@foreign))))
+             %command1467)))
+    (cast::obj x)))
+
+;; make-button@__biglook_button
+;; obj x int x int x obj -> button
+;; [export  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define (make-button@__biglook_button
+         %peer1474
+         padx1475
+         pady1476
+         %command1477)
+  (let ((new1478
+          (let ((res1596
+                  (let ((new1480 (new button)))
+                    (begin
+                      (let ((arg1585
+                              (class-num@__object button@__biglook_button)))
+                        (%object-class-num-set!@foreign
+                          (cast::object new1480)
+                          arg1585))
+                      (object-widening-set!@foreign
+                        (cast::object new1480)
+                        bfalse@foreign)
+                      new1480))))
+            res1596)))
+    (begin
+      (let ((res1597
+              (begin
+                (setfield
+                  (#"bgl_z52peerz52" obj)
+                  button
+                  (cast::obj new1478)
+                  %peer1474)
+                (setfield
+                  (#"bgl_padxz00" int)
+                  button
+                  (cast::obj new1478)
+                  padx1475)
+                (setfield
+                  (#"bgl_padyz00" int)
+                  button
+                  (cast::obj new1478)
+                  pady1476)
+                (setfield
+                  (#"bgl_z52commandz52" obj)
+                  button
+                  (cast::obj new1478)
+                  %command1477)
+                new1478)))
+        res1597)
+      (bglk-object-init@__biglook_bglk-object
+        (cast::bglk-object new1478))
+      new1478)))
+
+;; _make-button@__biglook_button
+;; procedure x obj x obj x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: never  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define (_make-button@__biglook_button
+         env
+         %peer1474
+         padx1475
+         pady1476
+         %command1477)
+  (let ((x (make-button@__biglook_button
+             %peer1474
+             (bint->int@foreign
+               (if (c-fixnum?@foreign padx1475)
+                 padx1475
+                 (begin
+                   (bigloo-type-error@__error
+                     (cnst-table-ref@foreign 14)
+                     string1699@__biglook_button
+                     padx1475)
+                   (failure
+                     bfalse@foreign
+                     bfalse@foreign
+                     bfalse@foreign))))
+             (bint->int@foreign
+               (if (c-fixnum?@foreign pady1476)
+                 pady1476
+                 (begin
+                   (bigloo-type-error@__error
+                     (cnst-table-ref@foreign 14)
+                     string1699@__biglook_button
+                     pady1476)
+                   (failure
+                     bfalse@foreign
+                     bfalse@foreign
+                     bfalse@foreign))))
+             %command1477)))
+    (cast::obj x)))
+
+;; allocate-button@__biglook_button
+;;  -> button
+;; [export  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define-inline (allocate-button@__biglook_button)
+  (let ((new1480 (new button)))
+    (begin
+      (let ((arg1585
+              (class-num@__object button@__biglook_button)))
+        (%object-class-num-set!@foreign
+          (cast::object new1480)
+          arg1585))
+      (object-widening-set!@foreign
+        (cast::object new1480)
+        bfalse@foreign)
+      new1480)))
+
+;; _allocate-button@__biglook_button
+;; procedure -> obj
+;; [static  side-effect: #t  occ: 1  rm: never  loc: #{location Lwidget/button.scm 1977 36}  user?: #t]
+(define (_allocate-button@__biglook_button env)
+  (let ((x (allocate-button@__biglook_button)))
+    (cast::obj x)))
+
+;; button-%command-set!@__biglook_button
+;; button x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2033 38}  user?: #t]
+(define-inline (button-%command-set!@__biglook_button
+                obj1442
+                val1441)
+  (setfield
+    (#"bgl_z52commandz52" obj)
+    button
+    (cast::obj obj1442)
+    val1441))
+
+;; _button-%command-set!@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2033 38}  user?: #t]
+(define (_button-%command-set!@__biglook_button
+         env
+         obj1442
+         val1441)
+  (button-%command-set!@__biglook_button
+    (if (button?@__biglook_button obj1442)
+      (cast::button obj1442)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 15)
+          string1692@__biglook_button
+          obj1442)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))
+    val1441))
+
+;; button-%command@__biglook_button
+;; button -> obj
+;; [static  side-effect: #f  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2033 38}  user?: #t]
+(define-inline (button-%command@__biglook_button obj1440)
+  (getfield
+    (#"bgl_z52commandz52" obj)
+    button
+    (cast::obj obj1440)))
+
+;; _button-%command@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 2  rm: now  loc: #{location Lwidget/button.scm 2033 38}  user?: #t]
+(define (_button-%command@__biglook_button env obj1440)
+  (button-%command@__biglook_button
+    (if (button?@__biglook_button obj1440)
+      (cast::button obj1440)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 16)
+          string1692@__biglook_button
+          obj1440)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))))
+
+;; button-command-set!@__biglook_button
+;; button x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2115 40}  user?: #t]
+(define-inline (button-command-set!@__biglook_button
+                obj1445
+                val1444)
+  (call-virtual-setter@__object
+    (cast::object obj1445)
+    (long->int@foreign 10)
+    val1444))
+
+;; _button-command-set!@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2115 40}  user?: #t]
+(define (_button-command-set!@__biglook_button
+         env
+         obj1445
+         val1444)
+  (button-command-set!@__biglook_button
+    (if (button?@__biglook_button obj1445)
+      (cast::button obj1445)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 17)
+          string1692@__biglook_button
+          obj1445)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))
+    val1444))
+
+;; button-command@__biglook_button
+;; button -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2115 40}  user?: #t]
+(define-inline (button-command@__biglook_button obj1443)
+  (call-virtual-getter@__object
+    (cast::object obj1443)
+    (long->int@foreign 10)))
+
+;; _button-command@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2115 40}  user?: #t]
+(define (_button-command@__biglook_button env obj1443)
+  (button-command@__biglook_button
+    (if (button?@__biglook_button obj1443)
+      (cast::button obj1443)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 18)
+          string1692@__biglook_button
+          obj1443)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))))
+
+;; button-text-set!@__biglook_button
+;; button x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2208 44}  user?: #t]
+(define-inline (button-text-set!@__biglook_button
+                obj1448
+                val1447)
+  (call-virtual-setter@__object
+    (cast::object obj1448)
+    (long->int@foreign 11)
+    val1447))
+
+;; _button-text-set!@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2208 44}  user?: #t]
+(define (_button-text-set!@__biglook_button
+         env
+         obj1448
+         val1447)
+  (button-text-set!@__biglook_button
+    (if (button?@__biglook_button obj1448)
+      (cast::button obj1448)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 19)
+          string1692@__biglook_button
+          obj1448)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))
+    val1447))
+
+;; button-text@__biglook_button
+;; button -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2208 44}  user?: #t]
+(define-inline (button-text@__biglook_button obj1446)
+  (call-virtual-getter@__object
+    (cast::object obj1446)
+    (long->int@foreign 11)))
+
+;; _button-text@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2208 44}  user?: #t]
+(define (_button-text@__biglook_button env obj1446)
+  (button-text@__biglook_button
+    (if (button?@__biglook_button obj1446)
+      (cast::button obj1446)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 20)
+          string1692@__biglook_button
+          obj1446)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))))
+
+;; button-image-set!@__biglook_button
+;; button x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2294 48}  user?: #t]
+(define-inline (button-image-set!@__biglook_button
+                obj1451
+                val1450)
+  (call-virtual-setter@__object
+    (cast::object obj1451)
+    (long->int@foreign 12)
+    val1450))
+
+;; _button-image-set!@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2294 48}  user?: #t]
+(define (_button-image-set!@__biglook_button
+         env
+         obj1451
+         val1450)
+  (button-image-set!@__biglook_button
+    (if (button?@__biglook_button obj1451)
+      (cast::button obj1451)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 21)
+          string1692@__biglook_button
+          obj1451)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))
+    val1450))
+
+;; button-image@__biglook_button
+;; button -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2294 48}  user?: #t]
+(define-inline (button-image@__biglook_button obj1449)
+  (call-virtual-getter@__object
+    (cast::object obj1449)
+    (long->int@foreign 12)))
+
+;; _button-image@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2294 48}  user?: #t]
+(define (_button-image@__biglook_button env obj1449)
+  (button-image@__biglook_button
+    (if (button?@__biglook_button obj1449)
+      (cast::button obj1449)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 22)
+          string1692@__biglook_button
+          obj1449)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))))
+
+;; button-border-width-set!@__biglook_button
+;; button x int -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2570 58}  user?: #t]
+(define-inline (button-border-width-set!@__biglook_button
+                obj1455
+                val1454)
+  (call-virtual-setter@__object
+    (cast::object obj1455)
+    (long->int@foreign 9)
+    (int->bint@foreign val1454)))
+
+;; _button-border-width-set!@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2570 58}  user?: #t]
+(define (_button-border-width-set!@__biglook_button
+         env
+         obj1455
+         val1454)
+  (button-border-width-set!@__biglook_button
+    (if (button?@__biglook_button obj1455)
+      (cast::button obj1455)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 23)
+          string1692@__biglook_button
+          obj1455)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))
+    (bint->int@foreign
+      (if (c-fixnum?@foreign val1454)
+        val1454
+        (begin
+          (bigloo-type-error@__error
+            (cnst-table-ref@foreign 23)
+            string1699@__biglook_button
+            val1454)
+          (failure
+            bfalse@foreign
+            bfalse@foreign
+            bfalse@foreign))))))
+
+;; button-border-width@__biglook_button
+;; button -> int
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2570 58}  user?: #t]
+(define-inline (button-border-width@__biglook_button obj1452)
+  (bint->int@foreign
+    (let ((aux1658
+            (call-virtual-getter@__object
+              (cast::object obj1452)
+              (long->int@foreign 9))))
+      (if (c-fixnum?@foreign aux1658)
+        aux1658
+        (begin
+          (bigloo-type-error@__error
+            (cnst-table-ref@foreign 24)
+            string1699@__biglook_button
+            aux1658)
+          (failure
+            bfalse@foreign
+            bfalse@foreign
+            bfalse@foreign))))))
+
+;; _button-border-width@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2570 58}  user?: #t]
+(define (_button-border-width@__biglook_button
+         env
+         obj1452)
+  (int->bint@foreign
+    (button-border-width@__biglook_button
+      (if (button?@__biglook_button obj1452)
+        (cast::button obj1452)
+        (begin
+          (bigloo-type-error@__error
+            (cnst-table-ref@foreign 25)
+            string1692@__biglook_button
+            obj1452)
+          (failure
+            bfalse@foreign
+            bfalse@foreign
+            bfalse@foreign))))))
+
+;; button-relief-set!@__biglook_button
+;; button x symbol -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2679 62}  user?: #t]
+(define-inline (button-relief-set!@__biglook_button
+                obj1460
+                val1459)
+  (call-virtual-setter@__object
+    (cast::object obj1460)
+    (long->int@foreign 14)
+    val1459))
+
+;; _button-relief-set!@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2679 62}  user?: #t]
+(define (_button-relief-set!@__biglook_button
+         env
+         obj1460
+         val1459)
+  (button-relief-set!@__biglook_button
+    (if (button?@__biglook_button obj1460)
+      (cast::button obj1460)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 26)
+          string1692@__biglook_button
+          obj1460)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))
+    (if (c-symbol?@foreign val1459)
+      val1459
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 26)
+          string1703@__biglook_button
+          val1459)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))))
+
+;; button-relief@__biglook_button
+;; button -> symbol
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2679 62}  user?: #t]
+(define-inline (button-relief@__biglook_button obj1458)
+  (let ((aux1666
+          (call-virtual-getter@__object
+            (cast::object obj1458)
+            (long->int@foreign 14))))
+    (if (c-symbol?@foreign aux1666)
+      aux1666
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 27)
+          string1703@__biglook_button
+          aux1666)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))))
+
+;; _button-relief@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2679 62}  user?: #t]
+(define (_button-relief@__biglook_button env obj1458)
+  (button-relief@__biglook_button
+    (if (button?@__biglook_button obj1458)
+      (cast::button obj1458)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 28)
+          string1692@__biglook_button
+          obj1458)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))))
+
+;; button-active-set!@__biglook_button
+;; button x bool -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2773 66}  user?: #t]
+(define-inline (button-active-set!@__biglook_button
+                obj1463
+                val1462)
+  (call-virtual-setter@__object
+    (cast::object obj1463)
+    (long->int@foreign 15)
+    (bool->bbool@foreign val1462)))
+
+;; _button-active-set!@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2773 66}  user?: #t]
+(define (_button-active-set!@__biglook_button
+         env
+         obj1463
+         val1462)
+  (button-active-set!@__biglook_button
+    (if (button?@__biglook_button obj1463)
+      (cast::button obj1463)
+      (begin
+        (bigloo-type-error@__error
+          (cnst-table-ref@foreign 29)
+          string1692@__biglook_button
+          obj1463)
+        (failure
+          bfalse@foreign
+          bfalse@foreign
+          bfalse@foreign)))
+    (obj->bool@foreign val1462)))
+
+;; button-active@__biglook_button
+;; button -> bool
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2773 66}  user?: #t]
+(define-inline (button-active@__biglook_button obj1461)
+  (obj->bool@foreign
+    (call-virtual-getter@__object
+      (cast::object obj1461)
+      (long->int@foreign 15))))
+
+;; _button-active@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 2773 66}  user?: #t]
+(define (_button-active@__biglook_button env obj1461)
+  (bool->bbool@foreign
+    (button-active@__biglook_button
+      (if (button?@__biglook_button obj1461)
+        (cast::button obj1461)
+        (begin
+          (bigloo-type-error@__error
+            (cnst-table-ref@foreign 30)
+            string1692@__biglook_button
+            obj1461)
+          (failure
+            bfalse@foreign
+            bfalse@foreign
+            bfalse@foreign))))))
+
+;; image?@__biglook_button
+;; obj -> bool
+;; [static  side-effect: #f  predicate-of: image  occ: 1  rm: now  loc: #{location ./Lwidget/image.scm 1955 35}  user?: #t]
+(define-inline (image?@__biglook_button obj1145)
+  (is-a?@__object obj1145 image@__biglook_image))
+
+;; method-init@__biglook_button
+;;  -> obj
+;; [static  side-effect: #t  occ: 1  rm: cgen  loc: #{location Lwidget/button.scm 1778 26}  user?: #f]
+(define (method-init@__biglook_button)
+  (begin
+    #unspecified
+    (add-method!@__object
+      bglk-object-init-env@__biglook_bglk-object
+      button@__biglook_button
+      proc1704@__biglook_button)
+    (add-method!@__object
+      object->struct-env@__object
+      button@__biglook_button
+      proc1705@__biglook_button)
+    (add-method!@__object
+      struct+object->object-env@__object
+      button@__biglook_button
+      proc1706@__biglook_button)))
+
+;; struct+object->object-button1522@__biglook_button
+;; procedure x obj x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 1977 36}  user?: #f]
+(define (struct+object->object-button1522@__biglook_button
+         env
+         o
+         s)
+  (labels
+    ((struct+object->object-button1522
+       (o s)
+       (begin
+         (object-widening-set!@foreign
+           (cast::object o)
+           (c-struct-ref@foreign s (long->int@foreign 0)))
+         (let ((v1485 (c-struct-ref@foreign s (long->int@foreign 1))))
+           (setfield
+             (#"bgl_z52peerz52" obj)
+             button
+             (cast::obj o)
+             v1485))
+         (let ((v1489 (bint->int@foreign
+                        (let ((aux1674
+                                (c-struct-ref@foreign
+                                  s
+                                  (long->int@foreign 11))))
+                          (if (c-fixnum?@foreign aux1674)
+                            aux1674
+                            (begin
+                              (bigloo-type-error@__error
+                                (cnst-table-ref@foreign 31)
+                                string1699@__biglook_button
+                                aux1674)
+                              (failure
+                                bfalse@foreign
+                                bfalse@foreign
+                                bfalse@foreign)))))))
+           (setfield
+             (#"bgl_padxz00" int)
+             button
+             (cast::obj o)
+             v1489))
+         (let ((v1493 (bint->int@foreign
+                        (let ((aux1676
+                                (c-struct-ref@foreign
+                                  s
+                                  (long->int@foreign 12))))
+                          (if (c-fixnum?@foreign aux1676)
+                            aux1676
+                            (begin
+                              (bigloo-type-error@__error
+                                (cnst-table-ref@foreign 31)
+                                string1699@__biglook_button
+                                aux1676)
+                              (failure
+                                bfalse@foreign
+                                bfalse@foreign
+                                bfalse@foreign)))))))
+           (setfield
+             (#"bgl_padyz00" int)
+             button
+             (cast::obj o)
+             v1493))
+         (let ((v1497 (c-struct-ref@foreign s (long->int@foreign 13))))
+           (setfield
+             (#"bgl_z52commandz52" obj)
+             button
+             (cast::obj o)
+             v1497))
+         o)))
+    (let ((x (struct+object->object-button1522
+               (if (button?@__biglook_button o)
+                 (cast::button o)
+                 (begin
+                   (bigloo-type-error@__error
+                     (cnst-table-ref@foreign 31)
+                     string1692@__biglook_button
+                     o)
+                   (failure
+                     bfalse@foreign
+                     bfalse@foreign
+                     bfalse@foreign)))
+               (if (c-struct?@foreign s)
+                 s
+                 (begin
+                   (bigloo-type-error@__error
+                     (cnst-table-ref@foreign 31)
+                     string1707@__biglook_button
+                     s)
+                   (failure
+                     bfalse@foreign
+                     bfalse@foreign
+                     bfalse@foreign))))))
+      (cast::obj x))))
+
+;; object->struct-button1520@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 1977 36}  user?: #f]
+(define (object->struct-button1520@__biglook_button
+         env
+         obj1481)
+  (labels
+    ((object->struct-button1520
+       (obj1481)
+       (let ((res1482
+               (c-make-struct@foreign
+                 (cnst-table-ref@foreign 1)
+                 (long->int@foreign 5)
+                 #unspecified)))
+         (begin
+           (c-struct-set!@foreign
+             res1482
+             (long->int@foreign 0)
+             bfalse@foreign)
+           (c-struct-set!@foreign
+             res1482
+             (long->int@foreign 1)
+             (getfield
+               (#"bgl_z52peerz52" obj)
+               button
+               (cast::obj obj1481)))
+           res1482))))
+    (object->struct-button1520
+      (if (button?@__biglook_button obj1481)
+        (cast::button obj1481)
+        (begin
+          (bigloo-type-error@__error
+            (cnst-table-ref@foreign 32)
+            string1692@__biglook_button
+            obj1481)
+          (failure
+            bfalse@foreign
+            bfalse@foreign
+            bfalse@foreign))))))
+
+;; bglk-object-init-button1518@__biglook_button
+;; procedure x obj -> obj
+;; [static  side-effect: #t  occ: 1  rm: now  loc: #{location Lwidget/button.scm 3067 73}  user?: #f]
+(define (bglk-object-init-button1518@__biglook_button
+         env
+         o)
+  (labels
+    ((bglk-object-init-button1518
+       (o)
+       (labels
+         ((call-next-method
+            ()
+            (let ((next-method1517
+                    (find-super-class-method@__object
+                      (cast::object o)
+                      bglk-object-init-env@__biglook_bglk-object
+                      button@__biglook_button)))
+              (if (c-procedure?@foreign next-method1517)
+                (let ((fun (if (c-procedure?@foreign next-method1517)
+                             next-method1517
+                             (begin
+                               (bigloo-type-error@__error
+                                 (cnst-table-ref@foreign 33)
+                                 string1693@__biglook_button
+                                 next-method1517)
+                               (failure
+                                 bfalse@foreign
+                                 bfalse@foreign
+                                 bfalse@foreign)))))
+                  (if (correct-arity?@foreign fun 1)
+                    (funcall
+                      fun
+                      next-method1517
+                      (cast::obj o)
+                      __eoa__@foreign)
+                    (failure
+                      string1708@__biglook_button
+                      (cnst-table-ref@foreign 34)
+                      fun)))
+                (begin
+                  (bglk-object-init@__biglook_bglk-object
+                    (cast::bglk-object o)))))))
+         (begin
+           (if (c-eq?@foreign
+                 (getfield
+                   (#"bgl_z52peerz52" obj)
+                   button
+                   (cast::obj o))
+                 #unspecified)
+             (let ((arg1587
+                     (%make-%button@__biglook_%button
+                       (cast::%bglk-object o))))
+               (setfield
+                 (#"bgl_z52peerz52" obj)
+                 button
+                 (cast::obj o)
+                 arg1587))
+             bfalse@foreign)
+           (call-next-method)
+           o))))
+    (let ((x (bglk-object-init-button1518
+               (if (button?@__biglook_button o)
+                 (cast::button o)
+                 (begin
+                   (bigloo-type-error@__error
+                     (cnst-table-ref@foreign 33)
+                     string1692@__biglook_button
+                     o)
+                   (failure
+                     bfalse@foreign
+                     bfalse@foreign
+                     bfalse@foreign))))))
+      (cast::obj x))))
+
+;; imported-modules-init@__biglook_button
+;;  -> obj
+;; [static  side-effect: #t  occ: 1  rm: cgen  loc: #{location Lwidget/button.scm 1778 26}  user?: #f]
+(define (imported-modules-init@__biglook_button)
+  (begin
+    (module-initialization@__biglook_bglk-object
+      40254
+      #"__biglook_button")
+    (module-initialization@__biglook_container
+      29129
+      #"__biglook_button")
+    (module-initialization@__biglook_widget
+      39766
+      #"__biglook_button")
+    (module-initialization@__biglook_image
+      8351
+      #"__biglook_button")
+    (module-initialization@__biglook_event
+      -99476
+      #"__biglook_button")))
+
