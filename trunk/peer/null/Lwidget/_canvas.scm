@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Wed Nov 17 14:44:38 2004 (dciabrin)               */
-;*    Copyright   :  2001-04 Manuel Serrano                            */
+;*    Last change :  Tue Mar 22 10:37:08 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Null peer Canvas implementation.                             */
 ;*    definition: @path ../../../biglook/Lwidget/canvas.scm@           */
@@ -44,6 +44,12 @@
 
 	   (%canvas-zoom-y::float ::%bglk-object)
 	   (%canvas-zoom-y-set! ::%bglk-object ::float)
+
+	   (%canvas-origin-x::int ::%bglk-object)
+	   (%canvas-origin-x-set! ::%bglk-object ::float)
+
+	   (%canvas-origin-y::int ::%bglk-object)
+	   (%canvas-origin-y-set! ::%bglk-object ::float)
 
 	   (%canvas-add! ::%bglk-object ::%bglk-object ::pair-nil)))
 
@@ -154,4 +160,29 @@
 ;*---------------------------------------------------------------------*/
 (define (%canvas-zoom-y-set! o::%bglk-object v::float)
    (not-implemented o "%canvas-zoom-y-set!"))
+
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-origin-x ...                                             */
+;*---------------------------------------------------------------------*/
+(define (%canvas-origin-x::float o::%bglk-object)
+   (not-implemented o "%canvas-origin-x"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-origin-x-set! ...                                        */
+;*---------------------------------------------------------------------*/
+(define (%canvas-origin-x-set! o::%bglk-object v::float)
+   (not-implemented o "%canvas-origin-x-set!"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-origin-y ...                                             */
+;*---------------------------------------------------------------------*/
+(define (%canvas-origin-y::float o::%bglk-object)
+   (not-implemented o "%canvas-origin-y"))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-origin-y-set! ...                                        */
+;*---------------------------------------------------------------------*/
+(define (%canvas-origin-y-set! o::%bglk-object v::float)
+   (not-implemented o "%canvas-origin-y-set!"))
 

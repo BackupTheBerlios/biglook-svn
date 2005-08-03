@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Llib/_event.scm          */
+;*    swt/Llib/_event.scm                                              */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Fri Dec 13 15:52:30 2002 (serrano)                */
-;*    Copyright   :  2001-02 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 21:44:41 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer event implementation.                             */
 ;*    definition: @path ../../../biglook/Llib/event.scm@               */
@@ -18,16 +18,18 @@
    (import __biglook_%error
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%bglk-object)
    
    (export (class %event
 	      %event
+	      type
 	      (%widget (default #f)))
 	   
 	   (%initialize-events! ::%event ::%event ::%event ::%event)
 	   
-	   (%event-type::symbol ::%event)
+;	   (%event-type::symbol ::%event)
 	   (%event-time::int ::%event)
 	   (%event-x::int ::%event)
 	   (%event-y::int ::%event)
@@ -67,63 +69,13 @@
 ;*---------------------------------------------------------------------*/
 ;*    %event-type ...                                                  */
 ;*---------------------------------------------------------------------*/
-(define (%event-type::symbol ev::%event)
-   (let ((%ev (%event-%event ev)))
-      (cond
-	 ((%awt-mouseevent? %ev)
-	  (let ((type (%awt-event-type %ev)))
-	     (cond
-		((=fx type %awt-mouseevent-press)
-		 'press)
-		((=fx type %awt-mouseevent-release)
-		 'release)
-		((=fx type %awt-mouseevent-enter)
-		 'enter)
-		((=fx type %awt-mouseevent-exit)
-		 'leave)
-		((=fx type %awt-mouseevent-move)
-		 'motion)
-		((=fx type %awt-mouseevent-drag)
-		 'drag)
-		((=fx type %awt-mouseevent-click)
-		 'click)
-		(else
-		 '???a))))
-	 ((%awt-focusevent? %ev)
-	  (let ((type (%awt-event-type %ev)))
-	     (cond
-		((=fx type %awt-focusevent-gained)
-		 'focus-in)
-		((=fx type %awt-focusevent-lost)
-		 'focus-out)
-		(else
-		 '???d))))
-	 ((%awt-componentevent? %ev)
-	  (let ((type (%awt-event-type %ev)))
-	     (cond
-		((=fx type %awt-componentevent-moved)
-		 'configure)
-		((=fx type %awt-componentevent-resized)
-		 'configure)
-		(else
-		 '???b))))
-	 ((%awt-windowevent? %ev)
-	  (let ((type (%awt-event-type %ev)))
-	     (cond
-		((=fx type %awt-windowevent-closed)
-		 'destroy)
-		((=fx type %awt-windowevent-iconified)
-		 'iconify)
-		((=fx type %awt-windowevent-deiconified)
-		 'deiconify)
-		(else
-		 '???c))))
-	 ((%awt-keyevent? %ev)
-	  'key-press)
-	 ((%swing-changeevent? %ev)
-	  'change)
-	 (else
-	  (string->symbol (find-runtime-type ev))))))
+;(define (%event-type::symbol ev::%event)
+;   (let ((%ev (%event-%event ev)))
+;      (cond
+; 	 ((%swt-shellevent? %ev)
+;	  'destroy)
+;	 (else
+;	  (string->symbol (find-runtime-type ev))))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-time ...                                                  */
@@ -138,57 +90,62 @@
 ;*    %event-x ...                                                     */
 ;*---------------------------------------------------------------------*/
 (define (%event-x::int ev::%event)
-   (let ((evt (%event-%event ev)))
+   '(let ((evt (%event-%event ev)))
       (cond
 	 ((%awt-mouseevent? evt)
 	  (%awt-mouseevent-x evt))
 	 ((%swing-listselectionevent? evt)
 	  -1)
 	 (else
-	  -1))))
+	  -1)))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-y ...                                                     */
 ;*---------------------------------------------------------------------*/
 (define (%event-y::int ev::%event)
-   (let ((evt (%event-%event ev)))
+   '(let ((evt (%event-%event ev)))
       (cond
 	 ((%awt-mouseevent? evt)
 	  (%awt-mouseevent-y evt))
 	 ((%swing-listselectionevent? evt)
 	  (%bglk-listselectionevent-selection evt))
 	 (else
-	  -1))))
+	  -1)))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-width ...                                                 */
 ;*---------------------------------------------------------------------*/
 (define (%event-width::int ev::%event)
-   (let ((evt (%event-%event ev)))
+   '(let ((evt (%event-%event ev)))
       (if (%awt-mouseevent? evt)
 	  (%awt-mouseevent-x evt)
-	  -1)))
+	  -1))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-height ...                                                */
 ;*---------------------------------------------------------------------*/
 (define (%event-height::int ev::%event)
-   (let ((evt (%event-%event ev)))
+   '(let ((evt (%event-%event ev)))
       (if (%awt-mouseevent? evt)
 	  (%awt-mouseevent-y evt)
-	  -1)))
+	  -1))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-mouse-time ...                                            */
 ;*---------------------------------------------------------------------*/
 (define (%event-mouse-time::int ev::%event)
-   (%bglk-input-event-time (%event-%event ev)))
+   '(%bglk-input-event-time (%event-%event ev))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-mouse-button ...                                          */
 ;*---------------------------------------------------------------------*/
 (define (%event-mouse-button::int ev::%event)
-   (let ((mod (%awt-inputevent-modifiers (%event-%event ev))))
+   '(let ((mod (%awt-inputevent-modifiers (%event-%event ev))))
       (cond
 	 ((=fx %awt-inputevent-button1
 	       (bit-and mod %awt-inputevent-button1))
@@ -200,13 +157,14 @@
 	       (bit-and mod %awt-inputevent-button3))
 	  3)
 	 (else
-	  0))))
+	  0)))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-mouse-modifiers ...                                       */
 ;*---------------------------------------------------------------------*/
 (define (%event-mouse-modifiers::pair-nil ev::%event)
-   (let ((mod (%awt-inputevent-modifiers (%event-%event ev)))
+   '(let ((mod (%awt-inputevent-modifiers (%event-%event ev)))
 	 (res '()))
       (if (=fx %awt-inputevent-alt-graph
 	       (bit-and %awt-inputevent-alt-graph mod))
@@ -229,13 +187,14 @@
 ;*    %event-key-time ...                                              */
 ;*---------------------------------------------------------------------*/
 (define (%event-key-time::int ev::%event)
-   (%bglk-input-event-time (%event-%event ev)))
+   '(%bglk-input-event-time (%event-%event ev))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-key-modifiers ...                                         */
 ;*---------------------------------------------------------------------*/
 (define (%event-key-modifiers::pair-nil ev::%event)
-   (let ((mod (%awt-inputevent-modifiers (%event-%event ev)))
+   '(let ((mod (%awt-inputevent-modifiers (%event-%event ev)))
 	 (res '()))
       (if (=fx %awt-inputevent-alt-graph
 	       (bit-and %awt-inputevent-alt-graph mod))
@@ -252,19 +211,21 @@
       (if (=fx %awt-inputevent-shift
 	       (bit-and %awt-inputevent-shift mod))
 	  (set! res (cons 'shift res)))
-      res))
+      res)
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-key-keyval ...                                            */
 ;*---------------------------------------------------------------------*/
 (define (%event-key-keyval::int ev::%event)
-   (%awt-keyevent-keycode (%event-%event ev)))
+   '(%awt-keyevent-keycode (%event-%event ev))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    %event-key-char ...                                              */
 ;*---------------------------------------------------------------------*/
 (define (%event-key-char::char ev::%event)
-   (let ((i (ucs2->integer (%awt-keyevent-keychar (%event-%event ev))))
+   '(let ((i (ucs2->integer (%awt-keyevent-keychar (%event-%event ev))))
 	 (m (%awt-inputevent-modifiers (%event-%event ev))))
       (if (<fx i 256)
 	  (if (=fx %awt-inputevent-ctrl (bit-and %awt-inputevent-ctrl m))
@@ -272,15 +233,17 @@
 	      (integer->char (-fx (+fx i (char->integer #\a)) 1))
 	      ;; this is a plain char
 	      (integer->char i))
-	  #a000)))
+	  #a000))
+   -1)
 
 ;*---------------------------------------------------------------------*/
 ;*    wrap-event-descriptor ...                                        */
 ;*---------------------------------------------------------------------*/
-(define (wrap-event-descriptor event receiver)
-   (with-access::%event *widget-event* (%event %widget)
+(define (wrap-event-descriptor event t) ;; receiver
+   (with-access::%event *widget-event* (%event type %widget)
       (set! %event event)
-      (set! %widget receiver)
+      (set! type t)
+;      (set! %widget receiver)
       *widget-event*))
    
 ;*---------------------------------------------------------------------*/

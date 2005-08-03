@@ -3,8 +3,8 @@
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Sat Mar 24 10:09:42 2001                          */
-#*    Last change :  Wed Oct  8 14:54:38 2003 (dciabrin)               */
-#*    Copyright   :  2001-03 Manuel Serrano                            */
+#*    Last change :  Tue Aug  2 15:10:00 2005 (dciabrin)               */
+#*    Copyright   :  2001-05 Manuel Serrano                            */
 #*    -------------------------------------------------------------    */
 #*    The (gmake) Makefile Swing Biglook peer specific Makefile.       */
 #*    -------------------------------------------------------------    */
@@ -42,7 +42,7 @@ LWIDGET		= _peer _bglkobject _widget \
                   _tree _table
 LSWT		= _awt _swt _swing swingmisc
 JLIB		= Bglk BglkSWT BJBorder \
-                  BJComponentAdapter BJWindowAdapter \
+                  BJComponentAdapter BJShellAdapter \
                   BJMouseAdapter BJMouseMotionAdapter BJKeyAdapter \
                   BJCanvas \
                   BJCanvasMouseAdapter BJCanvasMouseMotionAdapter \

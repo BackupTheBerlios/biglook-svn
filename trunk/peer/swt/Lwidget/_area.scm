@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Lwidget/_area.scm        */
+;*    swt/Lwidget/_area.scm                                            */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Wed May 16 07:09:40 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Aug  2 21:40:10 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Label implementation.                             */
 ;*    definition: @path ../../../biglook/Lwidget/area.scm@             */
@@ -18,6 +18,7 @@
    (import __biglook_%error
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%container)

@@ -3,8 +3,8 @@
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Wed Apr 18 10:39:08 2001                          */
-/*    Last change :  Thu Nov 25 17:55:07 2004 (dciabrin)               */
-/*    Copyright   :  2001-04 Manuel Serrano                            */
+/*    Last change :  Mon Mar 28 15:29:12 2005 (dciabrin)               */
+/*    Copyright   :  2001-05 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    The Biglook Canvas MouseAdapter                                  */
 /*=====================================================================*/

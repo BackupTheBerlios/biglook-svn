@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Mon Oct 27 19:22:06 2003 (dciabrin)               */
-;*    Copyright   :  2001-03 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 23:13:33 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Jvm peer Window implementation.                              */
 ;*    definition: @path ../../../biglook/Lwidget/window.scm@           */
@@ -52,11 +52,17 @@
 (define-method (%peer-init peer::%window)
 ;   (print "Dans le %peer-init")
 ;   peer)
-   (call-next-method)
+   ;; prevent native widget to be made visible
+   ;; windows has to be set visible explicitely by the user
+   (let ((tmp (%peer-%builtin peer)))
+      (%peer-%builtin-set! peer #unspecified)
+      (call-next-method)
+      (%peer-%builtin-set! peer tmp))
+
    (if (%swt-shell? (%peer-%builtin peer))
        (let ((shell::%swt-shell (%peer-%builtin peer)))
-	  (%swt-shell-size-set! shell 200 200)
-	  (%swt-shell-open shell)
+	  (%swt-shell-size-set! shell 200 160)
+	  ;(%swt-shell-open shell)
 	  peer)
        peer))
 
@@ -96,11 +102,11 @@
 ;      (let ((win (instantiate::%window
 ;		    (%builtin frame)
 ;		    (%bglk-object o))))
-;	 (register-window! win)
    (let ((win (instantiate::%window
 		 (%builtin (%swt-shell-new/style %bglk-swt-display
 						 %swt-constants-SHELL_TRIM))
 		 (%bglk-object o))))
+      (register-window! win)
       win))
 
 ;*---------------------------------------------------------------------*/
@@ -141,7 +147,8 @@
 ;*    %window-add! ...                                                 */
 ;*---------------------------------------------------------------------*/
 (define (%window-add! o::%bglk-object w::%bglk-object)
-   (with-access::%bglk-object o (%peer)
+   (print "add: " (find-runtime-type w))
+   '(with-access::%bglk-object o (%peer)
       (let* ((window::%awt-container (%peer-%builtin %peer))
 	     (pane::%awt-container (cond
 				      ((%swing-jframe? window)
@@ -213,15 +220,15 @@
 	     (begin
 		(%swt-shell-title-set! (%peer-%builtin %peer)
 				       (%bglk-bstring->jstring v))
-		o)
-	     o))))
+		o))
+	 o)))
 
 ;*---------------------------------------------------------------------*/
 ;*    %deiconify ...                                                   */
 ;*---------------------------------------------------------------------*/
 (define (%deiconify o::%bglk-object)
    (with-access::%bglk-object o (%peer)
-      (%awt-component-visible-set! (%peer-%builtin %peer) #f)
+      ;(%awt-component-visible-set! (%peer-%builtin %peer) #f)
       o))
    
 ;*---------------------------------------------------------------------*/
@@ -229,7 +236,7 @@
 ;*---------------------------------------------------------------------*/
 (define (%iconify o::%bglk-object)
    (with-access::%bglk-object o (%peer)
-      (%awt-component-visible-set! (%peer-%builtin %peer) #f)
+      ;(%awt-component-visible-set! (%peer-%builtin %peer) #f)
       o))
    
 ;*---------------------------------------------------------------------*/

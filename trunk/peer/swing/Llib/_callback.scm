@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Tue May 11 12:00:46 2004 (dciabrin)               */
-;*    Copyright   :  2001-04 Manuel Serrano                            */
+;*    Last change :  Thu Mar 31 15:02:04 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer event implementation.                             */
 ;*    definition: @path ../../../biglook/Llib/event.scm@               */
@@ -345,10 +345,11 @@
 	    ((click)
 	     ;; register that this canvas-item now wants click events
 	     (with-access::%canvas (%bglk-object-%peer %canvas) (press-items)
-		(let ((new-v (lambda (e)
-				(if (=fx (%event-mouse-button e) 1)
-				    (v e)))))
-		   (set! press-items (cons (cons o new-v) press-items)))))
+		(set! press-items (cons (cons o v) press-items))))
+;		(let ((new-v (lambda (e)
+;				(if (=fx (%event-mouse-button e) 1)
+;				    (v e)))))
+;		   (set! press-items (cons (cons o new-v) press-items)))))
 	    ((press)
 	     ;; register that this canvas-item now wants press events
 	     (with-access::%canvas (%bglk-object-%peer %canvas) (press-items)
@@ -389,6 +390,12 @@
 		(let ((cell (assq o leave-items)))
 		   (if (pair? cell)
 		       (set! leave-items (remq! cell leave-items))))))
+	    ((click)
+	     ;; register that this canvas-item now wants click events
+	     (with-access::%canvas (%bglk-object-%peer %canvas) (press-items)
+		(let ((cell (assq o press-items)))
+		   (if (pair? cell)
+		       (set! press-items (remq! cell press-items))))))
 	    ((press)
 	     ;; unregister that this canvas-item now wants press events
 	     (with-access::%canvas (%bglk-object-%peer %canvas) (press-items)

@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Thu Nov 25 11:42:25 2004 (dciabrin)               */
-;*    Copyright   :  2001-04 Manuel Serrano                            */
+;*    Last change :  Thu Mar 31 16:32:06 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Canvas items implementation.                      */
 ;*    definition: @path ../../../biglook/Lwidget/canvitem.scm@         */
@@ -301,6 +301,7 @@
       (%canvas canvas)
       (%bglk-object o)
       (%builtin (list #unspecified))))
+;#unspecified))))
 ;      (let* ((graphics (%awt-component-graphics (%peer-%builtin %peer)))
 ;	     (graphics-2D::%awt-graphics2D graphics)
 ;	     (fontrender (%bglk-canvas-graphics2D->fontrender graphics-2D)))
@@ -383,7 +384,8 @@
 		     (begin
 			(%awt-graphics2D-shape-fill g %arrow-beg) g))
 		 (if %arrow-end
-		     (begin (%awt-graphics2D-shape-fill g %arrow-end) g))
+		     (begin
+			(%awt-graphics2D-shape-fill g %arrow-end) g))
 		 ci)))
 	 (else
 	  '(warning "%canvas-item-draw(line)"
@@ -1718,7 +1720,7 @@
 							     enter-items
 							     leave-items
 							     key-items)
-	    (set! children (remq! ci children))
+	    (%canvas-children-remq! (%bglk-object-%peer %canvas) ci)
 	    (set! motion-items (remq! ci motion-items))
 	    (set! release-items (remq! ci release-items))
 	    (set! press-items (remq! ci press-items))

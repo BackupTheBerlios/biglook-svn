@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    .../prgm/project/biglook/peer/swing/Lwidget/_combobox.scm        */
+;*    swt/Lwidget/_combobox.scm                                        */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Wed Oct 10 15:27:40 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Aug  2 21:41:47 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Combobox implementation.                          */
 ;*    definition: @path ../../../biglook/Lwidget/combobox.scm@         */
@@ -18,6 +18,7 @@
    (import __biglook_%error
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%widget

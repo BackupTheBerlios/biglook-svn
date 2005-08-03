@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Thu Apr 19 08:57:56 2001                          */
-;*    Last change :  Thu Dec  9 14:49:57 2004 (dciabrin)               */
+;*    Last change :  Tue Dec 14 14:10:17 2004 (dciabrin)               */
 ;*    Copyright   :  2001-04 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Awt connection                                               */
@@ -65,7 +65,9 @@
 	    (field static meta::int "META_MASK")
 	    (field static shift::int "SHIFT_MASK")
 	    (method type::int (::%awt-inputevent) "getID")
+	    ;; WARN long ret
 	    (method time::long (::%awt-inputevent) "getWhen")
+	    ;; WARN long ret
 	    (method modifiers::long (::%awt-inputevent) "getModifiers")
 	    "java.awt.event.InputEvent")
 	 

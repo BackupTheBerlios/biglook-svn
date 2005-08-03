@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Lwidget/_table.scm       */
+;*    swt/Lwidget/_table.scm                                           */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Mon Jul 16 14:07:59 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Aug  2 21:43:53 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Table implementation.                             */
 ;*    definition: @path ../../../biglook/Lwidget/table.scm@            */
@@ -17,6 +17,7 @@
    
    (import __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%error

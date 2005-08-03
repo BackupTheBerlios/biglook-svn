@@ -1,10 +1,10 @@
 /*=====================================================================*/
-/*    .../prgm/project/biglook/peer/swing/Jlib/BJKeyAdapter.java       */
+/*    swing/Jlib/BJKeyAdapter.java                                     */
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Wed Apr 18 10:39:08 2001                          */
-/*    Last change :  Sun Jul 22 12:01:14 2001 (serrano)                */
-/*    Copyright   :  2001 Manuel Serrano                               */
+/*    Last change :  Sun Apr  3 16:37:52 2005 (dciabrin)               */
+/*    Copyright   :  2001-05 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    The Biglook KeyAdapter                                           */
 /*=====================================================================*/

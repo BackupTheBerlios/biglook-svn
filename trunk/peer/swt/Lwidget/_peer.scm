@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 31 13:34:23 2001                          */
-;*    Last change :  Wed Oct  8 14:02:17 2003 (dciabrin)               */
-;*    Copyright   :  2001-03 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 23:15:17 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The implementation of the peer object.                           */
 ;*    -------------------------------------------------------------    */
@@ -24,7 +24,9 @@
    
    (import __biglook_%bglk-object
 	   __biglook_%awt
-	   __biglook_%swing)
+	   __biglook_%swing
+	   __biglook_%swt
+	   )
    
    (java   (class %bglk-jcomponentadapter::%awt-componentadapter
 	      (constructor new ())
@@ -45,6 +47,14 @@
 		      (::%awt-window)
 		      "getWindowAdapterDestroy")
 	      "bigloo.biglook.peer.Jlib.BJWindowAdapter")
+
+;	   (class %swt-shelladapter
+;	      "org.eclipse.swt.events.ShellAdapter")
+
+       ;; BJWindowAdapter
+       (class %bglk-shelladapter::%swt-shelllistener
+	  (constructor new (::procedure))
+	  "bigloo.biglook.peer.Jlib.BJShellAdapter")
 
 	   ;; BJMouseAdapter
 	   (class %bglk-mouseadapter::%awt-mouseadapter
@@ -342,7 +352,7 @@
 	      ;; constructor
 	      (%peer-init)
 	      ;; the builtin object
-	      %builtin::%jobject
+	      %builtin ;::%jobject
 	      ;; the biglook object
 	      (%bglk-object
 	       (get peer-%bglk-object)
@@ -359,8 +369,13 @@
 ;*    %peer-init ...                                                   */
 ;*---------------------------------------------------------------------*/
 (define-generic (%peer-init peer::%peer)
-   ;(%awt-component-visible-set! (%peer-%builtin peer) #t)
-   peer)
+   ;(print "peer init " (find-runtime-type peer) ", "
+;	  (find-runtime-type (%peer-%builtin peer)))
+   (if (%swt-control? (%peer-%builtin peer))
+       (begin
+	  (%swt-control-set-visible! (%peer-%builtin peer) #t)
+	  peer)
+       peer))
 
 ;*---------------------------------------------------------------------*/
 ;*    object-print ::%peer ...                                         */

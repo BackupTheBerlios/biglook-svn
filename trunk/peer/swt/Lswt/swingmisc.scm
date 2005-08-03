@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Lswing/swingmisc.scm     */
+;*    swt/Lswt/swingmisc.scm                                           */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Thu Apr 19 21:09:35 2001                          */
-;*    Last change :  Sun Jun 24 13:43:46 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Aug  2 21:38:31 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The connection part of the Swing Biglook's peer                  */
 ;*=====================================================================*/
@@ -16,6 +16,7 @@
    
    (import __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%bglk-object)
    

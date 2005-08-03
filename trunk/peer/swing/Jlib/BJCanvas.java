@@ -3,8 +3,8 @@
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Wed Apr 25 18:03:46 2001                          */
-/*    Last change :  Thu Nov 18 14:44:40 2004 (dciabrin)               */
-/*    Copyright   :  2001-04 Manuel Serrano                            */
+/*    Last change :  Sun Apr  3 14:10:24 2005 (dciabrin)               */
+/*    Copyright   :  2001-05 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    My own (unefficient) implementation of the Canvas widget.        */
 /*=====================================================================*/
@@ -28,11 +28,13 @@ public class BJCanvas extends JPanel {
     procedure bglk_painter;
     public Object peer = null;
     AffineTransform zoom;
+    AffineTransform origin;
     Dimension dim;
 
     public BJCanvas( procedure p ) {
 	super( true );
 	zoom=new AffineTransform();
+	origin=new AffineTransform();
 	setBackground( java.awt.Color.white );
 	bglk_painter = p;
 
@@ -53,6 +55,23 @@ public class BJCanvas extends JPanel {
 	revalidate();
     }
 
+
+    public int getOriginX() {
+	return (int)origin.getTranslateX();
+    }
+    public int getOriginY() {
+	return (int)origin.getTranslateY();
+    }
+    public void setOriginX(int factor) {
+	origin.setToTranslation((double)factor,origin.getTranslateY());
+	revalidate();
+    }
+    public void setOriginY(int factor) {
+	origin.setToTranslation(origin.getTranslateX(),(double)factor);
+	revalidate();
+    }
+
+    
     public void paint( Graphics g ) {
 	super.paint( g );
 	Graphics2D g2D=(Graphics2D)g;
@@ -60,6 +79,7 @@ public class BJCanvas extends JPanel {
 			     RenderingHints.VALUE_ANTIALIAS_ON);
 	g2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 			     RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	g2D.transform(origin);
 	g2D.transform(zoom);
 	bglk_painter.funcall2( peer, g );
     }
@@ -87,9 +107,17 @@ public class BJCanvas extends JPanel {
 
     public static GeneralPath makeArrowPath(int a, int b, int c) {
 	GeneralPath gp=new GeneralPath();
+	// Inner arrow
+	/*
 	gp.moveTo(-c,a);
 	gp.lineTo(0,0);
 	gp.lineTo(c,a);
+	*/
+	// Outer arrow
+	gp.moveTo(-c,0);
+	gp.lineTo(0,-a);
+	gp.lineTo(c,0);
+	
 	return gp;
     }
 

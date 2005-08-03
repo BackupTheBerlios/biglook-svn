@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Oct 17 06:18:31 1998                          */
-;*    Last change :  Wed Nov  5 12:11:19 2003 (dciabrin)               */
+;*    Last change :  Tue Aug  2 11:52:55 2005 (dciabrin)               */
 ;*    -------------------------------------------------------------    */
 ;*    The Biglook peer library builder                                 */
 ;*=====================================================================*/
@@ -43,8 +43,8 @@
     __biglook_button
     __biglook_check-button
     __biglook_radio
-    __biglook_canvas
-    __biglook_canvas-item
+;    __biglook_canvas
+;    __biglook_canvas-item
     __biglook_label
     __biglook_entry
     __biglook_listbox

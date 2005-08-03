@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Wed Sep  6 08:21:00 2000                          */
-;*    Last change :  Wed Nov 17 14:33:44 2004 (dciabrin)               */
-;*    Copyright   :  2000-04 Manuel Serrano                            */
+;*    Last change :  Tue Mar 22 10:35:39 2005 (dciabrin)               */
+;*    Copyright   :  2000-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    Biglook Canvas widget                                            */
 ;*    -------------------------------------------------------------    */
@@ -64,6 +64,14 @@
 	       (zoom-y::float
 		(get %canvas-zoom-y)
 		(set %canvas-zoom-y-set!))
+	       ;; origin x
+	       (origin-x::int
+		(get %canvas-origin-x)
+		(set %canvas-origin-x-set!))
+	       (origin-y::int
+		(get %canvas-origin-y)
+		(set %canvas-origin-y-set!))
+	       ;; origin y
 	       )))
 
 ;*---------------------------------------------------------------------*/

@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    .../project/biglook/peer/swing/Lwidget/_fileselector.scm         */
+;*    swt/Lwidget/_fileselector.scm                                    */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Sun Jun 24 13:54:41 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Aug  2 21:43:24 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Fileselector implementation.                      */
 ;*    definition: @path ../../../biglook/Lwidget/fileselector.scm@     */
@@ -18,6 +18,7 @@
    (import __biglook_%error
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%after
 	   __biglook_%bglk-object

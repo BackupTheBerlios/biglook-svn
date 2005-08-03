@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Oct 17 06:18:31 1998                          */
-;*    Last change :  Wed Nov  5 23:04:21 2003 (braun)                  */
+;*    Last change :  Tue Aug  2 11:56:34 2005 (dciabrin)               */
 ;*    -------------------------------------------------------------    */
 ;*    The Biglook peer library builder                                 */
 ;*=====================================================================*/
@@ -46,8 +46,8 @@
     __biglook_%entry
     __biglook_%listbox
     __biglook_%combobox
-    __biglook_%canvas
-    __biglook_%canvas-item
+;    __biglook_%canvas
+;    __biglook_%canvas-item
     __biglook_%gauge
     __biglook_%scale
     __biglook_%menu

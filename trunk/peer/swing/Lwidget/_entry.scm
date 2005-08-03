@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Lwidget/_entry.scm       */
+;*    swing/Lwidget/_entry.scm                                         */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Wed Oct 10 15:27:31 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Sun Apr  3 16:36:55 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Entry implementation.                             */
 ;*    definition: @path ../../../biglook/Lwidget/entry.scm@            */
@@ -70,9 +70,9 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%entry %peer (%command)
 	 (if (procedure? %command)
-	     (%uninstall-widget-callback! o 'return %command))
+	     (%uninstall-widget-callback! o 'command %command))
 	 (if (procedure? v)
-	     (%install-widget-callback! o 'return v))
+	     (%install-widget-callback! o 'command v))
 	 (set! %command v))))
 
 ;*---------------------------------------------------------------------*/

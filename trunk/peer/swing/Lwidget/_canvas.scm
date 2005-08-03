@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Thu Nov 25 11:07:27 2004 (dciabrin)               */
-;*    Copyright   :  2001-04 Manuel Serrano                            */
+;*    Last change :  Thu Mar 31 16:31:19 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Canvas implementation.                            */
 ;*    definition: @path ../../../biglook/Lwidget/canvas.scm@           */
@@ -34,7 +34,7 @@
 	      (motion-items::pair-nil (default '()))
 	      ;; the list of objects that have registered a release hook
 	      (release-items::pair-nil (default '()))
-	      ;; the list of objects that have press a press hook
+	      ;; the list of objects that have registered a press hook
 	      (press-items::pair-nil (default '()))
 	      ;; the list of items registered for enter interaction
 	      (enter-items::pair-nil (default '()))
@@ -77,6 +77,13 @@
 	   (%canvas-zoom-y::float ::%bglk-object)
 	   (%canvas-zoom-y-set! ::%bglk-object ::float)
 
+	   (%canvas-origin-x::int ::%bglk-object)
+	   (%canvas-origin-x-set! ::%bglk-object ::int)
+
+	   (%canvas-origin-y::int ::%bglk-object)
+	   (%canvas-origin-y-set! ::%bglk-object ::int)
+
+	   (%canvas-children-remq! o::%canvas w::%bglk-object)
 	   (%canvas-add! ::%bglk-object ::%bglk-object ::pair-nil)))
 
 ;*---------------------------------------------------------------------*/
@@ -106,9 +113,11 @@
 ;*---------------------------------------------------------------------*/
 (define (%canvas-mouse-at canvas::%bglk-object items::pair-nil
 			  event::%awt-mouseevent)
-   (let ((x (flonum->fixnum (/ (%awt-mouseevent-x event)
+   (let ((x (flonum->fixnum (/ (- (%awt-mouseevent-x event)
+				  (%canvas-origin-x canvas))
 			       (%canvas-zoom-x canvas))))
-	 (y (flonum->fixnum (/ (%awt-mouseevent-y event)
+	 (y (flonum->fixnum (/ (- (%awt-mouseevent-y event)
+				  (%canvas-origin-y canvas))
 			       (%canvas-zoom-y canvas)))))
       (for-each (lambda (item.callback)
 		   (let* ((i (car item.callback))
@@ -126,9 +135,11 @@
    (with-access::%canvas o (%bglk-object motion-items enter-items leave-items)
       ;; first, we scan for motion events
       (%canvas-mouse-at %bglk-object motion-items event)
-      (let ((x (flonum->fixnum (/ (%awt-mouseevent-x event)
+      (let ((x (flonum->fixnum (/ (- (%awt-mouseevent-x event)
+				     (%canvas-origin-x %bglk-object))
 				  (%canvas-zoom-x %bglk-object))))
-	    (y (flonum->fixnum (/ (%awt-mouseevent-y event)
+	    (y (flonum->fixnum (/ (- (%awt-mouseevent-y event)
+				     (%canvas-origin-y %bglk-object))
 				  (%canvas-zoom-y %bglk-object)))))
 	 ;; enter
 	 (for-each (lambda (item.callback)
@@ -182,7 +193,9 @@
    (with-access::%canvas c (children)
       (for-each (lambda (ci)
 		   (if (%peer? (%bglk-object-%peer ci))
-			  (%canvas-item-draw (%bglk-object-%peer ci) g)))
+			  (begin
+			     (%canvas-item-draw (%bglk-object-%peer ci) g)
+			     ) ))
 		children)))
 
 ;*---------------------------------------------------------------------*/
@@ -291,9 +304,27 @@
 ;*    %%container-remove! ::%canvas ...                                */
 ;*---------------------------------------------------------------------*/
 (define-method (%%container-remove! o::%canvas w)
+   (%canvas-children-remq! o w))
+
+(define (%canvas-children-remq! o::%canvas w::%bglk-object)
    (with-access::%canvas o (children %lp)
-      (set! children (remq! w children))
-      (set! %lp (last-pair children)) ))
+      (let loop ((l children)
+		 (old '()))
+	 (if (pair? l)
+	     (if (eq? (car l) w)
+		 (cond
+		    ((null? old)
+		     (if (eq? children %lp) (set! %lp '()))
+		     (set! children (cdr l)))
+		    (else
+		     (if (null? (cdr l)) (set! %lp old))
+		     (set-cdr! old (cdr l))))
+		 (loop (cdr l) l))))))
+
+;      (set! children (remq! w children))
+;      (set! %lp (last-pair children)) ))
+
+
 
 ;*---------------------------------------------------------------------*/
 ;*    %canvas-zoom-x ...                                               */
@@ -327,4 +358,38 @@
    (with-access::%bglk-object o (%peer)
       (with-access::%canvas %peer (%builtin)
 	 (%bglk-canvas-zoom-y-set! %builtin v)
+	 o)))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-origin-x ...                                             */
+;*---------------------------------------------------------------------*/
+(define (%canvas-origin-x::int o::%bglk-object)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas %peer (%builtin)
+	 (%bglk-canvas-origin-x %builtin))))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-origin-x-set! ...                                        */
+;*---------------------------------------------------------------------*/
+(define (%canvas-origin-x-set! o::%bglk-object v::int)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas %peer (%builtin)
+	 (%bglk-canvas-origin-x-set! %builtin v)
+	 o)))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-origin-y ...                                             */
+;*---------------------------------------------------------------------*/
+(define (%canvas-origin-y::int o::%bglk-object)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas %peer (%builtin)
+	 (%bglk-canvas-origin-y %builtin))))
+
+;*---------------------------------------------------------------------*/
+;*    %canvas-origin-y-set! ...                                        */
+;*---------------------------------------------------------------------*/
+(define (%canvas-origin-y-set! o::%bglk-object v::int)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%canvas %peer (%builtin)
+	 (%bglk-canvas-origin-y-set! %builtin v)
 	 o)))

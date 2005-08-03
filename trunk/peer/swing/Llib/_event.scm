@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Fri May  7 00:31:25 2004 (braun)                  */
-;*    Copyright   :  2001-04 Manuel Serrano                            */
+;*    Last change :  Sun Apr  3 20:45:56 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer event implementation.                             */
 ;*    definition: @path ../../../biglook/Llib/event.scm@               */

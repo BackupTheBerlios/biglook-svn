@@ -1,10 +1,10 @@
 /*=====================================================================*/
-/*    serrano/prgm/project/biglook/peer/swing/Jlib/Bglk.java           */
+/*    swt/Jlib/Bglk.java                                               */
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Tue Apr 17 17:24:30 2001                          */
-/*    Last change :  Fri Aug 17 09:10:12 2001 (serrano)                */
-/*    Copyright   :  2001 Manuel Serrano                               */
+/*    Last change :  Tue Aug  2 12:21:03 2005 (dciabrin)               */
+/*    Copyright   :  2001-05 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    Various utilities for the Biglook Jvm back-end.                  */
 /*=====================================================================*/
@@ -134,7 +134,7 @@ public class Bglk {
     }
 
     public static int jvm_main() {
-	// starts a thread so that Biglook applications dont end immediatly
+	// start a thread so that Biglook applications doesn't end immediatly
 	Thread th = java.lang.Thread.currentThread();
 
 	try {

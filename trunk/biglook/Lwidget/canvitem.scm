@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Wed Sep  6 08:21:00 2000                          */
-;*    Last change :  Thu Oct 14 17:46:22 2004 (dciabrin)               */
-;*    Copyright   :  2000-04 Manuel Serrano                            */
+;*    Last change :  Thu Mar 31 14:57:53 2005 (dciabrin)               */
+;*    Copyright   :  2000-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    Biglook Canvas item widgets                                      */
 ;*    -------------------------------------------------------------    */
@@ -332,9 +332,11 @@
 ;*---------------------------------------------------------------------*/
 (define-method (uninstall-callback! w::canvas-item evt::symbol proc)
    (if (procedure? proc)
-       (let ((cb (%registered-canvas-item-callback w evt proc)))
+       (let ((cb::procedure (%registered-canvas-item-callback w evt proc)))
+;	  (print %uninstall-canvas-item-callback!)
 	  (%uninstall-canvas-item-callback! w evt cb)
-	  (%unregister-canvas-item-callback! w evt))))
+	  (%unregister-canvas-item-callback! w evt)
+	  )))
 
 ;*---------------------------------------------------------------------*/
 ;*    destroy ::canvas-item ...                                        */

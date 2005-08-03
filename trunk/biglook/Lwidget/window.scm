@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Wed Sep  6 08:21:00 2000                          */
-;*    Last change :  Fri Apr 23 14:01:30 2004 (dciabrin)               */
-;*    Copyright   :  2000-04 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 12:00:01 2005 (dciabrin)               */
+;*    Copyright   :  2000-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    Biglook Window widget                                            */
 ;*    -------------------------------------------------------------    */
@@ -28,7 +28,7 @@
    (library biglook_peer)
    
    (import  __biglook_bglk-object
-	    __biglook_canvas
+;	    __biglook_canvas
 	    __biglook_container
 	    __biglook_widget
 	    __biglook_layout

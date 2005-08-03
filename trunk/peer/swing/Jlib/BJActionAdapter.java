@@ -3,8 +3,8 @@
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Thu May 17 15:09:33 2001                          */
-/*    Last change :  Tue May 11 12:01:12 2004 (dciabrin)               */
-/*    Copyright   :  2001-04 Manuel Serrano                            */
+/*    Last change :  Sun Apr  3 16:37:58 2005 (dciabrin)               */
+/*    Copyright   :  2001-05 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    Action adapter                                                   */
 /*=====================================================================*/

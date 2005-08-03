@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    .../project/biglook/peer/swing/Lwidget/%check-button.scm         */
+;*    swt/Lwidget/_checkbutton.scm                                     */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Sun May  6 06:15:52 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Aug  2 21:40:55 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Null peer Check Button implementation.                       */
 ;*    definition: @path ../../../biglook/Lwidget/check-button.scm@     */
@@ -18,6 +18,7 @@
    (import __biglook_%error
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%widget

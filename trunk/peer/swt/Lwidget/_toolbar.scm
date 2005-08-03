@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Lwidget/_toolbar.scm     */
+;*    swt/Lwidget/_toolbar.scm                                         */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Mon Jul 16 10:14:00 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Aug  2 21:43:09 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Null peer Tool implementation.                               */
 ;*    definition: @path ../../../biglook/Lwidget/toolbar.scm@          */
@@ -18,6 +18,7 @@
    (import __biglook_%peer
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%bglk-object
 	   __biglook_%swing-misc
 	   __biglook_%widget

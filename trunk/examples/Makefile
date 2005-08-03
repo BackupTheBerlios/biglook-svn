@@ -3,8 +3,8 @@
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Thu Oct  5 10:28:17 2000                          */
-#*    Last change :  Wed Sep 15 09:16:44 2004 (dciabrin)               */
-#*    Copyright   :  2000-04 Manuel Serrano                            */
+#*    Last change :  Wed Aug  3 11:40:04 2005 (dciabrin)               */
+#*    Copyright   :  2000-05 Manuel Serrano                            */
 #*    -------------------------------------------------------------    */
 #*    The general Makefile for testing Biglook                         */
 #*=====================================================================*/
@@ -14,7 +14,7 @@
 #*---------------------------------------------------------------------*/
 DEMO	= simple label \
           button image checkbutton radio \
-          frame grid area window \
+          frame grid area window window2 \
           event event2 canvas \
           gauge scale entry listbox combobox \
           notepad paned \

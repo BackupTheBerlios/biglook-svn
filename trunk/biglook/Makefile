@@ -3,8 +3,8 @@
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Sat Mar 24 10:09:42 2001                          */
-#*    Last change :  Wed Nov  5 22:58:32 2003 (braun)                  */
-#*    Copyright   :  2001-03 Manuel Serrano                            */
+#*    Last change :  Tue Aug  2 11:58:39 2005 (dciabrin)               */
+#*    Copyright   :  2001-05 Manuel Serrano                            */
 #*    -------------------------------------------------------------    */
 #*    The (gmake) Makefile to build the Biglook library.               */
 #*=====================================================================*/
@@ -32,12 +32,13 @@ LWIDGET		= bglkobject widget \
                   notepad paned \
                   button checkbutton radio \
                   label entry listbox combobox \
-                  canvas canvitem \
                   gauge scale \
                   menu toolbar \
                   fileselector colorselector \
                   tree table text
 MISC		= biglook.init options.sch
+
+#                  canvas canvitem \
 
 #*---------------------------------------------------------------------*/
 #*    Objects                                                          */
@@ -146,7 +147,7 @@ bee: afile jfile btags
 
 afile:
 	$(AFILE) $(BGLK_SOURCES) -o .afile
- 
+
 #*---------------------------------------------------------------------*/
 #*    .jfile                                                           */
 #*---------------------------------------------------------------------*/

@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    .../prgm/project/biglook/peer/swing/Lwidget/_canvitem.scm        */
+;*    swt/Lwidget/_canvitem.scm                                        */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Sun Dec 15 08:24:32 2002 (serrano)                */
-;*    Copyright   :  2001-02 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 21:42:08 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Canvas items implementation.                      */
 ;*    definition: @path ../../../biglook/Lwidget/canvitem.scm@         */
@@ -18,6 +18,7 @@
    (import __biglook_%peer
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%bglk-object
 	   __biglook_%error
 	   __biglook_%canvas

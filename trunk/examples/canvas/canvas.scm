@@ -13,6 +13,12 @@
 		  (width 400)
 		  (height 200)
 		  (tooltips "Foo, Bar ?")
+		  ; axis origin !
+		  ;(origin-x 200)
+		  ;(origin-y 100)
+		  ; global zoom factor !
+		  ;(zoom-x 0.5)
+		  ;(zoom-y 0.5)
 		  (parent `(,win :expand #t :fill #t))))
        (drag-handler (make-drag-event-handler)))
    (setup-widgets canvas)
@@ -106,6 +112,10 @@
 ;*    setup-lines ...                                                  */
 ;*---------------------------------------------------------------------*/
 (define (setup-lines canvas drag-handler)
+   (instantiate::canvas-line
+      (canvas canvas)
+      (points '(0 0 100 100)))
+
    (instantiate::canvas-line
       (canvas canvas)
       (style 'dashed)

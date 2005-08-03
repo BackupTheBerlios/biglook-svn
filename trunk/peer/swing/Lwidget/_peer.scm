@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 31 13:34:23 2001                          */
-;*    Last change :  Tue Nov 30 16:25:31 2004 (dciabrin)               */
-;*    Copyright   :  2001-04 Manuel Serrano                            */
+;*    Last change :  Thu Mar 31 16:04:01 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The implementation of the peer object.                           */
 ;*    -------------------------------------------------------------    */
@@ -292,6 +292,10 @@
 	      (method zoom-x-set!::void (::%bglk-canvas ::float) "setZoomX")
 	      (method zoom-y::float (::%bglk-canvas) "getZoomY")
 	      (method zoom-y-set!::void (::%bglk-canvas ::float) "setZoomY")
+	      (method origin-x::int (::%bglk-canvas) "getOriginX")
+	      (method origin-x-set!::void (::%bglk-canvas ::int) "setOriginX")
+	      (method origin-y::int (::%bglk-canvas) "getOriginY")
+	      (method origin-y-set!::void (::%bglk-canvas ::int) "setOriginY")
 	      "bigloo.biglook.peer.Jlib.BJCanvas")
 
 	   ;; BJTreeCellRenderer

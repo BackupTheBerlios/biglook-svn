@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Wed Oct  8 16:52:04 2003 (dciabrin)               */
-;*    Copyright   :  2001-03 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 22:53:39 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Jvm peer Widget implementation.                              */
 ;*    definition: @path ../../../biglook/Lwidget/widget.scm@           */
@@ -17,6 +17,7 @@
    
    (import __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%error
@@ -47,8 +48,17 @@
 	   (%widget-visible::bool ::%bglk-object)
 	   (%widget-visible-set! ::%bglk-object ::bool)
 
+	   (generic %%widget-visible::bool ::%peer)
+	   (generic %%widget-visible-set! ::%peer ::bool)
+
+	   (%widget-enabled::bool ::%bglk-object)
+	   (%widget-enabled-set! ::%bglk-object ::bool)
+
 	   (%widget-can-focus?::bool ::%bglk-object)
 	   (%widget-can-focus?-set! ::%bglk-object ::bool)
+
+	   (%widget-cursor ::%bglk-object)
+	   (%widget-cursor-set! ::%bglk-object ::obj)
 
 	   (%destroy-widget ::%bglk-object)))
 
@@ -56,23 +66,24 @@
 ;*    %widget-parent ...                                               */
 ;*---------------------------------------------------------------------*/
 (define (%widget-parent o::%bglk-object)
-   (with-access::%bglk-object o (%peer)
+   '(with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
 	 (if (%awt-component? %builtin)
-	     (%bglk-get-object (%awt-component-parent %builtin))))))
+	     (%bglk-get-object (%awt-component-parent %builtin)))))
+   #f)
 
 ;*---------------------------------------------------------------------*/
 ;*    %widget-event ...                                                */
 ;*---------------------------------------------------------------------*/
 (define (%widget-event o::%bglk-object)
-   (with-access::%peer (%bglk-object-%peer o) (%event)
+   '(with-access::%peer (%bglk-object-%peer o) (%event)
       %event))
 
 ;*---------------------------------------------------------------------*/
 ;*    %widget-event-set! ...                                           */
 ;*---------------------------------------------------------------------*/
 (define (%widget-event-set! o::%bglk-object v)
-   (with-access::%peer (%bglk-object-%peer o) (%event)
+   '(with-access::%peer (%bglk-object-%peer o) (%event)
       (set! %event v)))
 
 ;*---------------------------------------------------------------------*/
@@ -81,30 +92,8 @@
 (define (%widget-width::int o::%bglk-object)
    (with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
-	 (cond
-	  ((%awt-component? %builtin)
-	   (%awt-component-width %builtin))
-	  ((%awt-geom-dimension2D? %builtin)
-	   (%awt-geom-dimension2D-width %builtin))
-	  (else
-	   -1)))))
+	 (%swt-rectangle-width (%swt-control-get-bounds %builtin)))))
 
-;*---------------------------------------------------------------------*/
-;*    %widget-width-set! ...                                           */
-;*---------------------------------------------------------------------*/
-(define (%widget-width-set! o::%bglk-object v::int)
-   (with-access::%bglk-object o (%peer)
-      (with-access::%peer %peer (%builtin)
-	 (if (%awt-component? %builtin)
-	     (let ((dim (%awt-dimension-new v (%widget-height o)))
-		   (builtin %builtin))
-		(%awt-component-dimension-set! builtin dim)
-		(if (%swing-jcomponent? builtin)
-		    (begin
-		       (%swing-jcomponent-preferred-size-set! builtin dim)
-		       (%swing-jcomponent-minimum-size-set! builtin dim)
-		       o))
-		o)))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %widget-height ...                                               */
@@ -112,36 +101,36 @@
 (define (%widget-height::int o::%bglk-object)
    (with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
-	 (cond
-	    ((%awt-component? %builtin)
-	     (%awt-component-height %builtin))
-	    ((%awt-geom-dimension2D? %builtin)
-	     (%awt-geom-dimension2D-height %builtin))
-	    (else
-	     -1)))))
+	 (%swt-rectangle-height (%swt-control-get-bounds %builtin)))))
+
+
+;*---------------------------------------------------------------------*/
+;*    %widget-width-set! ...                                           */
+;*---------------------------------------------------------------------*/
+(define (%widget-width-set! o::%bglk-object width::int)
+   (with-access::%bglk-object o (%peer)
+      (with-access::%peer %peer (%builtin)
+	 (let ((rec (%swt-control-get-bounds %builtin)))
+	    (%swt-control-set-size! %builtin
+				    width (%swt-rectangle-height rec))
+	    width))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %widget-height-set! ...                                          */
 ;*---------------------------------------------------------------------*/
-(define (%widget-height-set! o::%bglk-object v::int)
+(define (%widget-height-set! o::%bglk-object height::int)
    (with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
-	 (if (%awt-component? %builtin)
-	     (let ((dim (%awt-dimension-new (%widget-width o) v))
-		   (builtin %builtin))
-		(%awt-component-dimension-set! builtin dim)
-		(if (%swing-jcomponent? builtin)
-		    (begin
-		       (%swing-jcomponent-preferred-size-set! builtin dim)
-		       (%swing-jcomponent-minimum-size-set! builtin dim)
-		       o))
-		o)))))
+	 (let ((rec (%swt-control-get-bounds %builtin)))
+	    (%swt-control-set-size! %builtin
+				    (%swt-rectangle-width rec) height)
+	    height))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %widget-tooltips ...                                             */
 ;*---------------------------------------------------------------------*/
 (define (%widget-tooltips o::%bglk-object)
-   (with-access::%bglk-object o (%peer)
+   '(with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
 	 (if (%awt-component? %builtin)
 	     (let ((component %builtin))
@@ -157,7 +146,7 @@
 ;*    %widget-tooltips-set! ...                                        */
 ;*---------------------------------------------------------------------*/
 (define (%widget-tooltips-set! o::%bglk-object v)
-   (with-access::%bglk-object o (%peer)
+   '(with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
 	 (if (%awt-component? %builtin)
 	     (if v
@@ -170,7 +159,7 @@
 ;*    %widget-active? ...                                              */
 ;*---------------------------------------------------------------------*/
 (define (%widget-active? o::%bglk-object)
-   (with-access::%bglk-object o (%peer)
+   '(with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
 	 (if (%awt-component? %builtin)
 	     (%awt-component-enabled? %builtin)
@@ -180,7 +169,7 @@
 ;*    %widget-active?-set! ...                                         */
 ;*---------------------------------------------------------------------*/
 (define (%widget-active?-set! o::%bglk-object v)
-   (with-access::%bglk-object o (%peer)
+   '(with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
 	 (if (%awt-component? %builtin)
 	     (begin
@@ -205,20 +194,16 @@
 (define (%widget-visible o::%bglk-object)
    (with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
-	 (if (%awt-component? %builtin)
-	     (%awt-component-visible %builtin)
-	     #t))))
+	 (%swt-control-get-visible %builtin))))
 
 ;*---------------------------------------------------------------------*/
 ;*    %widget-visible-set! ...                                         */
 ;*---------------------------------------------------------------------*/
-(define (%widget-visible-set! o::%bglk-object v)
+(define (%widget-visible-set! o::%bglk-object visible)
    (with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
-	 (if (%awt-component? %builtin)
-	     (begin
-		(%awt-component-visible-set! %builtin v)
-		o)))))
+	 (%swt-control-set-visible! %builtin visible)
+	 visible)))
 
 ;*---------------------------------------------------------------------*/
 ;*    %widget-can-focus? ...                                           */
@@ -236,9 +221,70 @@
 ;*    %destroy-widget ...                                              */
 ;*---------------------------------------------------------------------*/
 (define (%destroy-widget o::%bglk-object)
-   (with-access::%bglk-object o (%peer)
+   '(with-access::%bglk-object o (%peer)
       (with-access::%peer %peer (%builtin)
 	 (if (%awt-component? %builtin)
 	     (begin
 		(%awt-component-removenotify %builtin)
+		o)))))
+
+;*---------------------------------------------------------------------*/
+;*    %%widget-visible ...                                             */
+;*---------------------------------------------------------------------*/
+(define-generic (%%widget-visible::bool o::%peer)
+   '(with-access::%peer o (%builtin)
+      (if (%awt-component? %builtin)
+	  (%awt-component-visible %builtin)
+	  #f))
+   #t)
+   
+
+;*---------------------------------------------------------------------*/
+;*    %%widget-visible-set! ...                                        */
+;*---------------------------------------------------------------------*/
+(define-generic (%%widget-visible-set! o::%peer v::bool)
+   '(with-access::%peer o (%builtin)
+      (if (%awt-component? %builtin)
+	  (begin
+	     (%awt-component-visible-set! %builtin v)
+	     o)))
+   #t)
+
+;*---------------------------------------------------------------------*/
+;*    %widget-cursor ...                                               */
+;*---------------------------------------------------------------------*/
+(define (%widget-cursor o::%bglk-object)
+   '(with-access::%bglk-object o (%peer)
+      (with-access::%peer %peer (%builtin)
+	 (%awt-component-cursor %builtin))))
+
+;*---------------------------------------------------------------------*/
+;*    %widget-can-focus?-set! ...                                      */
+;*---------------------------------------------------------------------*/
+(define (%widget-cursor-set! o::%bglk-object v::obj)
+   '(with-access::%bglk-object o (%peer)
+      (with-access::%peer %peer (%builtin)
+	 (%awt-component-cursor-set! %builtin (%cursor-%peer v))
+	 o)))
+
+;*---------------------------------------------------------------------*/
+;*    %widget-enabled ...                                              */
+;*---------------------------------------------------------------------*/
+(define (%widget-enabled o::%bglk-object)
+   '(with-access::%bglk-object o (%peer)
+      (with-access::%peer %peer (%builtin)
+	 (if (%swing-jcomponent? %builtin)
+	     (%awt-component-enabled? %builtin)
+	     #t)))
+   #t)
+
+;*---------------------------------------------------------------------*/
+;*    %widget-enabled-set! ...                                         */
+;*---------------------------------------------------------------------*/
+(define (%widget-enabled-set! o::%bglk-object v)
+   '(with-access::%bglk-object o (%peer)
+      (with-access::%peer %peer (%builtin)
+	 (if (%swing-jcomponent? %builtin)
+	     (begin
+		(%swing-jcomponent-enabled-set! %builtin v)
 		o)))))

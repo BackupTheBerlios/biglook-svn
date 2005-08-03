@@ -13,13 +13,44 @@
 	  (method static main::int () "jvm_main")
 	  "bigloo.biglook.peer.Jlib.BglkSWT")
 
-       (class %swt-shell::%jobject
+       (class %swt-rectangle::%jobject
+	  (field x::int "x")
+	  (field y::int "y")
+	  (field width::int "width")
+	  (field height::int "height")
+	  "org.eclipse.swt.graphics.Rectangle")
+       
+       (class %swt-widget::%jobject
+	  "org.eclipse.swt.widgets.Widget")
+
+       (class %swt-control::%swt-widget
+	  (method get-bounds::%swt-rectangle (::%swt-control) "getBounds")
+	  (method set-size!::void (::%swt-control ::int ::int) "setSize")
+	  (method set-position!::void (::%swt-control ::int ::int)
+		  "setPosition")
+	  (method get-visible::bool (::%swt-control) "getVisible")
+	  (method set-visible!::void (::%swt-control ::bool) "setVisible")
+
+	  "org.eclipse.swt.widgets.Control")
+
+       (class %swt-shelllistener::%jobject
+	  "org.eclipse.swt.events.ShellListener")
+
+       (class %swt-shell-adapter::%swt-shelllistener
+	  "org.eclipse.swt.events.ShellAdapter")
+
+
+       (class %swt-shell::%swt-widget
 	  (constructor new (::%swt-display))
 	  (constructor new/style (::%swt-display ::int))
 	  (method open::void (::%swt-shell) "open")
 	  (method title::%jstring (::%swt-shell) "getText")
 	  (method title-set!::void (::%swt-shell ::%jstring) "setText")
 	  (method size-set!::void (::%swt-shell ::int ::int) "setSize")
+;	  (method visible-set!::void (::%swt-shell ::bool) "setVisible")
+	  (method dispose!::void (::%swt-shell) "dispose")
+	  (method add-shell-listener!::void (::%swt-shell ::%swt-shelllistener)
+		  "addShellListener")
 	  "org.eclipse.swt.widgets.Shell")
        (class %swt-constants::%jobject
 ;	  (constructor public  org.eclipse.swt.SWT () "org.eclipse.swt.SWT")
@@ -328,4 +359,9 @@
 	  (field final public static  KeyDown::int "KeyDown")
 	  (field final public static  None::int "None")
 	  "org.eclipse.swt.SWT")
+       (class %swt-typedevent
+	  (field time::int "time")
+	  "org.eclipse.swt.events.TypedEvent")
+       (class %swt-shellevent::%swt-typedevent
+	  "org.eclipse.swt.events.ShellEvent")
        ))

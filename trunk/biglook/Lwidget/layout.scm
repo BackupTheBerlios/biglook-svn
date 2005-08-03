@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sun Apr 15 18:09:57 2001                          */
-;*    Last change :  Fri Apr 23 14:07:05 2004 (dciabrin)               */
-;*    Copyright   :  2001-04 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 23:07:59 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The abstract class layout. A layout is a container with a        */
 ;*    specific layout. The two subclasses of layout in the standard    */
@@ -76,7 +76,7 @@
 ;*---------------------------------------------------------------------*/
 (define-method (bglk-object-init o::layout)
    (call-next-method)
-   (with-access::layout o (layout)
+   '(with-access::layout o (layout)
       (cond
        ((eq? layout #unspecified)
 	  ;; if the user has not specified its own layout or #f (which

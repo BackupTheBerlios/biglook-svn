@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Fri Nov 21 17:45:35 2003 (dciabrin)               */
-;*    Copyright   :  2001-03 Manuel Serrano                            */
+;*    Last change :  Sun Apr  3 20:43:23 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer Menu implementation.                              */
 ;*    definition: @path ../../../biglook/Lwidget/menu.scm@             */

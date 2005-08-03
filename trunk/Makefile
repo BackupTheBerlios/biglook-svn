@@ -1,10 +1,10 @@
 #*=====================================================================*/
-#*    biglook/Makefile                                                 */
+#*    trunk/Makefile                                                   */
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Sat Mar 24 10:06:49 2001                          */
-#*    Last change :  Thu Nov  6 17:09:42 2003 (dciabrin)               */
-#*    Copyright   :  2001-03 Manuel Serrano                            */
+#*    Last change :  Wed Aug  3 11:43:44 2005 (dciabrin)               */
+#*    Copyright   :  2001-05 Manuel Serrano                            */
 #*    -------------------------------------------------------------    */
 #*    The (gmake) Makefile to build Biglook.                           */
 #*    -------------------------------------------------------------    */
@@ -36,8 +36,8 @@ include Makefile.kconfig
 #*    Peers                                                            */
 #*---------------------------------------------------------------------*/
 PEER	= null
-_PEERS  = gtk gtk2 swing
-PEERS_SH = gtk,gtk2,swing
+_PEERS  = gtk gtk2 swing swt
+PEERS_SH = gtk,gtk2,swing,swt
 PEERS	= null $(_PEERS)
 
 #*---------------------------------------------------------------------*/

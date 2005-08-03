@@ -9,9 +9,9 @@ gtk:
 gtk2:
 	$(MAKE) -f ../Makefile.demo DEMO=`basename $$PWD` PEER=gtk2
 
-swing:
+swing swt:
 	(dem=`basename $$PWD`; \
-	$(MAKE) -f ../Makefile.demo DEMO=$$dem PEER=swing O=class BJFLAGS="-jvm")
+	$(MAKE) -f ../Makefile.demo DEMO=$$dem PEER=$@ O=class BJFLAGS="-jvm")
 
 clean:
 	$(MAKE) -f ../Makefile.demo clean DEMO=`basename $$PWD` PEER=$(PEER)

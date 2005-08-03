@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Llib/_color.scm          */
+;*    swt/Llib/_color.scm                                              */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Sun Dec 15 08:10:51 2002 (serrano)                */
-;*    Copyright   :  2001-02 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 21:37:22 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Null peer Color implementation.                              */
 ;*    definition: @path ../../../biglook/Llib/color.scm@               */
@@ -18,6 +18,7 @@
    (import __biglook_%error
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer)
    
    (export  (abstract-class %color)

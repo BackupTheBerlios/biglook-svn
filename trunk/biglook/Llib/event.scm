@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Fri Apr 20 09:50:41 2001                          */
-;*    Last change :  Wed Nov 24 11:18:33 2004 (dciabrin)               */
-;*    Copyright   :  2001-04 Manuel Serrano                            */
+;*    Last change :  Tue Aug  2 21:45:40 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Biglook event handling                                       */
 ;*    -------------------------------------------------------------    */
@@ -156,7 +156,7 @@
 	    ;; event  
 	    (class event::%event
 	       (widget read-only (get %event-%widget))
-	       (type::symbol read-only (get %event-type))
+	       (type::symbol read-only (get (lambda (o) (%event-type o))))
 	       (time::int read-only (get %event-time))
 	       (button::int read-only (get (lambda (o) 0)))
 	       (click-count::int read-only (get (lambda (o) 0)))

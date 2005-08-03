@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/null/Llib/_callback.scm        */
+;*    null/Llib/_callback.scm                                          */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Tue Jul 31 07:00:31 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Thu Mar 31 14:58:44 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Null peer callback: implementation.                          */
 ;*    definition: @path ../../../biglook/Llib/event.scm@               */
@@ -24,7 +24,7 @@
 	   (%uninstall-widget-callback! ::%bglk-object ::symbol ::procedure)
 	   
 	   (%install-canvas-item-callback! ::%bglk-object ::symbol ::procedure)
-	   (%uninstall-canvas-item-callback! ::%bglk-object ::symbol ::obj)
+	   (%uninstall-canvas-item-callback! ::%bglk-object ::symbol ::procedure)
 	   
 	   (%install-tree-branch-callback! ::%bglk-object ::symbol ::procedure)
 	   (%uninstall-tree-branch-callback! ::%bglk-object ::symbol ::procedure)

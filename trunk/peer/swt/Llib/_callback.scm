@@ -1,10 +1,10 @@
 ;*=====================================================================*/
-;*    serrano/prgm/project/biglook/peer/swing/Llib/_callback.scm       */
+;*    swt/Llib/_callback.scm                                           */
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Sat Mar 24 09:14:39 2001                          */
-;*    Last change :  Thu Jul 26 11:16:18 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Tue Aug  2 23:14:55 2005 (dciabrin)               */
+;*    Copyright   :  2001-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Swing peer event implementation.                             */
 ;*    definition: @path ../../../biglook/Llib/event.scm@               */
@@ -18,6 +18,7 @@
    (import __biglook_%error
 	   __biglook_%awt
 	   __biglook_%swing
+	   __biglook_%swt
 	   __biglook_%peer
 	   __biglook_%bglk-object
 	   __biglook_%event)
@@ -53,183 +54,17 @@
 ;*    %connect-widget-callback! ...                                    */
 ;*---------------------------------------------------------------------*/
 (define (%connect-widget-callback! peer builtin s v)
-   (if (%awt-component? builtin)
+   (print "%connect-widget-callback!")
+   (if (%swt-widget? builtin)
        (case s
-	  ((enter)
-	   ;; enter
-	   (%bglk-mouseadapter-add! builtin
-				    #unspecified
-				    #unspecified
-				    v
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    wrap-mouse-descriptor)
-	   v)
-	  ((leave)
-	   ;; leave
-	   (%bglk-mouseadapter-add! builtin
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    v
-				    #unspecified
-				    #unspecified
-				    wrap-mouse-descriptor)
-	   v)
-	  ((press)
-	   ;; press
-	   (%bglk-mouseadapter-add! builtin
-				    v
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    wrap-mouse-descriptor)
-	   v)
-	  ((release)
-	   ;; release
-	   (%bglk-mouseadapter-add! builtin
-				    #unspecified
-				    v
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    wrap-mouse-descriptor)
-	   v)
-	  ((click)
-	   ;; click
-	   (%bglk-mouseadapter-add! builtin
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    v
-				    #unspecified
-				    wrap-mouse-descriptor)
-	   v)
-	  ((command)
-	   ;; command
-	   (%bglk-mouseadapter-add! builtin
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    #unspecified
-				    v
-				    wrap-mouse-descriptor)
-	   v)
-	  ((action)
-	   ;; action
-	   (%bglk-actionadapter-add! builtin
-				     v
-				     wrap-event-descriptor
-				     (%bglk-bstring->jstring ""))
-	   v)
-	  ((return)
-	   ;; return
-	   (%bglk-keyadapter-return-add! builtin v wrap-key-descriptor)
-	   v)
-	  ((motion)
-	   ;; motion
-	   (%bglk-mousemotionadapter-add! builtin
-					  #unspecified
-					  v
-					  wrap-mouse-descriptor)
-	   v)
-	  ((key)
-	   ;; key
-	   (%bglk-keyadapter-add! builtin v wrap-key-descriptor)
-	   v)
-	  ((configure)
-	   ;; configure
-	   (%bglk-componentadapter-add! builtin v wrap-event-descriptor)
-	   v)
-	  ((focus-in)
-	   ;; focus-in
-	   (%bglk-focusadapter-add! builtin
-				    v
-				    #unspecified
-				    wrap-event-descriptor)
-	   v)
-	  ((focus-out)
-	   ;; focus-out
-	   (%bglk-focusadapter-add! builtin 
-				    #unspecified
-				    v
-				    wrap-event-descriptor)
-	   v)
 	  ((destroy)
 	   ;; destroy
-	   (if (not (%awt-window? builtin))
+	   (if (not (%swt-shell? builtin))
 	       (error "install-widget-event-handler!"
 		      "Can't install event on non window widget"
 		      s)
 	       (%install-window-destroy-handler! peer v)))
-	  ((iconify)
-	   ;; iconify
-	   (if (not (%awt-window? builtin))
-	       (error "install-widget-event-handler!"
-		      "Can't install event on non window widget"
-		      peer)
-	       (begin
-		  (%bglk-windowadapter-add! builtin
-					    v
-					    #unspecified
-					    #unspecified
-					    wrap-event-descriptor)
-		  v)))
-	  ((deiconify)
-	   ;; deiconifu
-	   (if (not (%awt-window? builtin))
-	       (error "install-widget-event-handler!"
-		      "Can't install event on non window widget"
-		      peer)
-	       (begin
-		  (%bglk-windowadapter-add! builtin
-					    #unspecified
-					    v
-					    #unspecified
-					    wrap-event-descriptor)
-		  v)))
-	  ((jslider-change)
-	   ;; jslider-change
-	   (if (not (%swing-jslider? builtin))
-	       (error "install-widget-event-handler!"
-		      "Can't install event on non slider widget"
-		      peer)
-	       (begin
-		  (%bglk-changeadapter-add! builtin
-					    v
-					    wrap-event-descriptor)
-		  v)))
-	  ((tree-selection)
-	   (if (not (%swing-jtree? builtin))
-	       (error "install-widget-event-handler!"
-		      "Can't install event on non jtree widget"
-		      peer)
-	       (begin
-		  (%bglk-tree-selectionadapter-add! builtin
-						    v
-						    wrap-event-descriptor)
-		  v)))
-	  ((table-selection)
-	   (if (not (%swing-jtable? builtin))
-	       (error "install-widget-event-handler!"
-		      "Can't install event on non jtable widget"
-		      peer)
-	       (let ((model (%swing-jtable-selection-model builtin)))
-		  (%bglk-list-selectionadapter-add! model
-						    (%peer-%bglk-object peer)
-						    v
-						    wrap-event-descriptor)
-		  v)))
-	  ((expand)
-	   #unspecified)
-	  ((collapse)
-	   #unspecified)
+
 	  (else
 	   (error "%install-handler!" "Unknown event" s)))))
 
@@ -301,14 +136,12 @@
 ;*---------------------------------------------------------------------*/
 ;*    %install-window-destroy-handler! ...                             */
 ;*---------------------------------------------------------------------*/
-(define (%install-window-destroy-handler! frame::%peer v)
-   (with-access::%peer frame (%builtin)
-      (%bglk-windowadapter-add! %builtin
-				#unspecified
-				#unspecified
-				v
-				wrap-event-descriptor)
-      v))
+(define (%install-window-destroy-handler! window::%peer handler)
+   ;(print "%install-window-destroy-handler!")
+   (let ((sa (%bglk-shelladapter-new wrap-event-descriptor)))
+      (with-access::%peer window (%builtin)
+	 (%swt-shell-add-shell-listener! %builtin sa))
+      handler))
 
 ;*---------------------------------------------------------------------*/
 ;*    %install-canvas-item-callback! ...                               */
