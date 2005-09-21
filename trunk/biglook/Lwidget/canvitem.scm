@@ -3,7 +3,7 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Wed Sep  6 08:21:00 2000                          */
-;*    Last change :  Thu Mar 31 14:57:53 2005 (dciabrin)               */
+;*    Last change :  Wed Sep 21 22:22:19 2005 (dciabrin)               */
 ;*    Copyright   :  2000-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    Biglook Canvas item widgets                                      */
@@ -350,13 +350,13 @@
 ;*---------------------------------------------------------------------*/
 ;*    raise ...                                                        */
 ;*---------------------------------------------------------------------*/
-(define-method (raise ci::canvas-item)
+(define-method (widget-raise! ci::canvas-item)
    (%canvas-item-raise ci))
 
 ;*---------------------------------------------------------------------*/
 ;*    lower ...                                                        */
 ;*---------------------------------------------------------------------*/
-(define-method (lower ci::canvas-item)
+(define-method (widget-lower! ci::canvas-item)
    (%canvas-item-lower ci))
 
 ;*---------------------------------------------------------------------*/

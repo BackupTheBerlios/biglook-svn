@@ -3,8 +3,8 @@
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Sat Mar 24 10:09:42 2001                          */
-#*    Last change :  Sun May 30 19:27:34 2004 (braun)                  */
-#*    Copyright   :  2001-04 Manuel Serrano                            */
+#*    Last change :  Sun Sep 18 17:25:53 2005 (dciabrin)               */
+#*    Copyright   :  2001-05 Manuel Serrano                            */
 #*    -------------------------------------------------------------    */
 #*    The (gmake) Makefile to build the Biglook peers.                 */
 #*    This Makefile can't be processed directly. It is included by     */
@@ -52,7 +52,7 @@ heap: .afile $(BOOTKDIR)/lib/biglook_peer.heap
 $(BOOTKDIR)/lib/biglook_peer.heap: $(PEER_HEAP_FILE) $(PEER_SOURCES)
 	@ $(BIGLOO) $(BHEAPFLAGS) \
                     $(PEER_HEAP_FILE) \
-                    -addheap $(BOOTKDIR)/lib/biglook_peer.heap
+                    -addheap $(BOOTKDIR)/lib/biglook_peer.heap -heap-library biglook
 	@ echo "Heap Done... ($(BOOTKDIR)/lib/biglook_peer.heap)"
 	@ echo "-------------------------------"
 
@@ -64,7 +64,7 @@ jheap: .afile .jfile $(BOOTKDIR)/lib/biglook_peer.jheap
 $(BOOTKDIR)/lib/biglook_peer.jheap: $(PEER_HEAP_FILE) $(PEER_SOURCES)
 	@ $(BIGLOO) $(BHEAPFLAGS) \
                     $(PEER_HEAP_FILE) \
-                    -jvm -g -addheap $(BOOTKDIR)/lib/biglook_peer.jheap
+                    -jvm -g -addheap $(BOOTKDIR)/lib/biglook_peer.jheap -heap-library biglook
 	@ echo "JHeap Done... ($(BOOTKDIR)/lib/biglook_peer.jheap)"
 	@ echo "-------------------------------"
 

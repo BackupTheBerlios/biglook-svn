@@ -1,11 +1,11 @@
 #!/bin/sh
 #*=====================================================================*/
-#*    serrano/prgm/project/biglook/configure                           */
+#*    biglook-berlios/configure                                        */
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Tue Jan 25 16:05:10 1994                          */
-#*    Last change :  Tue May  6 14:01:59 2003 (serrano)                */
-#*    Copyright   :  1994-2003 Manuel Serrano, see LICENSE file        */
+#*    Last change :  Wed Sep 21 13:45:20 2005 (dciabrin)               */
+#*    Copyright   :  1994-2005 Manuel Serrano, see LICENSE file        */
 #*    -------------------------------------------------------------    */
 #*    The Biglook configuration file                                   */
 #*=====================================================================*/
@@ -17,10 +17,10 @@ backends="gtk gtk2 swing"
 bigloo=bigloo
 
 # bigloo compilation flags
-boptflags="-jvm-purify -unsafe -O3 -L $""(BOOTKDIR)/lib/null -L $""(BOOTKDIR)/lib -copt \"-I $""(BOOTKDIR)/lib\" -copt \"$""(CPICFLAGS)\""
+boptflags="-jvm-purify -wslots -O3 -L $""(BOOTKDIR)/lib/null -L $""(BOOTKDIR)/lib -copt \"-I $""(BOOTKDIR)/lib\" -copt \"$""(CPICFLAGS)\""
 bdbgflags="-g -L $""(BOOTKDIR)/lib/null -L $""(BOOTKDIR)/lib -copt \"-I $""(BOOTKDIR)/lib\" -copt \"$""(CPICFLAGS)\""
 bflags=$boptflags
-bheapflags="-unsafe -q -mkaddheap -mkaddlib -L $""(BOOTKDIR)/lib"
+bheapflags="-wslots -q -mkaddheap -mkaddlib -L $""(BOOTKDIR)/lib"
 
 # the afile, jfile and btags binaries
 afile=afile

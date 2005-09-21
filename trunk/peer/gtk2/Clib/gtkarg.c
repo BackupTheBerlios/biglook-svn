@@ -1,10 +1,10 @@
 /*=====================================================================*/
-/*    serrano/prgm/project/biglook/peer/gtk/Clib/gtkarg.c              */
+/*    gtk2/Clib/gtkarg.c                                               */
 /*    -------------------------------------------------------------    */
 /*    Author      :  Manuel Serrano                                    */
 /*    Creation    :  Tue Apr 10 15:34:59 2001                          */
-/*    Last change :  Sat Jul  7 10:48:54 2001 (serrano)                */
-/*    Copyright   :  2001 Manuel Serrano                               */
+/*    Last change :  Wed Sep 21 13:30:05 2005 (dciabrin)               */
+/*    Copyright   :  2001-05 Manuel Serrano                            */
 /*    -------------------------------------------------------------    */
 /*    GValue calls                                                     */
 /*=====================================================================*/
@@ -15,7 +15,9 @@
 /*---------------------------------------------------------------------*/
 /*    Importations                                                     */
 /*---------------------------------------------------------------------*/
-extern the_c_failure( char *, char *, obj_t );
+obj_t the_c_failure( char *proc, char *msg, obj_t obj) {
+  return the_failure(string_to_bstring(proc),string_to_bstring(msg),obj);
+}
 
 /*---------------------------------------------------------------------*/
 /*    obj_t                                                            */

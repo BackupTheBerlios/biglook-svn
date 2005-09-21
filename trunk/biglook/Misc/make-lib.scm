@@ -43,8 +43,8 @@
     __biglook_button
     __biglook_check-button
     __biglook_radio
-;    __biglook_canvas
-;    __biglook_canvas-item
+    __biglook_canvas
+    __biglook_canvas-item
     __biglook_label
     __biglook_entry
     __biglook_listbox

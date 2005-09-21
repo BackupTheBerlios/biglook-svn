@@ -3,7 +3,7 @@
 #*    -------------------------------------------------------------    */
 #*    Author      :  Manuel Serrano                                    */
 #*    Creation    :  Sat Mar 24 10:09:42 2001                          */
-#*    Last change :  Tue Aug  2 11:58:39 2005 (dciabrin)               */
+#*    Last change :  Sun Sep 18 17:50:50 2005 (dciabrin)               */
 #*    Copyright   :  2001-05 Manuel Serrano                            */
 #*    -------------------------------------------------------------    */
 #*    The (gmake) Makefile to build the Biglook library.               */
@@ -29,6 +29,7 @@ LLIB		= configure app event color font after port cursor
 LWIDGET		= bglkobject widget \
                   image \
                   container box grid area layout window frame scroll \
+		  canvas canvitem \
                   notepad paned \
                   button checkbutton radio \
                   label entry listbox combobox \
@@ -85,7 +86,7 @@ heap: .afile $(BOOTKDIR)/lib/biglook.heap
 $(BOOTKDIR)/lib/biglook.heap: $(BGLK_HEAP_FILE) $(BGLK_SOURCES)
 	@ $(BIGLOO) $(BHEAPFLAGS) \
                     $(BGLK_HEAP_FILE) \
-                    -addheap $(BOOTKDIR)/lib/biglook.heap
+                    -addheap $(BOOTKDIR)/lib/biglook.heap -heap-library biglook
 	@ echo "Heap Done... ($(BOOTKDIR)/lib/biglook.heap)"
 	@ echo "-------------------------------"
 
@@ -97,7 +98,7 @@ jheap: .afile .jfile $(BOOTKDIR)/lib/biglook.jheap
 $(BOOTKDIR)/lib/biglook.jheap: $(BGLK_HEAP_FILE) $(BGLK_SOURCES)
 	@ $(BIGLOO) $(BHEAPFLAGS) \
                     $(BGLK_HEAP_FILE) \
-                    -jvm -addheap $(BOOTKDIR)/lib/biglook.jheap
+                    -jvm -addheap $(BOOTKDIR)/lib/biglook.jheap -heap-library biglook
 	@ echo "JHeap Done... ($(BOOTKDIR)/lib/biglook.jheap)"
 	@ echo "-------------------------------"
 

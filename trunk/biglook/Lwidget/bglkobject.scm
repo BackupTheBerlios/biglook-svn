@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Wed Sep  6 08:16:28 2000                          */
-;*    Last change :  Tue May 11 14:16:09 2004 (dciabrin)               */
-;*    Copyright   :  2000-04 Manuel Serrano                            */
+;*    Last change :  Wed Sep 21 22:23:10 2005 (dciabrin)               */
+;*    Copyright   :  2000-05 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The Biglook bglk-object class                                    */
 ;*=====================================================================*/
@@ -29,8 +29,8 @@
 
 	    (generic destroy ::bglk-object)
 	    (generic widget-repaint! ::bglk-object)
-	    (generic raise ::bglk-object)
-	    (generic lower ::bglk-object)))
+	    (generic widget-raise! ::bglk-object)
+	    (generic widget-lower! ::bglk-object)))
 
 ;*---------------------------------------------------------------------*/
 ;*    bglk-object-init ...                                             */
@@ -63,10 +63,10 @@
 ;*---------------------------------------------------------------------*/
 ;*    raise ::bglk-object ...                                          */
 ;*---------------------------------------------------------------------*/
-(define-generic (raise widget::bglk-object))
+(define-generic (widget-raise! widget::bglk-object))
 
 ;*---------------------------------------------------------------------*/
 ;*    lower ::bglk-object ...                                          */
 ;*---------------------------------------------------------------------*/
-(define-generic (lower widget::bglk-object))
+(define-generic (widget-lower! widget::bglk-object))
 		       
