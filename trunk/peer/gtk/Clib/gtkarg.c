@@ -167,21 +167,21 @@ bglk_gtk_arg_type_set( GtkObject *gobj, char *name, obj_t value, int t ) {
 	 if( STRINGP( value ) ) 
 	    GTK_VALUE_STRING( arg ) = BSTRING_TO_STRING( value );
 	 else
-	    the_c_failure( name, "string", value );
+	    C_FAILURE( name, "string", value );
 	 break;
 
       case GTK_TYPE_DOUBLE:
 	 if( REALP( value ) ) 
 	    GTK_VALUE_DOUBLE( arg ) = REAL_TO_DOUBLE( value );
 	 else
-	    the_c_failure( name, "double", value );
+	    C_FAILURE( name, "double", value );
 	 break;
 
       case GTK_TYPE_FLOAT:
 	 if( REALP( value ) ) 
 	    GTK_VALUE_FLOAT( arg ) = REAL_TO_FLOAT( value );
 	 else
-	    the_c_failure( name, "float", value );
+	    C_FAILURE( name, "float", value );
 	 break;
 
       case GTK_TYPE_UINT:
@@ -189,28 +189,28 @@ bglk_gtk_arg_type_set( GtkObject *gobj, char *name, obj_t value, int t ) {
 	 if( INTEGERP( value ) ) 
 	    GTK_VALUE_UINT( arg ) = CINT( value );
 	 else
-	    the_c_failure( name, "double", value );
+	    C_FAILURE( name, "double", value );
 	 break;
 
       case GTK_TYPE_ULONG:
 	 if( INTEGERP( value ) ) 
 	    GTK_VALUE_ULONG( arg ) = CINT( value );
 	 else
-	    the_c_failure( name, "double", value );
+	    C_FAILURE( name, "double", value );
 	 break;
 
       case GTK_TYPE_ENUM:
 	 if( INTEGERP( value ) ) 
 	    GTK_VALUE_ENUM( arg ) = CINT( value );
 	 else
-	    the_c_failure( name, "enum", value );
+	    C_FAILURE( name, "enum", value );
 	 break;
 
       case GTK_TYPE_BOOL:
 	 if( BOOLEANP( value ) )
 	    GTK_VALUE_UINT( arg ) = ((value != BFALSE) ? TRUE : FALSE);
 	 else
-	    the_c_failure( name, "bool", value );
+	    C_FAILURE( name, "bool", value );
 	 break;
 
       case GTK_TYPE_OBJECT:
@@ -241,7 +241,7 @@ bglk_gtk_arg_type_set( GtkObject *gobj, char *name, obj_t value, int t ) {
 	       if( INTEGERP( value ) ) 
 		  GTK_VALUE_ENUM( arg ) = CINT( value );
 	       else
-		  the_c_failure( name, "enum", value );
+		  C_FAILURE( name, "enum", value );
 	       break;
 	    } else {
 	       if( t == GTK_TYPE_GNOME_CANVAS_POINTS ) {

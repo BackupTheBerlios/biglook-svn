@@ -12,7 +12,7 @@
 ;*    GTK CC options                                                   */
 ;*---------------------------------------------------------------------*/
 ;; linking
-(let ((gtk-ld-options "-L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm "))
+(let ((gtk-ld-options "-L/usr/lib -lgtk -lgdk -rdynamic -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm "))
    (set! *ld-options* (string-append *ld-options*
 				     gtk-ld-options
 				     " -L/usr/X11R6/lib ")))
@@ -32,7 +32,7 @@
 ;*    GNOMEUI CC options                                               */
 ;*---------------------------------------------------------------------*/
 ;; linking
-(let ((gnome-ld-options "-rdynamic -L/usr/lib -L/usr/X11R6/lib -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -ldl -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb-3 -lglib "))
+(let ((gnome-ld-options "-rdynamic -L/usr/lib -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -ldl -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb-3 -lglib "))
    (set! *ld-options* (string-append *ld-options* gnome-ld-options)))
 
 ;; compiling
@@ -43,7 +43,7 @@
 ;*    GdkPixbuf CC options                                             */
 ;*---------------------------------------------------------------------*/
 ;; linking
-(let ((pixbuf-ld-options "-L/usr/lib -lgdk_pixbuf -L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lglib -ldl -lXi -lXext -lX11 -lm -lgnomecanvaspixbuf "))
+(let ((pixbuf-ld-options "-L/usr/lib -lgdk_pixbuf -lgnomecanvaspixbuf "))
    (set! *ld-options* (string-append *ld-options* pixbuf-ld-options)))
   
 ;; compiling

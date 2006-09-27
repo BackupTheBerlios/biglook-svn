@@ -49,20 +49,20 @@ bglk_invoke_callback( obj_t p ) {
       exit( -1 );
    }
 
-   if( INPUT_PORT( ip ).kindof == KINDOF_CLOSED ) {
+   if( PORT( ip ).kindof == KINDOF_CLOSED ) {
       bglk_unregister_port_callback( ip );
    } else {
       PROCEDURE_ENTRY( CDR( p ) )( CDR( p ), ip, BEOA );
    
-      if( INPUT_PORT( ip ).kindof == KINDOF_CLOSED ) {
+      if( PORT( ip ).kindof == KINDOF_CLOSED ) {
 	 bglk_unregister_port_callback( ip );
       } else {
-	 if( INPUT_PORT( ip ).eof || feof( INPUT_PORT( ip ).file ) ) {
+	 if( INPUT_PORT( ip ).eof || feof( PORT( ip ).stream ) ) {
 	    PROCEDURE_ENTRY( CDR( p ) )( CDR( p ), ip, BEOA );
 
 	    /* flushout everything left in the buffer */
 	    while( !INPUT_PORT( ip ).eof &&
-		   INPUT_PORT( ip ).kindof != KINDOF_CLOSED )  {
+		   PORT( ip ).kindof != KINDOF_CLOSED )  {
 	       PROCEDURE_ENTRY( CDR( p ) )( CDR( p ), ip, BEOA );
 	    }
 	 
@@ -79,7 +79,7 @@ bglk_invoke_callback( obj_t p ) {
 int
 bglk_add_input_port_handler( obj_t port, int condition, obj_t callback ) {
    FILE *f;
-   f = INPUT_PORT( port ).file;
+   f = PORT( port ).stream;
 
    return gdk_input_add( fileno( f ),
 			 condition,
@@ -98,10 +98,10 @@ bglk_add_input_port_events( obj_t port ) {
    int n;
    FILE *f;
 
-   switch( (int)INPUT_PORT( port ).kindof ) {
+   switch( (int)PORT( port ).kindof ) {
       case (int)KINDOF_CONSOLE:
       case (int)KINDOF_SOCKET:
-	 f = INPUT_PORT( port ).file;
+	 f = PORT( port ).stream;
 	 n = fileno( f );
 	 event_handler_setup( n );
 	 INPUT_PORT( port ).syseof = event_handler_feof;
@@ -115,7 +115,7 @@ bglk_add_input_port_events( obj_t port ) {
 	 
       case (int)KINDOF_FILE:
       case (int)KINDOF_PIPE:
-	 f = INPUT_PORT( port ).file;
+	 f = PORT( port ).stream;
 	 n = fileno( f );
 	 event_handler_setup( n );
 	 INPUT_PORT( port ).syseof = event_handler_feof;

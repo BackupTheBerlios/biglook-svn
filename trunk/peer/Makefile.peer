@@ -52,7 +52,7 @@ heap: .afile $(BOOTKDIR)/lib/biglook_peer.heap
 $(BOOTKDIR)/lib/biglook_peer.heap: $(PEER_HEAP_FILE) $(PEER_SOURCES)
 	@ $(BIGLOO) $(BHEAPFLAGS) \
                     $(PEER_HEAP_FILE) \
-                    -addheap $(BOOTKDIR)/lib/biglook_peer.heap -heap-library biglook
+                    -addheap $(BOOTKDIR)/lib/biglook_peer.heap -heap-library biglook_peer
 	@ echo "Heap Done... ($(BOOTKDIR)/lib/biglook_peer.heap)"
 	@ echo "-------------------------------"
 
@@ -64,7 +64,7 @@ jheap: .afile .jfile $(BOOTKDIR)/lib/biglook_peer.jheap
 $(BOOTKDIR)/lib/biglook_peer.jheap: $(PEER_HEAP_FILE) $(PEER_SOURCES)
 	@ $(BIGLOO) $(BHEAPFLAGS) \
                     $(PEER_HEAP_FILE) \
-                    -jvm -g -addheap $(BOOTKDIR)/lib/biglook_peer.jheap -heap-library biglook
+                    -jvm -g -addheap $(BOOTKDIR)/lib/biglook_peer.jheap -heap-library biglook_peer
 	@ echo "JHeap Done... ($(BOOTKDIR)/lib/biglook_peer.jheap)"
 	@ echo "-------------------------------"
 

@@ -211,7 +211,7 @@ bglk_g_property_type_set( GObject *gobj, char *name, obj_t value, int t ) {
             g_value_init (&gval, G_TYPE_STRING);
 	    g_value_set_string (&gval, BSTRING_TO_STRING( value ));
 	 } else
-	    the_c_failure( name, "string", value );
+	    C_FAILURE( name, "string", value );
 	 break;
 
       case G_TYPE_DOUBLE:
@@ -219,7 +219,7 @@ bglk_g_property_type_set( GObject *gobj, char *name, obj_t value, int t ) {
             g_value_init (&gval, G_TYPE_DOUBLE);
 	    g_value_set_double (&gval, REAL_TO_DOUBLE( value ));
 	 } else
-	    the_c_failure( name, "double", value );
+	    C_FAILURE( name, "double", value );
 	 break;
 
       case G_TYPE_FLOAT:
@@ -227,7 +227,7 @@ bglk_g_property_type_set( GObject *gobj, char *name, obj_t value, int t ) {
             g_value_init (&gval, G_TYPE_FLOAT);
 	    g_value_set_float (&gval, REAL_TO_FLOAT( value ));
 	 } else
-	    the_c_failure( name, "float", value );
+	    C_FAILURE( name, "float", value );
 	 break;
 
       case G_TYPE_UINT:
@@ -236,7 +236,7 @@ bglk_g_property_type_set( GObject *gobj, char *name, obj_t value, int t ) {
             g_value_init (&gval, G_TYPE_UINT);
 	    g_value_set_uint (&gval, CINT( value ));
 	 } else
-	    the_c_failure( name, "double", value );
+	    C_FAILURE( name, "double", value );
 	 break;
 
       case G_TYPE_ULONG:
@@ -244,7 +244,7 @@ bglk_g_property_type_set( GObject *gobj, char *name, obj_t value, int t ) {
             g_value_init (&gval, G_TYPE_ULONG);
 	    g_value_set_ulong (&gval, CINT( value ));
 	 } else
-	    the_c_failure( name, "double", value );
+	    C_FAILURE( name, "double", value );
 	 break;
 
       case G_TYPE_ENUM:
@@ -252,7 +252,7 @@ bglk_g_property_type_set( GObject *gobj, char *name, obj_t value, int t ) {
             g_value_init (&gval, G_TYPE_ENUM);
 	    g_value_set_enum (&gval, CINT( value ));
 	 } else
-	    the_c_failure( name, "enum", value );
+	    C_FAILURE( name, "enum", value );
 	 break;
 
       case G_TYPE_BOOLEAN:
@@ -260,7 +260,7 @@ bglk_g_property_type_set( GObject *gobj, char *name, obj_t value, int t ) {
             g_value_init (&gval, G_TYPE_BOOLEAN);
 	    g_value_set_boolean (&gval, ((value != BFALSE) ? TRUE : FALSE));
 	 } else
-	    the_c_failure( name, "bool", value );
+	    C_FAILURE( name, "bool", value );
 	 break;
 
       case G_TYPE_POINTER:
@@ -292,7 +292,7 @@ bglk_g_property_type_set( GObject *gobj, char *name, obj_t value, int t ) {
 	       if( INTEGERP( value ) ) 
 		  g_value_set_enum (&gval, CINT( value ));
 	       else
-		  the_c_failure( name, "enum", value );
+		  C_FAILURE( name, "enum", value );
 	       break;
 	    } else {
 	       if( t == GNOME_TYPE_CANVAS_POINTS ) {

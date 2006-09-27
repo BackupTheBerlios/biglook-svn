@@ -19,8 +19,8 @@ bigloo=bigloo
 # bigloo compilation flags
 boptflags="-jvm-purify -wslots -O3 -L $""(BOOTKDIR)/lib/null -L $""(BOOTKDIR)/lib -copt \"-I $""(BOOTKDIR)/lib\" -copt \"$""(CPICFLAGS)\""
 bdbgflags="-g -L $""(BOOTKDIR)/lib/null -L $""(BOOTKDIR)/lib -copt \"-I $""(BOOTKDIR)/lib\" -copt \"$""(CPICFLAGS)\""
-bflags=$boptflags
-bheapflags="-wslots -q -mkaddheap -mkaddlib -L $""(BOOTKDIR)/lib"
+bflags="$boptflags -wslots"
+bheapflags="-unsafe -q -mkaddheap -mkaddlib -L $""(BOOTKDIR)/lib -wslots"
 
 # the afile, jfile and btags binaries
 afile=afile

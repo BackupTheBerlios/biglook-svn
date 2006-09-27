@@ -3,8 +3,8 @@
 ;*    -------------------------------------------------------------    */
 ;*    Author      :  Manuel Serrano                                    */
 ;*    Creation    :  Tue Apr 10 09:52:57 2001                          */
-;*    Last change :  Sat May 19 07:11:52 2001 (serrano)                */
-;*    Copyright   :  2001 Manuel Serrano                               */
+;*    Last change :  Thu Feb 23 02:55:44 2006 (serrano)                */
+;*    Copyright   :  2001-06 Manuel Serrano                            */
 ;*    -------------------------------------------------------------    */
 ;*    The implementation of the LET-OPTIONS macro.                     */
 ;*                                                                     */
@@ -75,9 +75,13 @@
       (let* ((loop   (gensym 'loop))
 	     (expr   (gensym 'expr))
 	     (kvars  (map (lambda (kbinding)
-			     (let ((str (keyword->string (car kbinding))))
-				(string->symbol
-				 (substring str 1 (string-length str)))))
+			     (cond-expand
+				((or bigloo2.5 bigloo2.6 bigloo2.7)
+				 (let ((str (keyword->string (car kbinding))))
+				    (string->symbol
+				     (substring str 1 (string-length str)))))
+				(else
+				 (keyword->symbol (car kbinding)))))
 			  kbdgs))
 	     (kinits (map (lambda (var binding)
 			     (list var (cadr binding)))
