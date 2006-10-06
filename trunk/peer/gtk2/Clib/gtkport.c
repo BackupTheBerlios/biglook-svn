@@ -19,8 +19,8 @@
 /*    static functions                                                 */
 /*---------------------------------------------------------------------*/
 static int event_handler_feof( FILE * );
-static int event_handler_fgetc( FILE * );
-static int event_handler_fread( char *, long, long, FILE * );
+static long event_handler_fgetc( FILE * );
+static long event_handler_fread( char *, long, long, FILE * );
 static void event_handler_setup( int );
 static void fill_buffer( FILE * );
 
@@ -98,9 +98,9 @@ bglk_add_input_port_events( obj_t port ) {
    int n;
    FILE *f;
 
-   switch( (int)PORT( port ).kindof ) {
-      case (int)KINDOF_CONSOLE:
-      case (int)KINDOF_SOCKET:
+   switch( (long)PORT( port ).kindof ) {
+      case (long)KINDOF_CONSOLE:
+      case (long)KINDOF_SOCKET:
 	 f = PORT( port ).stream;
 	 n = fileno( f );
 	 event_handler_setup( n );
@@ -113,8 +113,8 @@ bglk_add_input_port_events( obj_t port ) {
 			(gpointer)f );
 	 return BUNSPEC;
 	 
-      case (int)KINDOF_FILE:
-      case (int)KINDOF_PIPE:
+      case (long)KINDOF_FILE:
+      case (long)KINDOF_PIPE:
 	 f = PORT( port ).stream;
 	 n = fileno( f );
 	 event_handler_setup( n );
@@ -182,7 +182,7 @@ event_handler_feof( FILE *file ) {
 /*    static int                                                       */
 /*    event_handler_fgetc ...                                          */
 /*---------------------------------------------------------------------*/
-static int
+static long
 event_handler_fgetc( FILE *file ) {
    int n = fileno( file );
 
@@ -209,14 +209,14 @@ event_handler_fgetc( FILE *file ) {
 /*    static int                                                       */
 /*    event_handler_fread ...                                          */
 /*---------------------------------------------------------------------*/
-static int
+static long
 event_handler_fread( char *ptr, long size, long nmemb, FILE *file ) {
    int n = fileno( file );
    long sz = size * nmemb;
    long i = 0;
 
    for( i = 0; i < sz; i++ ) {
-      int c = event_handler_fgetc( file );
+      long c = event_handler_fgetc( file );
 
       if( EOF == c )
 	 return i;

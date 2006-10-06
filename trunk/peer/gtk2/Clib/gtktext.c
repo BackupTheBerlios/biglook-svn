@@ -1,5 +1,6 @@
 #include <bigloo.h>
 #include <biglook_peer.h>
+#include <string.h>
 
 char*
 bglk_gtk_text_buffer_get_text( GtkTextBuffer *buffer)

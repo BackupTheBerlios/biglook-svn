@@ -11,6 +11,7 @@
 #include <bigloo.h>
 #include <biglook_peer.h>
 #include "../Include/_event.h"
+#include <string.h>
 
 int 
 bglk_toolbar_space_size ( GtkToolbar *_tb ){

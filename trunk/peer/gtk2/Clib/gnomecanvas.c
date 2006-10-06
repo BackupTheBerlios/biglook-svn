@@ -220,7 +220,7 @@ bglk_gnome_canvas_item_new( GnomeCanvasGroup *parent, int type, obj_t lst ) {
 	    }
 	 }
       }
-      g_object_set_property (citem, name, &gval);
+     g_object_set_property (G_OBJECT(citem), name, &gval);
    }
 
    return (GtkObject *)citem;

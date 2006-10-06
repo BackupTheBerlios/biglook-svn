@@ -12,6 +12,7 @@
 #include <biglook_peer.h>
 #include <gdk/gdkkeysyms.h>
 #include "../Include/_event.h"
+#include <string.h>
 
 /*---------------------------------------------------------------------*/
 /*    Importations from __biglook_%event (can't be in biglook_peer.h   */
@@ -538,7 +539,7 @@ bglk_install_widget_event_handler( GtkObject *o, obj_t p, char *name ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_uninstall_widget_event_handler( GtkObject *o, obj_t p ) {
-   gtk_signal_disconnect_by_func( o, bglk_event_callback, p );
+  gtk_signal_disconnect_by_func( o, G_CALLBACK(bglk_event_callback), p );
 }
 
 /*---------------------------------------------------------------------*/
@@ -547,7 +548,7 @@ bglk_uninstall_widget_event_handler( GtkObject *o, obj_t p ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_install_widget_signal_handler( GtkObject *o, obj_t p, char *name ) {
-   g_signal_connect( o, name, bglk_signal_callback, p );
+  g_signal_connect( o, name, G_CALLBACK(bglk_signal_callback), p );
 }
 
 /*---------------------------------------------------------------------*/
@@ -556,7 +557,7 @@ bglk_install_widget_signal_handler( GtkObject *o, obj_t p, char *name ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_uninstall_widget_signal_handler( GtkObject *o, obj_t p ) {
-   gtk_signal_disconnect_by_func( o, bglk_signal_callback, p );
+  gtk_signal_disconnect_by_func( o, G_CALLBACK(bglk_signal_callback), p );
 }
 
 /*---------------------------------------------------------------------*/
@@ -565,7 +566,7 @@ bglk_uninstall_widget_signal_handler( GtkObject *o, obj_t p ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_install_child_handler( GtkObject *o, obj_t p, char *name ) {
-   gtk_signal_connect_after( o, name, bglk_child_callback, p );
+  gtk_signal_connect_after( o, name, G_CALLBACK(bglk_child_callback), p );
 }
 
 /*---------------------------------------------------------------------*/
@@ -574,7 +575,7 @@ bglk_install_child_handler( GtkObject *o, obj_t p, char *name ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_uninstall_child_handler( GtkObject *o, obj_t p ) {
-   gtk_signal_disconnect_by_func( o, bglk_child_callback, p );
+  gtk_signal_disconnect_by_func( o, G_CALLBACK(bglk_child_callback), p );
 }
 
 /*---------------------------------------------------------------------*/
@@ -585,7 +586,8 @@ bglk_uninstall_child_handler( GtkObject *o, obj_t p ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_install_canvas_item_event_handler( GtkObject *o, obj_t pair ) {
-   gtk_signal_connect( o, "event", bglk_canvas_item_event_callback, pair );
+  gtk_signal_connect( o, "event", 
+                      G_CALLBACK(bglk_canvas_item_event_callback), pair );
 }
 
 /*---------------------------------------------------------------------*/
@@ -596,7 +598,9 @@ bglk_install_canvas_item_event_handler( GtkObject *o, obj_t pair ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_uninstall_canvas_item_event_handler( GtkObject *o, obj_t pair ) {
-   gtk_signal_disconnect_by_func( o, bglk_canvas_item_event_callback, pair );
+  gtk_signal_disconnect_by_func( o, 
+                                 G_CALLBACK(bglk_canvas_item_event_callback), 
+                                 pair );
 }
 
 /*---------------------------------------------------------------------*/
@@ -606,7 +610,8 @@ bglk_uninstall_canvas_item_event_handler( GtkObject *o, obj_t pair ) {
 /*    See bglk_menu_item_event_callback.                               */
 /*---------------------------------------------------------------------*/
 obj_t bglk_install_menu_item_event_handler( GtkObject *o, obj_t p ) {
-   gtk_signal_connect( o, "activate", bglk_menu_item_event_callback, p );
+  gtk_signal_connect( o, "activate", 
+                      G_CALLBACK(bglk_menu_item_event_callback), p );
 }
 
 /*---------------------------------------------------------------------*/
@@ -616,7 +621,8 @@ obj_t bglk_install_menu_item_event_handler( GtkObject *o, obj_t p ) {
 /*    See bglk_menu_item_event_callback.                               */
 /*---------------------------------------------------------------------*/
 obj_t bglk_uninstall_menu_item_event_handler( GtkObject *o, obj_t p ) {
-   gtk_signal_disconnect_by_func( o, bglk_menu_item_event_callback, p );
+  gtk_signal_disconnect_by_func( o, G_CALLBACK(bglk_menu_item_event_callback),
+                                 p );
 }
 
 /*---------------------------------------------------------------------*/
@@ -625,7 +631,8 @@ obj_t bglk_uninstall_menu_item_event_handler( GtkObject *o, obj_t p ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_install_row_select_handler( GtkObject *o, obj_t p ) {
-   gtk_signal_connect( o, "select_row", bglk_select_row_callback, p );
+  gtk_signal_connect( o, "select_row", 
+                      G_CALLBACK(bglk_select_row_callback), p );
    return p;
 }
 
@@ -635,7 +642,7 @@ bglk_install_row_select_handler( GtkObject *o, obj_t p ) {
 /*---------------------------------------------------------------------*/
 obj_t
 bglk_uninstall_row_select_handler( GtkObject *o, obj_t p ) {
-   gtk_signal_disconnect_by_func( o, bglk_select_row_callback, p );
+  gtk_signal_disconnect_by_func( o, G_CALLBACK(bglk_select_row_callback), p );
    return p;
 }
 

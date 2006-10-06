@@ -11,6 +11,7 @@
 #include <bigloo.h>
 #include <biglook_peer.h>
 #include <gtk/gtk.h>
+#include <string.h>
 
 /*---------------------------------------------------------------------*/
 /*    gtk_color_buffer                                                 */
