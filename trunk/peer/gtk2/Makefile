@@ -31,6 +31,9 @@ PEER_CFLAGS	= $(GTK_CFLAGS) \
                   $(GLIB_CFLAGS) \
                   $(GNOME_CFLAGS) \
                   -I$(BOOTKDIR)/lib/gtk2
+PEER_LDFLAGS	= $(GTK_LDFLAGS) \
+                  $(GLIB_LDFLAGS) \
+                  $(GNOME_LDFLAGS)
 PEER_BFLAGS	= -copt '$(PEER_CFLAGS)'
 PEER_OBJ_DIRS	= objs/Clib objs/Lgtk2
 PEER_CLEAN	= Include/event.h
@@ -72,7 +75,7 @@ PEER_SOURCES	= $(LLIB:%=Llib/%.scm) \
                   $(LWIDGET:%=Lwidget/%.scm) \
                   $(LGTK:%=Lgtk2/%.scm) \
                   $(CLIB:%=Clib/%.c)
-                  
+
 #*---------------------------------------------------------------------*/
 #*    Population                                                       */
 #*---------------------------------------------------------------------*/

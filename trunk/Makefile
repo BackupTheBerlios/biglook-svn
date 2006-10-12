@@ -70,7 +70,7 @@ boot-gtk-generic: boot-null lib/$(GTK) peer/$(GTK)/Makefile.$(GTK)config
 #*--- boot-gtk -------------------------------------------------------*/
 boot-gtk: GTK=gtk
 boot-gtk: boot-gtk-generic
-	
+
 #*--- boot-gtk2 -------------------------------------------------------*/
 boot-gtk2: GTK=gtk2
 boot-gtk2: boot-gtk-generic

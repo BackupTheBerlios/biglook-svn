@@ -1,10 +1,8 @@
 ;*---------------------------------------------------------------------*/
 ;*    The basename of the native fthread library name                  */
 ;*---------------------------------------------------------------------*/
-(set! *bigloo-libraries-translation-table*
-      (cons* (cons "biglook" (cons "biglook" "<KRELEASE>"))
-	     (cons "biglook_peer" (cons "biglook_peer" "<KRELEASE>"))
-             *bigloo-libraries-translation-table*))
+(library-translation-table-add! 'biglook "biglook" "<KRELEASE>")
+(library-translation-table-add! 'biglook_peer "biglook_peer" "<KRELEASE>")
 
 ;*---------------------------------------------------------------------*/
 ;*    The used peer                                                    */

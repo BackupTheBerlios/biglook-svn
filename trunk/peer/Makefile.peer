@@ -77,7 +77,7 @@ lib: dirs \
 
 $(BOOTKDIR)/lib/$(PEER_NAME)/libbiglook_peer_s-$(KRELEASE).$(SHAREDSUFFIX): $(PEER_OBJECTS)
 	@ /bin/rm -f $@
-	@ $(LD) -o $@ $(PEER_OBJECTS) -lm -lc
+	 $(LD) -o $@ $(PEER_OBJECTS) -lm -lc $(PEER_LDFLAGS)
 	@ echo "biglook_peer_s-$(KRELEASE).$(SHAREDSUFFIX) done...($@)"
 	@ echo "-------------------------------"
 
