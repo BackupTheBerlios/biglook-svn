@@ -59,7 +59,7 @@
 ;*    The peer library                                                 */
 ;*---------------------------------------------------------------------*/
 (set! *additional-bigloo-libraries*
-      (cons "biglook_peer" *additional-bigloo-libraries*))
+      (cons 'biglook_peer *additional-bigloo-libraries*))
 
 ;*---------------------------------------------------------------------*/
 ;*    The peer .init file                                              */
