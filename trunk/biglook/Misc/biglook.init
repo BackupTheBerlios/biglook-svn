@@ -20,7 +20,7 @@
        (let ((cell (assq 'biglook-peer *eval-options*)))
 	  (if (pair? cell)
 	      (cadr cell)
-	      "gtk")))))
+	      "gtk2")))))
 
 ;*---------------------------------------------------------------------*/
 ;*    .biglook runtime command file                                    */
